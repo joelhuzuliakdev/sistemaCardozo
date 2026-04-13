@@ -365,6 +365,55 @@ import Layout from '../../layouts/Layout.astro';
         <span id="toastMsg" class="text-white text-xs font-bold tracking-wide"></span>
         </div>
 
+        <!-- ═══════════════ MODAL DURACIÓN ═══════════════ -->
+        <div id="modalDuracion" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+          <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+          <div class="relative bg-neutral-900 border border-blue-900/50 rounded-sm w-full max-w-sm shadow-2xl animate-modal">
+            <div class="bg-neutral-800 px-6 py-4 flex items-center justify-between border-b border-neutral-700">
+              <span class="text-white text-xs font-black tracking-[0.25em] uppercase">Confirmar Turno</span>
+              <button onclick="cerrarModalDuracion()" class="text-neutral-500 hover:text-white transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+            <div class="p-6 space-y-4">
+              <div class="bg-blue-500/10 border border-blue-500/20 rounded-sm px-4 py-3">
+                <p class="text-blue-400 text-xs font-bold tracking-wide" id="duracionInfo"></p>
+              </div>
+              <input type="hidden" id="duracionTurnoId"/>
+              <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">
+                  ¿Cuántas horas va a durar este trabajo?
+                </label>
+                <div class="relative">
+                  <input type="number" id="duracionHoras" min="0.5" max="12" step="0.5"
+                    class="admin-input w-full pr-12"
+                    placeholder="Ej: 2"/>
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 text-xs">hs</span>
+                </div>
+                <p class="text-neutral-600 text-[10px] mt-1.5">
+                  Los horarios siguientes se bloquearán automáticamente hasta que finalice el trabajo.
+                </p>
+                <p class="text-red-400 text-xs mt-1 hidden" id="duracionError">Ingresá un valor entre 0.5 y 12 horas</p>
+              </div>
+            </div>
+            <div class="px-6 pb-6 flex gap-3 justify-end">
+              <button onclick="cerrarModalDuracion()"
+                class="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all">
+                Cancelar
+              </button>
+              <button onclick="confirmarDuracion()"
+                class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all flex items-center gap-2">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+
     </div>
 
 </Layout>
@@ -480,23 +529,14 @@ import Layout from '../../layouts/Layout.astro';
       icon.classList.add('spinning');
 
       try {
-        /* ──────────────────────────────────────────
-           REEMPLAZAR con tu endpoint real:
-           const res = await fetch(`${API_BASE}/turnos`);
-           if (!res.ok) throw new Error(`HTTP ${res.status}`);
-           turnosData = await res.json();
-        ────────────────────────────────────────── */
+        // Leer desde localStorage (datos guardados por el formulario o por admin)
+        const stored = localStorage.getItem('cardozo_turnos');
+        turnosData = stored ? JSON.parse(stored) : [];
 
-        // DATOS MOCK — eliminar cuando tengas el backend
-        await new Promise(r => setTimeout(r, 600));
-        turnosData = [
-          { id: '1', nombre: 'Juan', apellido: 'García', celular: '11 2345 6789', fecha: '2025-04-14', horario: '09:00', vehiculo: 'auto', modelo_vehiculo: 'Volkswagen Gol 2018', descripcion: 'Cambio de aceite y filtro. Además revisar frenos delanteros.', estado: 'pendiente' },
-          { id: '2', nombre: 'María', apellido: 'López', celular: '11 9876 5432', fecha: '2025-04-14', horario: '11:00', vehiculo: 'moto', modelo_vehiculo: 'Honda CB 250 2020', descripcion: 'Revisión general, ajuste de cadena y cambio de pastillas de freno.', estado: 'confirmado' },
-          { id: '3', nombre: 'Carlos', apellido: 'Fernández', celular: '11 5555 1234', fecha: '2025-04-15', horario: '10:00', vehiculo: 'camioneta', modelo_vehiculo: 'Ford Ranger 2021', descripcion: 'Diagnóstico eléctrico. La camioneta no arranca bien en frío.', estado: 'enproceso' },
-          { id: '4', nombre: 'Ana', apellido: 'Martínez', celular: '11 7777 8888', fecha: '2025-04-12', horario: '14:00', vehiculo: 'auto', modelo_vehiculo: 'Toyota Corolla 2019', descripcion: 'Service completo de 40.000 km.', estado: 'finalizado' },
-          { id: '5', nombre: 'Roberto', apellido: 'Sánchez', celular: '11 3333 4444', fecha: '2025-04-16', horario: '08:00', vehiculo: 'auto', modelo_vehiculo: 'Peugeot 208 2022', descripcion: 'Ruido extraño en suspensión delantera derecha al frenar.', estado: 'pendiente' },
-          { id: '6', nombre: 'Laura', apellido: 'Díaz', celular: '11 6666 9999', fecha: '2025-04-17', horario: '15:00', vehiculo: 'moto', modelo_vehiculo: 'Bajaj Pulsar NS200', descripcion: 'Cambio de aceite, bujía y revisión de luces.', estado: 'pendiente' },
-        ];
+        // TODO: reemplazar con fetch real:
+        // const res = await fetch(`${API_BASE}/turnos`);
+        // if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        // turnosData = await res.json();
 
         renderKanban();
         updateStats();
@@ -622,21 +662,68 @@ import Layout from '../../layouts/Layout.astro';
     // CAMBIAR ESTADO
     // ══════════════════════════════════════════
     async function cambiarEstado(id, nuevoEstado) {
+      if (nuevoEstado === 'confirmado') {
+        abrirModalDuracion(id);
+        return;
+      }
       try {
-        /* REEMPLAZAR:
-           await fetch(`${API_BASE}/turnos/${id}/estado`, {
-             method: 'PATCH',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify({ estado: nuevoEstado }),
-           }); */
         const t = turnosData.find(x => x.id === id);
         if (t) t.estado = nuevoEstado;
+        guardarTurnosEnStorage();
         renderKanban();
         updateStats();
-        const labels = { confirmado: 'Turno confirmado', enproceso: 'Turno iniciado', finalizado: 'Turno finalizado', cancelado: 'Turno cancelado', pendiente: 'Turno reabierto' };
+        const labels = { enproceso: 'Turno iniciado', finalizado: 'Turno finalizado', cancelado: 'Turno cancelado', pendiente: 'Turno reabierto' };
         showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
       } catch {
         showToast('Error al cambiar el estado', 'error');
+      }
+    }
+
+    function guardarTurnosEnStorage() {
+      localStorage.setItem('cardozo_turnos', JSON.stringify(turnosData));
+    }
+
+    function abrirModalDuracion(id) {
+      document.getElementById('duracionTurnoId').value = id;
+      document.getElementById('duracionHoras').value = '';
+      const t = turnosData.find(x => x.id === id);
+      if (t) {
+        document.getElementById('duracionInfo').textContent =
+          `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
+      }
+      const modal = document.getElementById('modalDuracion');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => document.getElementById('duracionHoras').focus(), 100);
+    }
+
+    function cerrarModalDuracion() {
+      const modal = document.getElementById('modalDuracion');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    async function confirmarDuracion() {
+      const id = document.getElementById('duracionTurnoId').value;
+      const horas = parseFloat(document.getElementById('duracionHoras').value);
+      if (!horas || horas < 0.5 || horas > 12) {
+        document.getElementById('duracionError').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('duracionError').classList.add('hidden');
+      try {
+        const t = turnosData.find(x => x.id === id);
+        if (t) {
+          t.estado = 'confirmado';
+          t.duracion_horas = horas;
+        }
+        guardarTurnosEnStorage();
+        cerrarModalDuracion();
+        renderKanban();
+        updateStats();
+        showToast('Turno confirmado', 'ok');
+      } catch {
+        showToast('Error al confirmar el turno', 'error');
       }
     }
 
@@ -760,7 +847,7 @@ import Layout from '../../layouts/Layout.astro';
     });
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') { cerrarEditar(); cerrarEliminar(); }
+      if (e.key === 'Escape') { cerrarEditar(); cerrarEliminar(); cerrarModalDuracion(); }
     });
 
     // ══════════════════════════════════════════
@@ -782,4 +869,4 @@ import Layout from '../../layouts/Layout.astro';
     // INIT
     // ══════════════════════════════════════════
     cargarTurnos();
-</script>
+</script> // FALTA AGREGAR QUE AL CONFIRMAR EL TURNO, PUEDA PONER QUE SALE EL ARREGLO CON MANO DE OBRA INCLUIDO Y QUE CUANDO ESTE EN FINALIZADO SE PUEDA ELIMINAR DE TURNOS Y QUE SE QUEDE GUARDADO EN EL HISTORIAL CON SU NOMBRE Y NUMERO PARA PROXIMO TRABAJO.
