@@ -1,0 +1,605 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<div class="min-h-screen bg-neutral-950 font-workshop relative overflow-x-hidden">
+
+		<!-- Diagonal accent strip -->
+		<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-yellow-400 to-blue-600"></div>
+
+		<!-- Background: SVG floating mechanical parts -->
+		<div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+			<svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+				<defs>
+				<!-- Gear tooth path reused via use -->
+				<g id="gear-lg">
+					<!-- 12-tooth gear, r=38, inner r=28 -->
+					<path d="
+					M0,-38 L5,-44 L10,-44 L15,-38
+					A38,38 0 0,1 18.5,-33.5
+					L22,-29 L26,-30 L28,-22
+					A28,28 0 0,1 27.5,-16
+					L26,-10 L30,-6 L27,2
+					A38,38 0 0,1 24,8
+					L20,14 L22,19 L15,23
+					A28,28 0 0,1 10,25
+					L6,28 L5,34 L-5,34
+					L-6,28 L-10,25
+					A28,28 0 0,1 -15,23
+					L-22,19 L-20,14
+					L-24,8
+					A38,38 0 0,1 -27,2
+					L-30,-6 L-26,-10 L-27.5,-16
+					A28,28 0 0,1 -28,-22
+					L-26,-30 L-22,-29 L-18.5,-33.5
+					A38,38 0 0,1 -15,-38
+					L-10,-44 L-5,-44 Z"
+					fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<circle cx="0" cy="0" r="10" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<line x1="-10" y1="0" x2="10" y2="0" stroke="currentColor" stroke-width="1"/>
+					<line x1="0" y1="-10" x2="0" y2="10" stroke="currentColor" stroke-width="1"/>
+				</g>
+
+				<g id="gear-sm">
+					<!-- 8-tooth small gear, r=20, inner r=14 -->
+					<path d="
+					M0,-20 L4,-24 L8,-24 L10,-20
+					A20,20 0 0,1 14,-14
+					L18,-12 L18,-6
+					A14,14 0 0,1 14,-2
+					L12,4 L14,8 L10,12
+					A20,20 0 0,1 4,16
+					L2,20 L-2,20 L-4,16
+					A20,20 0 0,1 -10,12
+					L-14,8 L-12,4
+					A14,14 0 0,1 -14,-2
+					L-18,-6 L-18,-12 L-14,-14
+					A20,20 0 0,1 -10,-20
+					L-8,-24 L-4,-24 Z"
+					fill="none" stroke="currentColor" stroke-width="1"/>
+					<circle cx="0" cy="0" r="6" fill="none" stroke="currentColor" stroke-width="1"/>
+				</g>
+
+				<g id="wrench">
+					<!-- Wrench silhouette -->
+					<path d="M-4,-30 Q-2,-26 0,-22 L14,14 Q16,18 14,22 Q10,28 4,26 Q-2,24 -4,18 L-18,-18 Q-20,-22 -18,-26 Q-14,-32 -8,-32 Z"
+					fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<circle cx="-12" cy="-26" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<circle cx="8" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+				</g>
+
+				<g id="bolt">
+					<!-- Hex bolt top view -->
+					<polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<circle cx="0" cy="0" r="6" fill="none" stroke="currentColor" stroke-width="1"/>
+					<line x1="-3" y1="-5" x2="3" y2="5" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+				</g>
+
+				<g id="piston">
+					<!-- Piston side view -->
+					<rect x="-14" y="-8" width="28" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<line x1="14" y1="-5" x2="30" y2="-5" stroke="currentColor" stroke-width="1"/>
+					<line x1="14" y1="5" x2="30" y2="5" stroke="currentColor" stroke-width="1"/>
+					<line x1="30" y1="-8" x2="30" y2="8" stroke="currentColor" stroke-width="1.2"/>
+					<line x1="-14" y1="0" x2="-30" y2="0" stroke="currentColor" stroke-width="1.4"/>
+					<rect x="-6" y="-4" width="12" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+				</g>
+
+				<g id="spring">
+					<path d="M-20,0 Q-16,-8 -12,0 Q-8,8 -4,0 Q0,-8 4,0 Q8,8 12,0 Q16,-8 20,0"
+					fill="none" stroke="currentColor" stroke-width="1.2"/>
+				</g>
+				</defs>
+
+				<!-- Far back layer (very faint, large) -->
+				<g opacity="0.04" color="#ffffff">
+				<!-- Big gear top-left -->
+				<g transform="translate(80, 140) rotate(15) scale(2.2)"><use href="#gear-lg"/></g>
+				<!-- Big gear bottom-right -->
+				<g transform="translate(1300, 700) rotate(-20) scale(2.8)"><use href="#gear-lg"/></g>
+				<!-- Wrench center-right -->
+				<g transform="translate(1100, 250) rotate(40) scale(2.4)"><use href="#wrench"/></g>
+				</g>
+
+				<!-- Mid layer (medium opacity) -->
+				<g opacity="0.055" color="#ffffff">
+				<!-- Gear cluster top-right -->
+				<g transform="translate(1200, 80) rotate(8) scale(1.6)"><use href="#gear-lg"/></g>
+				<g transform="translate(1258, 112) rotate(-30) scale(1.1)"><use href="#gear-sm"/></g>
+
+				<!-- Gear bottom-left -->
+				<g transform="translate(100, 820) rotate(-12) scale(1.8)"><use href="#gear-lg"/></g>
+
+				<!-- Piston top-left area -->
+				<g transform="translate(260, 60) rotate(-15) scale(1.5)"><use href="#piston"/></g>
+
+				<!-- Spring mid-right -->
+				<g transform="translate(1280, 450) rotate(90) scale(1.8)"><use href="#spring"/></g>
+
+				<!-- Bolt scattered -->
+				<g transform="translate(1050, 650) rotate(20) scale(1.4)"><use href="#bolt"/></g>
+				<g transform="translate(160, 500) rotate(-35) scale(1.2)"><use href="#bolt"/></g>
+				</g>
+
+				<!-- Front layer (more visible, smaller pieces, red/blue accents) -->
+				<g opacity="0.07" color="#ef4444">
+				<!-- Red gear accent top-right -->
+				<g transform="translate(1150, 180) rotate(22) scale(1.2)"><use href="#gear-sm"/></g>
+				<!-- Red wrench bottom-left -->
+				<g transform="translate(50, 700) rotate(55) scale(1.3)"><use href="#wrench"/></g>
+				</g>
+
+				<g opacity="0.07" color="#3b82f6">
+				<!-- Blue gear bottom-center -->
+				<g transform="translate(600, 900) rotate(-10) scale(1.3)"><use href="#gear-sm"/></g>
+				<!-- Blue bolt top-left -->
+				<g transform="translate(350, 35) rotate(15) scale(1.1)"><use href="#bolt"/></g>
+				</g>
+
+				<g opacity="0.06" color="#facc15">
+				<!-- Yellow piston right side -->
+				<g transform="translate(1300, 320) rotate(-30) scale(1.4)"><use href="#piston"/></g>
+				<!-- Yellow spring left -->
+				<g transform="translate(80, 350) rotate(0) scale(1.6)"><use href="#spring"/></g>
+				</g>
+
+				<!-- Extra fine detail: bolts sprinkled across -->
+				<g opacity="0.05" color="#ffffff">
+				<g transform="translate(700, 50) rotate(10) scale(0.9)"><use href="#bolt"/></g>
+				<g transform="translate(900, 820) rotate(-22) scale(1.0)"><use href="#bolt"/></g>
+				<g transform="translate(450, 780) rotate(45) scale(0.85)"><use href="#bolt"/></g>
+				<g transform="translate(1350, 550) rotate(-5) scale(0.9)"><use href="#bolt"/></g>
+				<g transform="translate(200, 200) rotate(30) scale(0.8)"><use href="#gear-sm"/></g>
+				<g transform="translate(800, 180) rotate(-18) scale(1.0)"><use href="#spring"/></g>
+				</g>
+			</svg>
+		</div>
+
+		<!-- Header -->
+		<header class="workshop-header relative z-10 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-sm sticky top-0">
+			<div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<!-- Wrench icon -->
+					<div class="workshop-logo w-26 h-26 flex items-center justify-center rounded-sm rotate-3 shadow-lg shadow-red-900/40">
+						<img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-26 h-26 object-contain" />
+						</svg>
+					</div>
+					<div>
+						<span class="text-white font-black text-xl tracking-widest uppercase">Cardozoperformance</span>
+						<span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Sistema de Turnos</span>
+					</div>
+				</div>
+				<div class="hidden md:flex items-center gap-2">
+					<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+					<span class="text-neutral-400 text-xs tracking-widest uppercase">Turnos Online</span>
+				</div>
+			</div>
+		</header>
+
+		<!-- Hero section -->
+		<section class="workshop-hero relative z-10 max-w-5xl mx-auto px-6 pt-14 pb-10">
+			<div class="flex flex-col md:flex-row md:items-end gap-6">
+				<div class="flex-1">
+					<div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/20 rounded-sm px-3 py-1 mb-4">
+						<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
+						<span class="text-yellow-400 text-xs tracking-[0.2em] uppercase font-semibold">Reserva tu turno</span>
+					</div>
+					<h1 class="text-white text-4xl md:text-5xl font-black leading-none tracking-tight uppercase">
+						Agendá tu<br/>
+						<span class="text-red-500">Servicio</span>
+					</h1>
+				</div>
+				<p class="text-neutral-400 text-sm max-w-xs leading-relaxed">
+				Completá el formulario y nos contactamos para confirmar tu turno. Atendemos todos los vehículos.
+				</p>
+			</div>
+			<!-- Divider with bolt icons -->
+			<div class="flex items-center gap-3 mt-8">
+				<div class="h-px flex-1 bg-gradient-to-r from-red-600/50 to-transparent"></div>
+					<svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+						<path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+					</svg>
+				<div class="h-px flex-1 bg-gradient-to-l from-blue-600/50 to-transparent"></div>
+			</div>
+		</section>
+
+		<!-- Main Form -->
+		<main class="relative z-10 max-w-5xl mx-auto px-6 pb-20">
+			<form
+				class="workshop-form bg-neutral-900 border border-neutral-800 rounded-sm shadow-2xl overflow-hidden"
+				id="turnoForm"
+				novalidate
+			>
+				<!-- Form top bar -->
+				<div class="workshop-form-header bg-neutral-800 px-8 py-4 flex items-center justify-between">
+				<span class="text-white text-xs font-bold tracking-[0.25em] uppercase">Datos del Turno</span>
+				<div class="flex gap-1.5">
+					<span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+					<span class="w-3 h-3 rounded-full bg-yellow-400/70"></span>
+					<span class="w-3 h-3 rounded-full bg-green-500/70"></span>
+				</div>
+				</div>
+
+				<div class="p-8 space-y-8">
+
+				<!-- SECTION 1: Datos personales -->
+				<div class="workshop-form-section">
+					<div class="flex items-center gap-3 mb-5">
+					<div class="w-6 h-6 bg-blue-600 flex items-center justify-center rounded-sm text-white text-xs font-black">1</div>
+					<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Datos Personales</span>
+					<div class="h-px flex-1 bg-neutral-800"></div>
+					</div>
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+					<!-- Nombre -->
+					<div class="workshop-field">
+						<label for="nombre" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+						Nombre <span class="text-red-500">*</span>
+						</label>
+						<input
+						type="text"
+						id="nombre"
+						name="nombre"
+						class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all duration-200"
+						placeholder="Ej: Juan"
+						autocomplete="given-name"
+						required
+						/>
+						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="nombre-error">Ingresá tu nombre</span>
+					</div>
+
+					<!-- Apellido -->
+					<div class="workshop-field">
+						<label for="apellido" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+						Apellido <span class="text-red-500">*</span>
+						</label>
+						<input
+						type="text"
+						id="apellido"
+						name="apellido"
+						class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all duration-200"
+						placeholder="Ej: García"
+						autocomplete="family-name"
+						required
+						/>
+						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="apellido-error">Ingresá tu apellido</span>
+					</div>
+
+					<!-- Celular -->
+					<div class="workshop-field md:col-span-2">
+						<label for="celular" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+						Número de Celular <span class="text-red-500">*</span>
+						</label>
+						<div class="relative">
+						<span class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 text-sm font-bold select-none">+54</span>
+						<input
+							type="tel"
+							id="celular"
+							name="celular"
+							class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 pl-14 pr-4 py-3 text-sm rounded-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all duration-200"
+							placeholder="11 2345 6789"
+							autocomplete="tel"
+							required
+						/>
+						</div>
+						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="celular-error">Ingresá un número válido</span>
+					</div>
+
+					</div>
+				</div>
+
+				<!-- SECTION 2: Turno -->
+				<div class="workshop-form-section">
+					<div class="flex items-center gap-3 mb-5">
+					<div class="w-6 h-6 bg-yellow-400 flex items-center justify-center rounded-sm text-black text-xs font-black">2</div>
+					<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Fecha y Horario</span>
+					<div class="h-px flex-1 bg-neutral-800"></div>
+					</div>
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+					<!-- Fecha -->
+					<div class="workshop-field">
+						<label for="fecha" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+						Fecha <span class="text-red-500">*</span>
+						</label>
+						<input
+						type="date"
+						id="fecha"
+						name="fecha"
+						class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 [color-scheme:dark]"
+						required
+						/>
+						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="fecha-error">Seleccioná una fecha</span>
+					</div>
+
+					<!-- Horario -->
+					<div class="workshop-field">
+						<label for="horario" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+						Horario <span class="text-red-500">*</span>
+						</label>
+						<select
+						id="horario"
+						name="horario"
+						class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 appearance-none cursor-pointer"
+						required
+						>
+						<option value="" disabled selected class="text-neutral-600">Seleccioná un horario</option>
+						<option value="08:00">08:00 hs</option>
+						<option value="09:00">09:00 hs</option>
+						<option value="10:00">10:00 hs</option>
+						<option value="11:00">11:00 hs</option>
+						<option value="12:00">12:00 hs</option>
+						<option value="14:00">14:00 hs</option>
+						<option value="15:00">15:00 hs</option>
+						<option value="16:00">16:00 hs</option>
+						<option value="17:00">17:00 hs</option>
+						</select>
+						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="horario-error">Elegí un horario</span>
+					</div>
+
+					</div>
+				</div>
+
+				<!-- SECTION 3: Vehículo y servicio -->
+				<div class="workshop-form-section">
+					<div class="flex items-center gap-3 mb-5">
+					<div class="w-6 h-6 bg-red-600 flex items-center justify-center rounded-sm text-white text-xs font-black">3</div>
+					<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Vehículo y Servicio</span>
+					<div class="h-px flex-1 bg-neutral-800"></div>
+					</div>
+					<div class="space-y-5">
+
+					<!-- Vehículo -->
+					<div class="workshop-field">
+						<label for="vehiculo" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+						Tipo de Vehículo <span class="text-red-500">*</span>
+						</label>
+						<div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="vehiculo-group" role="group" aria-labelledby="vehiculo-label">
+						<!-- Auto -->
+						<label class="workshop-vehicle-card group cursor-pointer">
+							<input type="radio" name="vehiculo" value="auto" class="sr-only workshop-vehicle-radio" required/>
+							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+							<div class="text-2xl mb-1">🚗</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Auto</span>
+							</div>
+						</label>
+						<!-- Moto -->
+						<label class="workshop-vehicle-card group cursor-pointer">
+							<input type="radio" name="vehiculo" value="moto" class="sr-only workshop-vehicle-radio"/>
+							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+							<div class="text-2xl mb-1">🏍️</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Moto</span>
+							</div>
+						</label>
+						<!-- Camioneta -->
+						<label class="workshop-vehicle-card group cursor-pointer">
+							<input type="radio" name="vehiculo" value="camioneta" class="sr-only workshop-vehicle-radio"/>
+							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+							<div class="text-2xl mb-1">🚙</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Camioneta</span>
+							</div>
+						</label>
+						<!-- Otro -->
+						<label class="workshop-vehicle-card group cursor-pointer">
+							<input type="radio" name="vehiculo" value="otro" class="sr-only workshop-vehicle-radio"/>
+							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+							<div class="text-2xl mb-1">🚐</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Otro</span>
+							</div>
+						</label>
+						</div>
+						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="vehiculo-error">Seleccioná el tipo de vehículo</span>
+					</div>
+
+					<!-- Modelo / descripción vehículo -->
+					<div class="workshop-field">
+						<label for="modelo_vehiculo" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+							Marca y Modelo
+						</label>
+						<input
+						type="text"
+						id="modelo_vehiculo"
+						name="modelo_vehiculo"
+						class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/30 transition-all duration-200"
+						placeholder="Ej: Volkswagen Gol 2018"
+						/>
+					</div>
+
+					<!-- Descripción del problema -->
+					<div class="workshop-field">
+						<label for="descripcion" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+						¿Qué tiene que arreglar? <span class="text-red-500">*</span>
+						</label>
+						<textarea
+						id="descripcion"
+						name="descripcion"
+						rows="4"
+						class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/30 transition-all duration-200 resize-none"
+						placeholder="Describí el problema o servicio que necesitás (cambio de aceite, frenos, diagnóstico, etc.)"
+						required
+						></textarea>
+						<div class="flex justify-between mt-1">
+							<span class="workshop-error text-red-500 text-xs hidden" id="descripcion-error">Describí el problema o servicio</span>
+							<span class="text-neutral-600 text-xs ml-auto" id="char-count">0 / 300</span>
+						</div>
+					</div>
+
+					</div>
+				</div>
+
+				<!-- Submit -->
+				<div class="pt-2">
+					<button
+					type="submit"
+					id="submitBtn"
+					class="workshop-submit group w-full bg-red-600 hover:bg-red-500 text-white font-black tracking-[0.2em] uppercase text-sm py-4 px-8 rounded-sm transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-red-900/30 hover:shadow-red-900/50 active:scale-[0.98]"
+					>
+					<svg class="w-4 h-4 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 20 20">
+						<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+					</svg>
+					Confirmar Turno
+					</button>
+					<p class="text-neutral-600 text-xs text-center mt-3 tracking-wide">
+					Te contactaremos para confirmar la disponibilidad del turno.
+					</p>
+				</div>
+
+				</div>
+			</form>
+
+			<!-- Success message (hidden by default) -->
+			<div
+				id="successMessage"
+				class="workshop-success hidden mt-6 bg-green-900/20 border border-green-700/40 rounded-sm p-6 text-center"
+			>
+				<div class="text-3xl mb-3">✅</div>
+				<h3 class="text-white font-black text-lg uppercase tracking-widest mb-1">¡Turno Solicitado!</h3>
+				<p class="text-neutral-400 text-sm">Nos vamos a comunicar con vos para confirmar el turno.</p>
+			</div>
+
+		</main>
+	</div>
+
+</Layout>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
+
+    .font-workshop {
+    	font-family: 'Barlow', sans-serif;
+    }
+
+    /* Vehicle card selected state */
+    .workshop-vehicle-radio:checked + .vehicle-card-inner {
+		border-color: rgb(239 68 68);
+		background-color: rgb(239 68 68 / 0.1);
+    }
+
+    /* Input focus glow */
+    .workshop-input:focus {
+    	box-shadow: 0 0 0 2px rgb(59 130 246 / 0.1);
+    }
+
+    /* Subtle form fade-in */
+    .workshop-form {
+    	animation: fadeUp 0.4s ease-out both;
+    }
+
+    @keyframes fadeUp {
+		from { opacity: 0; transform: translateY(16px); }
+		to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Select arrow custom */
+    select.workshop-input {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 12px center;
+		background-size: 16px;
+		padding-right: 40px;
+    }
+</style>
+
+<script>
+    // Set minimum date to today
+    const fechaInput = document.getElementById('fecha') as HTMLInputElement;
+    if (fechaInput) {
+		const today = new Date().toISOString().split('T')[0];
+		fechaInput.min = today;
+    }
+
+    // Character counter for textarea
+    const descripcion = document.getElementById('descripcion') as HTMLTextAreaElement;
+    const charCount = document.getElementById('char-count');
+    if (descripcion && charCount) {
+		descripcion.addEventListener('input', () => {
+			const len = descripcion.value.length;
+			charCount.textContent = `${len} / 300`;
+			if (len > 300) {
+			descripcion.value = descripcion.value.slice(0, 300);
+			charCount.textContent = '300 / 300';
+			}
+		});
+    }
+
+    // Form validation + submit
+    const form = document.getElementById('turnoForm') as HTMLFormElement;
+    const successMessage = document.getElementById('successMessage');
+
+    function showError(id: string, show: boolean) {
+		const el = document.getElementById(id);
+		if (el) el.classList.toggle('hidden', !show);
+    }
+
+    function validateForm(): boolean {
+		let valid = true;
+
+		const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
+		showError('nombre-error', !nombre);
+		if (!nombre) valid = false;
+
+		const apellido = (document.getElementById('apellido') as HTMLInputElement).value.trim();
+		showError('apellido-error', !apellido);
+		if (!apellido) valid = false;
+
+		const celular = (document.getElementById('celular') as HTMLInputElement).value.trim();
+		const celularValid = /^\d{8,15}$/.test(celular.replace(/\s/g, ''));
+		showError('celular-error', !celularValid);
+		if (!celularValid) valid = false;
+
+		const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+		showError('fecha-error', !fecha);
+		if (!fecha) valid = false;
+
+		const horario = (document.getElementById('horario') as HTMLSelectElement).value;
+		showError('horario-error', !horario);
+		if (!horario) valid = false;
+
+		const vehiculo = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
+		showError('vehiculo-error', !vehiculo);
+		if (!vehiculo) valid = false;
+
+		const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
+		showError('descripcion-error', !desc);
+		if (!desc) valid = false;
+
+		return valid;
+    }
+
+    form?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		if (!validateForm()) return;
+
+		const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+		submitBtn.disabled = true;
+		submitBtn.textContent = 'Enviando...';
+
+		// Collect form data — ready for backend integration
+		const formData = {
+			nombre: (document.getElementById('nombre') as HTMLInputElement).value.trim(),
+			apellido: (document.getElementById('apellido') as HTMLInputElement).value.trim(),
+			celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
+			fecha: (document.getElementById('fecha') as HTMLInputElement).value,
+			horario: (document.getElementById('horario') as HTMLSelectElement).value,
+			vehiculo: (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement)?.value,
+			modelo_vehiculo: (document.getElementById('modelo_vehiculo') as HTMLInputElement).value.trim(),
+			descripcion: (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim(),
+		};
+
+		console.log('Turno data:', formData);
+
+		// TODO: Replace with real API call
+		// const response = await fetch('/api/turnos', {
+		//   method: 'POST',
+		//   headers: { 'Content-Type': 'application/json' },
+		//   body: JSON.stringify(formData),
+		// });
+
+		// Simulate async delay
+		await new Promise(r => setTimeout(r, 800));
+
+		form.classList.add('hidden');
+		successMessage?.classList.remove('hidden');
+    });
+</script>

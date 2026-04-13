@@ -1,0 +1,770 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+    <div class="min-h-screen bg-neutral-950 font-workshop relative overflow-x-hidden">
+
+        <!-- Top accent strip -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-yellow-400 to-blue-600 z-50"></div>
+
+        <!-- Background SVG mechanical parts (same as index) -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+            <g id="a-gear-lg">
+                <path d="M0,-38 L5,-44 L10,-44 L15,-38 A38,38 0 0,1 18.5,-33.5 L22,-29 L26,-30 L28,-22 A28,28 0 0,1 27.5,-16 L26,-10 L30,-6 L27,2 A38,38 0 0,1 24,8 L20,14 L22,19 L15,23 A28,28 0 0,1 10,25 L6,28 L5,34 L-5,34 L-6,28 L-10,25 A28,28 0 0,1 -15,23 L-22,19 L-20,14 L-24,8 A38,38 0 0,1 -27,2 L-30,-6 L-26,-10 L-27.5,-16 A28,28 0 0,1 -28,-22 L-26,-30 L-22,-29 L-18.5,-33.5 A38,38 0 0,1 -15,-38 L-10,-44 L-5,-44 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="0" cy="0" r="10" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <line x1="-10" y1="0" x2="10" y2="0" stroke="currentColor" stroke-width="1"/>
+                <line x1="0" y1="-10" x2="0" y2="10" stroke="currentColor" stroke-width="1"/>
+            </g>
+            <g id="a-gear-sm">
+                <path d="M0,-20 L4,-24 L8,-24 L10,-20 A20,20 0 0,1 14,-14 L18,-12 L18,-6 A14,14 0 0,1 14,-2 L12,4 L14,8 L10,12 A20,20 0 0,1 4,16 L2,20 L-2,20 L-4,16 A20,20 0 0,1 -10,12 L-14,8 L-12,4 A14,14 0 0,1 -14,-2 L-18,-6 L-18,-12 L-14,-14 A20,20 0 0,1 -10,-20 L-8,-24 L-4,-24 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+                <circle cx="0" cy="0" r="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            </g>
+            <g id="a-wrench">
+                <path d="M-4,-30 Q-2,-26 0,-22 L14,14 Q16,18 14,22 Q10,28 4,26 Q-2,24 -4,18 L-18,-18 Q-20,-22 -18,-26 Q-14,-32 -8,-32 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="-12" cy="-26" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="8" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+            </g>
+            <g id="a-bolt">
+                <polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="0" cy="0" r="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            </g>
+            </defs>
+            <g opacity="0.04" color="#ffffff">
+            <g transform="translate(80,180) rotate(15) scale(2.2)"><use href="#a-gear-lg"/></g>
+            <g transform="translate(1300,600) rotate(-20) scale(2.8)"><use href="#a-gear-lg"/></g>
+            </g>
+            <g opacity="0.05" color="#ffffff">
+            <g transform="translate(1200,90) rotate(8) scale(1.6)"><use href="#a-gear-lg"/></g>
+            <g transform="translate(100,750) rotate(-12) scale(1.8)"><use href="#a-gear-lg"/></g>
+            <g transform="translate(260,50) rotate(-15) scale(1.5)"><use href="#a-wrench"/></g>
+            <g transform="translate(1050,600) rotate(20) scale(1.4)"><use href="#a-bolt"/></g>
+            <g transform="translate(160,460) rotate(-35) scale(1.2)"><use href="#a-bolt"/></g>
+            </g>
+            <g opacity="0.06" color="#ef4444">
+            <g transform="translate(1150,200) rotate(22) scale(1.2)"><use href="#a-gear-sm"/></g>
+            <g transform="translate(50,680) rotate(55) scale(1.3)"><use href="#a-wrench"/></g>
+            </g>
+            <g opacity="0.06" color="#3b82f6">
+            <g transform="translate(600,880) rotate(-10) scale(1.3)"><use href="#a-gear-sm"/></g>
+            <g transform="translate(350,30) rotate(15) scale(1.1)"><use href="#a-bolt"/></g>
+            </g>
+            <g opacity="0.05" color="#facc15">
+            <g transform="translate(200,200) rotate(30) scale(0.8)"><use href="#a-gear-sm"/></g>
+            <g transform="translate(900,820) rotate(-22) scale(1.0)"><use href="#a-bolt"/></g>
+            </g>
+        </svg>
+        </div>
+
+        <!-- Header -->
+        <header class="relative z-10 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-sm sticky top-0">
+        <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+            <div class="w-12 h-12 flex items-center justify-center">
+                <img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
+            </div>
+            <div>
+                <span class="text-white font-black text-xl tracking-widest uppercase">Cardozoperformance</span>
+                <span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Panel de Administración</span>
+            </div>
+            </div>
+            <!-- Stats resumen rápido -->
+            <div class="hidden lg:flex items-center gap-6">
+            <div class="text-center">
+                <span class="block text-white font-black text-lg leading-none" id="stat-total">—</span>
+                <span class="text-neutral-500 text-[10px] tracking-widest uppercase">Total</span>
+            </div>
+            <div class="w-px h-8 bg-neutral-800"></div>
+            <div class="text-center">
+                <span class="block text-yellow-400 font-black text-lg leading-none" id="stat-pendiente">—</span>
+                <span class="text-neutral-500 text-[10px] tracking-widest uppercase">Pendientes</span>
+            </div>
+            <div class="w-px h-8 bg-neutral-800"></div>
+            <div class="text-center">
+                <span class="block text-blue-400 font-black text-lg leading-none" id="stat-confirmado">—</span>
+                <span class="text-neutral-500 text-[10px] tracking-widest uppercase">Confirmados</span>
+            </div>
+            <div class="w-px h-8 bg-neutral-800"></div>
+            <div class="text-center">
+                <span class="block text-green-400 font-black text-lg leading-none" id="stat-finalizado">—</span>
+                <span class="text-neutral-500 text-[10px] tracking-widest uppercase">Finalizados</span>
+            </div>
+            </div>
+
+            <!-- Acciones header -->
+            <div class="flex items-center gap-2">
+            <!-- Historial -->
+            <a href="/admin/historial"
+                class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Historial
+            </a>
+            <!-- Recargar -->
+            <button id="btnRecargar"
+                class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+                <svg id="iconRecargar" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Recargar
+            </button>
+            <!-- Logout -->
+            <button id="btnLogout"
+                class="flex items-center gap-2 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                </svg>
+                Salir
+            </button>
+            </div>
+=======
+            <!-- Botón recargar -->
+            <button id="btnRecargar"
+            class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+            <svg id="iconRecargar" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Recargar
+            </button>
+
+        </div>
+        </header>
+
+        <!-- Toolbar: búsqueda + filtros -->
+        <div class="relative z-10 border-b border-neutral-800/60 bg-neutral-950/70 backdrop-blur-sm">
+        <div class="max-w-screen-xl mx-auto px-6 py-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+            <!-- Buscador -->
+            <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Buscar por nombre, vehículo, servicio..."
+                class="bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 pl-9 pr-4 py-2 text-xs rounded-sm focus:outline-none focus:border-blue-500 w-72 transition-all"/>
+            </div>
+            <!-- Filtro vehículo -->
+            <div class="flex items-center gap-3">
+            <select id="filtroVehiculo" class="select-arrow bg-neutral-800 border border-neutral-700 text-neutral-300 text-xs px-3 py-2 rounded-sm focus:outline-none focus:border-blue-500 appearance-none pr-7 transition-all">
+                <option value="">Todos los vehículos</option>
+                <option value="auto">Auto</option>
+                <option value="moto">Moto</option>
+                <option value="camioneta">Camioneta</option>
+                <option value="otro">Otro</option>
+            </select>
+            <!-- Ordenar por fecha -->
+            <select id="filtroOrden" class="select-arrow bg-neutral-800 border border-neutral-700 text-neutral-300 text-xs px-3 py-2 rounded-sm focus:outline-none focus:border-blue-500 appearance-none pr-7 transition-all">
+                <option value="asc">Fecha: más próximos</option>
+                <option value="desc">Fecha: más lejanos</option>
+            </select>
+            </div>
+        </div>
+        </div>
+
+        <!-- Kanban board -->
+        <main class="relative z-10 max-w-screen-xl mx-auto px-6 py-8">
+
+        <!-- Loading state -->
+        <div id="loadingState" class="flex flex-col items-center justify-center py-24 gap-4">
+            <svg class="w-8 h-8 text-red-500 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            <span class="text-neutral-500 text-xs tracking-widest uppercase">Cargando turnos...</span>
+        </div>
+
+        <!-- Error state -->
+        <div id="errorState" class="hidden flex-col items-center justify-center py-24 gap-3">
+            <div class="w-12 h-12 bg-red-900/30 border border-red-700/40 rounded-sm flex items-center justify-center">
+            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            </svg>
+            </div>
+            <p class="text-red-400 text-sm font-bold">Error al cargar los turnos</p>
+            <p id="errorMsg" class="text-neutral-500 text-xs"></p>
+            <button onclick="cargarTurnos()" class="mt-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all">Reintentar</button>
+        </div>
+
+        <!-- Kanban columns -->
+        <div id="kanbanBoard" class="hidden grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+            <!-- Col: Pendiente -->
+            <div class="kanban-col">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+                <span class="text-neutral-300 text-xs font-black tracking-[0.2em] uppercase">Pendiente</span>
+                <span id="count-pendiente" class="ml-auto bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded-sm">0</span>
+            </div>
+            <div id="col-pendiente" class="space-y-3 min-h-[120px]"></div>
+            </div>
+
+            <!-- Col: Confirmado -->
+            <div class="kanban-col">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                <span class="text-neutral-300 text-xs font-black tracking-[0.2em] uppercase">Confirmado</span>
+                <span id="count-confirmado" class="ml-auto bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold px-2 py-0.5 rounded-sm">0</span>
+            </div>
+            <div id="col-confirmado" class="space-y-3 min-h-[120px]"></div>
+            </div>
+
+            <!-- Col: En proceso -->
+            <div class="kanban-col">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                <span class="text-neutral-300 text-xs font-black tracking-[0.2em] uppercase">En Proceso</span>
+                <span id="count-enproceso" class="ml-auto bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-0.5 rounded-sm">0</span>
+            </div>
+            <div id="col-enproceso" class="space-y-3 min-h-[120px]"></div>
+            </div>
+
+            <!-- Col: Finalizado -->
+            <div class="kanban-col">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                <span class="text-neutral-300 text-xs font-black tracking-[0.2em] uppercase">Finalizado</span>
+                <span id="count-finalizado" class="ml-auto bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold px-2 py-0.5 rounded-sm">0</span>
+            </div>
+            <div id="col-finalizado" class="space-y-3 min-h-[120px]"></div>
+            </div>
+
+        </div>
+        </main>
+
+        <!-- ═══════════════ MODAL EDITAR ═══════════════ -->
+        <div id="modalEditar" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="modalBackdrop"></div>
+        <!-- Panel -->
+        <div class="relative bg-neutral-900 border border-neutral-700 rounded-sm w-full max-w-lg shadow-2xl animate-modal">
+            <!-- Header modal -->
+            <div class="bg-neutral-800 px-6 py-4 flex items-center justify-between border-b border-neutral-700">
+            <span class="text-white text-xs font-black tracking-[0.25em] uppercase">Editar Turno</span>
+            <button id="btnCerrarModal" class="text-neutral-500 hover:text-white transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            </div>
+            <div class="p-6 space-y-4">
+            <input type="hidden" id="editId"/>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Nombre</label>
+                <input type="text" id="editNombre" class="admin-input w-full"/>
+                </div>
+                <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Apellido</label>
+                <input type="text" id="editApellido" class="admin-input w-full"/>
+                </div>
+            </div>
+            <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Celular</label>
+                <input type="tel" id="editCelular" class="admin-input w-full"/>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Fecha</label>
+                <input type="date" id="editFecha" class="admin-input w-full [color-scheme:dark]"/>
+                </div>
+                <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Horario</label>
+                <select id="editHorario" class="admin-input w-full appearance-none">
+                    <option value="08:00">08:00 hs</option>
+                    <option value="09:00">09:00 hs</option>
+                    <option value="10:00">10:00 hs</option>
+                    <option value="11:00">11:00 hs</option>
+                    <option value="12:00">12:00 hs</option>
+                    <option value="14:00">14:00 hs</option>
+                    <option value="15:00">15:00 hs</option>
+                    <option value="16:00">16:00 hs</option>
+                    <option value="17:00">17:00 hs</option>
+                </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Vehículo</label>
+                <select id="editVehiculo" class="admin-input w-full appearance-none">
+                    <option value="auto">Auto</option>
+                    <option value="moto">Moto</option>
+                    <option value="camioneta">Camioneta</option>
+                    <option value="otro">Otro</option>
+                </select>
+                </div>
+                <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Marca / Modelo</label>
+                <input type="text" id="editModelo" class="admin-input w-full"/>
+                </div>
+            </div>
+            <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Estado</label>
+                <select id="editEstado" class="admin-input w-full appearance-none">
+                <option value="pendiente">Pendiente</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="enproceso">En Proceso</option>
+                <option value="finalizado">Finalizado</option>
+                <option value="cancelado">Cancelado</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">Descripción del servicio</label>
+                <textarea id="editDescripcion" rows="3" class="admin-input w-full resize-none"></textarea>
+            </div>
+            </div>
+            <div class="px-6 pb-6 flex gap-3 justify-end">
+            <button id="btnCancelarEdicion" class="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all">Cancelar</button>
+            <button id="btnGuardarEdicion" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all flex items-center gap-2">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Guardar cambios
+            </button>
+            </div>
+        </div>
+        </div>
+
+        <!-- ═══════════════ MODAL CONFIRMAR ELIMINACIÓN ═══════════════ -->
+        <div id="modalEliminar" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="relative bg-neutral-900 border border-red-900/50 rounded-sm w-full max-w-sm shadow-2xl p-6 text-center">
+            <div class="w-12 h-12 bg-red-900/30 border border-red-700/40 rounded-sm flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+            </div>
+            <h3 class="text-white font-black text-sm uppercase tracking-widest mb-2">¿Eliminar turno?</h3>
+            <p class="text-neutral-400 text-xs mb-6">Esta acción no se puede deshacer. El turno será eliminado permanentemente.</p>
+            <input type="hidden" id="eliminarId"/>
+            <div class="flex gap-3 justify-center">
+            <button id="btnCancelarEliminar" class="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all">Cancelar</button>
+            <button id="btnConfirmarEliminar" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all">Eliminar</button>
+            </div>
+        </div>
+        </div>
+
+        <!-- Toast notification -->
+        <div id="toast" class="fixed bottom-6 right-6 z-50 hidden items-center gap-3 bg-neutral-800 border border-neutral-700 rounded-sm px-4 py-3 shadow-xl min-w-[220px]">
+        <span id="toastIcon" class="text-base">✓</span>
+        <span id="toastMsg" class="text-white text-xs font-bold tracking-wide"></span>
+        </div>
+
+    </div>
+
+</Layout>
+
+<style>
+    /* Select custom arrow */
+    .select-arrow {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 14px;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
+    .font-workshop { font-family: 'Barlow', sans-serif; }
+
+    .admin-input {
+      background: rgb(38 38 38);
+      border: 1px solid rgb(64 64 64);
+      color: white;
+      font-size: 0.8125rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 2px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .admin-input:focus { border-color: rgb(59 130 246); }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-modal { animation: modalIn 0.2s ease-out both; }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .toast-show { animation: toastIn 0.2s ease-out both; }
+
+    /* Card hover lift */
+    .turno-card { transition: transform 0.15s ease, border-color 0.15s ease; }
+    .turno-card:hover { transform: translateY(-2px); }
+
+    /* Spin animation for reload icon */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinning { animation: spin 0.7s linear infinite; }
+</style>
+
+<script is:inline>
+    // ══════════════════════════════════════════
+    // CONFIG — ajustar según el backend
+    // ══════════════════════════════════════════
+    const API_BASE = '/api'; // TODO: cambiar por la URL real
+
+    // ══════════════════════════════════════════
+    // ESTADO LOCAL
+    // ══════════════════════════════════════════
+    let turnosData = [];
+    let filtros = { search: '', vehiculo: '', orden: 'asc' };
+
+    // ══════════════════════════════════════════
+    // HELPERS
+    // ══════════════════════════════════════════
+    const vehiculoEmoji = {
+      auto: '🚗', moto: '🏍️', camioneta: '🚙', otro: '🚐'
+    };
+
+    const estadoConfig = {
+      pendiente:  { label: 'Pendiente',   border: 'border-yellow-400/20', badge: 'bg-yellow-400/10 text-yellow-400' },
+      confirmado: { label: 'Confirmado',  border: 'border-blue-500/20',   badge: 'bg-blue-500/10 text-blue-400' },
+      enproceso:  { label: 'En Proceso',  border: 'border-orange-500/20', badge: 'bg-orange-500/10 text-orange-400' },
+      finalizado: { label: 'Finalizado',  border: 'border-green-500/20',  badge: 'bg-green-500/10 text-green-400' },
+      cancelado:  { label: 'Cancelado',   border: 'border-red-500/20',    badge: 'bg-red-500/10 text-red-400' },
+    };
+
+    function formatFecha(fecha) {
+      if (!fecha) return '—';
+      const [y, m, d] = fecha.split('-');
+      return `${d}/${m}/${y}`;
+    }
+
+    // ══════════════════════════════════════════
+    // TOAST
+    // ══════════════════════════════════════════
+    let toastTimer;
+    function showToast(msg, tipo = 'ok') {
+      const toast = document.getElementById('toast');
+      const iconMap = { ok: '✓', error: '✕', info: 'ℹ' };
+      const colorMap = { ok: 'text-green-400', error: 'text-red-400', info: 'text-blue-400' };
+      document.getElementById('toastMsg').textContent = msg;
+      document.getElementById('toastIcon').textContent = iconMap[tipo];
+      document.getElementById('toastIcon').className = `text-base ${colorMap[tipo]}`;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex', 'toast-show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex', 'toast-show');
+      }, 3000);
+    }
+
+    // ══════════════════════════════════════════
+    // FETCH TURNOS — conectar con tu API
+    // ══════════════════════════════════════════
+    async function cargarTurnos() {
+      document.getElementById('loadingState').classList.remove('hidden');
+      document.getElementById('kanbanBoard').classList.add('hidden');
+      document.getElementById('errorState').classList.add('hidden');
+      document.getElementById('errorState').classList.remove('flex');
+
+      const icon = document.getElementById('iconRecargar');
+      icon.classList.add('spinning');
+
+      try {
+        /* ──────────────────────────────────────────
+           REEMPLAZAR con tu endpoint real:
+           const res = await fetch(`${API_BASE}/turnos`);
+           if (!res.ok) throw new Error(`HTTP ${res.status}`);
+           turnosData = await res.json();
+        ────────────────────────────────────────── */
+
+        // DATOS MOCK — eliminar cuando tengas el backend
+        await new Promise(r => setTimeout(r, 600));
+        turnosData = [
+          { id: '1', nombre: 'Juan', apellido: 'García', celular: '11 2345 6789', fecha: '2025-04-14', horario: '09:00', vehiculo: 'auto', modelo_vehiculo: 'Volkswagen Gol 2018', descripcion: 'Cambio de aceite y filtro. Además revisar frenos delanteros.', estado: 'pendiente' },
+          { id: '2', nombre: 'María', apellido: 'López', celular: '11 9876 5432', fecha: '2025-04-14', horario: '11:00', vehiculo: 'moto', modelo_vehiculo: 'Honda CB 250 2020', descripcion: 'Revisión general, ajuste de cadena y cambio de pastillas de freno.', estado: 'confirmado' },
+          { id: '3', nombre: 'Carlos', apellido: 'Fernández', celular: '11 5555 1234', fecha: '2025-04-15', horario: '10:00', vehiculo: 'camioneta', modelo_vehiculo: 'Ford Ranger 2021', descripcion: 'Diagnóstico eléctrico. La camioneta no arranca bien en frío.', estado: 'enproceso' },
+          { id: '4', nombre: 'Ana', apellido: 'Martínez', celular: '11 7777 8888', fecha: '2025-04-12', horario: '14:00', vehiculo: 'auto', modelo_vehiculo: 'Toyota Corolla 2019', descripcion: 'Service completo de 40.000 km.', estado: 'finalizado' },
+          { id: '5', nombre: 'Roberto', apellido: 'Sánchez', celular: '11 3333 4444', fecha: '2025-04-16', horario: '08:00', vehiculo: 'auto', modelo_vehiculo: 'Peugeot 208 2022', descripcion: 'Ruido extraño en suspensión delantera derecha al frenar.', estado: 'pendiente' },
+          { id: '6', nombre: 'Laura', apellido: 'Díaz', celular: '11 6666 9999', fecha: '2025-04-17', horario: '15:00', vehiculo: 'moto', modelo_vehiculo: 'Bajaj Pulsar NS200', descripcion: 'Cambio de aceite, bujía y revisión de luces.', estado: 'pendiente' },
+        ];
+
+        renderKanban();
+        updateStats();
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('kanbanBoard').classList.remove('hidden');
+      } catch (err) {
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorState').classList.add('flex');
+        document.getElementById('errorMsg').textContent = err.message || 'Error de conexión';
+      } finally {
+        icon.classList.remove('spinning');
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // RENDER KANBAN
+    // ══════════════════════════════════════════
+    function turnosFiltrados() {
+      return turnosData
+        .filter(t => {
+          const q = filtros.search.toLowerCase();
+          const matchSearch = !q ||
+            `${t.nombre} ${t.apellido}`.toLowerCase().includes(q) ||
+            (t.descripcion || '').toLowerCase().includes(q) ||
+            (t.modelo_vehiculo || '').toLowerCase().includes(q);
+          const matchVehiculo = !filtros.vehiculo || t.vehiculo === filtros.vehiculo;
+          return matchSearch && matchVehiculo;
+        })
+        .sort((a, b) => {
+          const da = new Date(`${a.fecha}T${a.horario}`).getTime();
+          const db = new Date(`${b.fecha}T${b.horario}`).getTime();
+          return filtros.orden === 'asc' ? da - db : db - da;
+        });
+    }
+
+    function renderKanban() {
+      const cols = ['pendiente', 'confirmado', 'enproceso', 'finalizado'];
+      const data = turnosFiltrados();
+
+      cols.forEach(estado => {
+        const col = document.getElementById(`col-${estado}`);
+        const count = document.getElementById(`count-${estado}`);
+        const items = data.filter(t => t.estado === estado);
+        count.textContent = String(items.length);
+        col.innerHTML = items.length === 0
+          ? `<div class="border border-dashed border-neutral-800 rounded-sm p-6 text-center text-neutral-700 text-xs tracking-widest uppercase">Sin turnos</div>`
+          : items.map(t => cardHTML(t)).join('');
+      });
+    }
+
+    function cardHTML(t) {
+      const cfg = estadoConfig[t.estado] || estadoConfig['pendiente'];
+      const emoji = vehiculoEmoji[t.vehiculo] || '🚐';
+      return `
+        <div class="turno-card bg-neutral-900 border ${cfg.border} border border-neutral-800 rounded-sm p-4 hover:border-neutral-600" data-id="${t.id}">
+          <div class="flex items-start justify-between gap-2 mb-3">
+            <div>
+              <p class="text-white font-black text-sm leading-tight">${t.nombre} ${t.apellido}</p>
+              <a href="tel:${t.celular}" class="text-neutral-500 text-xs hover:text-blue-400 transition-colors">${t.celular}</a>
+            </div>
+            <span class="shrink-0 text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-sm ${cfg.badge}">${cfg.label}</span>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="w-3 h-3 text-neutral-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <span class="text-neutral-300 text-xs font-bold">${formatFecha(t.fecha)}</span>
+            <span class="text-neutral-600 text-xs">•</span>
+            <span class="text-neutral-400 text-xs">${t.horario} hs</span>
+          </div>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-sm leading-none">${emoji}</span>
+            <span class="text-neutral-400 text-xs capitalize">${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}</span>
+          </div>
+          <p class="text-neutral-500 text-xs leading-relaxed line-clamp-2 border-t border-neutral-800 pt-2 mb-3">${t.descripcion}</p>
+          <div class="flex gap-1.5 mb-3 flex-wrap">
+            ${accionesEstadoHTML(t)}
+          </div>
+          <div class="flex gap-2 border-t border-neutral-800 pt-3">
+            <button onclick="abrirEditar('${t.id}')"
+              class="flex-1 flex items-center justify-center gap-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              Editar
+            </button>
+            <button onclick="abrirEliminar('${t.id}')"
+              class="flex-1 flex items-center justify-center gap-1.5 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              Eliminar
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function accionesEstadoHTML(t) {
+      const transiciones = {
+        pendiente:  [{ to: 'confirmado', label: 'Confirmar', color: 'bg-blue-600 hover:bg-blue-500 text-white' }, { to: 'cancelado', label: 'Cancelar', color: 'bg-red-900/30 hover:bg-red-900/60 border border-red-800/50 text-red-400' }],
+        confirmado: [{ to: 'enproceso', label: '&#9654; Iniciar', color: 'bg-orange-600 hover:bg-orange-500 text-white' }, { to: 'cancelado', label: 'Cancelar', color: 'bg-red-900/30 hover:bg-red-900/60 border border-red-800/50 text-red-400' }],
+        enproceso:  [{ to: 'finalizado', label: '&#10003; Finalizar', color: 'bg-green-700 hover:bg-green-600 text-white' }],
+        finalizado: [],
+        cancelado:  [{ to: 'pendiente', label: 'Reabrir', color: 'bg-neutral-700 hover:bg-neutral-600 text-neutral-300' }],
+      };
+      const ops = transiciones[t.estado] || [];
+      return ops.map(op =>
+        `<button onclick="cambiarEstado('${t.id}', '${op.to}')"
+          class="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-sm transition-all ${op.color}">
+          ${op.label}
+        </button>`
+      ).join('');
+    }
+
+    // ══════════════════════════════════════════
+    // STATS HEADER
+    // ══════════════════════════════════════════
+    function updateStats() {
+      document.getElementById('stat-total').textContent = String(turnosData.length);
+      document.getElementById('stat-pendiente').textContent = String(turnosData.filter(t => t.estado === 'pendiente').length);
+      document.getElementById('stat-confirmado').textContent = String(turnosData.filter(t => t.estado === 'confirmado').length);
+      document.getElementById('stat-finalizado').textContent = String(turnosData.filter(t => t.estado === 'finalizado').length);
+    }
+
+    // ══════════════════════════════════════════
+    // CAMBIAR ESTADO
+    // ══════════════════════════════════════════
+    async function cambiarEstado(id, nuevoEstado) {
+      try {
+        /* REEMPLAZAR:
+           await fetch(`${API_BASE}/turnos/${id}/estado`, {
+             method: 'PATCH',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ estado: nuevoEstado }),
+           }); */
+        const t = turnosData.find(x => x.id === id);
+        if (t) t.estado = nuevoEstado;
+        renderKanban();
+        updateStats();
+        const labels = { confirmado: 'Turno confirmado', enproceso: 'Turno iniciado', finalizado: 'Turno finalizado', cancelado: 'Turno cancelado', pendiente: 'Turno reabierto' };
+        showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
+      } catch {
+        showToast('Error al cambiar el estado', 'error');
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // MODAL EDITAR
+    // ══════════════════════════════════════════
+    function abrirEditar(id) {
+      const t = turnosData.find(x => x.id === id);
+      if (!t) return;
+      document.getElementById('editId').value = t.id;
+      document.getElementById('editNombre').value = t.nombre;
+      document.getElementById('editApellido').value = t.apellido;
+      document.getElementById('editCelular').value = t.celular;
+      document.getElementById('editFecha').value = t.fecha;
+      document.getElementById('editHorario').value = t.horario;
+      document.getElementById('editVehiculo').value = t.vehiculo;
+      document.getElementById('editModelo').value = t.modelo_vehiculo || '';
+      document.getElementById('editEstado').value = t.estado;
+      document.getElementById('editDescripcion').value = t.descripcion;
+      const modal = document.getElementById('modalEditar');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function cerrarEditar() {
+      const modal = document.getElementById('modalEditar');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    async function guardarEdicion() {
+      const id = document.getElementById('editId').value;
+      const datos = {
+        nombre:          document.getElementById('editNombre').value.trim(),
+        apellido:        document.getElementById('editApellido').value.trim(),
+        celular:         document.getElementById('editCelular').value.trim(),
+        fecha:           document.getElementById('editFecha').value,
+        horario:         document.getElementById('editHorario').value,
+        vehiculo:        document.getElementById('editVehiculo').value,
+        modelo_vehiculo: document.getElementById('editModelo').value.trim(),
+        estado:          document.getElementById('editEstado').value,
+        descripcion:     document.getElementById('editDescripcion').value.trim(),
+      };
+      try {
+        /* REEMPLAZAR:
+           await fetch(`${API_BASE}/turnos/${id}`, {
+             method: 'PUT',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify(datos),
+           }); */
+        const idx = turnosData.findIndex(x => x.id === id);
+        if (idx !== -1) turnosData[idx] = Object.assign({}, turnosData[idx], datos);
+        cerrarEditar();
+        renderKanban();
+        updateStats();
+        showToast('Turno actualizado correctamente', 'ok');
+      } catch {
+        showToast('Error al guardar los cambios', 'error');
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // MODAL ELIMINAR
+    // ══════════════════════════════════════════
+    function abrirEliminar(id) {
+      document.getElementById('eliminarId').value = id;
+      const modal = document.getElementById('modalEliminar');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function cerrarEliminar() {
+      const modal = document.getElementById('modalEliminar');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    async function confirmarEliminar() {
+      const id = document.getElementById('eliminarId').value;
+      try {
+        /* REEMPLAZAR:
+           await fetch(`${API_BASE}/turnos/${id}`, { method: 'DELETE' }); */
+        turnosData = turnosData.filter(x => x.id !== id);
+        cerrarEliminar();
+        renderKanban();
+        updateStats();
+        showToast('Turno eliminado', 'info');
+      } catch {
+        showToast('Error al eliminar el turno', 'error');
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // EVENT LISTENERS
+    // ══════════════════════════════════════════
+    document.getElementById('btnGuardarEdicion').addEventListener('click', guardarEdicion);
+    document.getElementById('btnCerrarModal').addEventListener('click', cerrarEditar);
+    document.getElementById('btnCancelarEdicion').addEventListener('click', cerrarEditar);
+    document.getElementById('modalBackdrop').addEventListener('click', cerrarEditar);
+    document.getElementById('btnCancelarEliminar').addEventListener('click', cerrarEliminar);
+    document.getElementById('btnConfirmarEliminar').addEventListener('click', confirmarEliminar);
+    document.getElementById('btnRecargar').addEventListener('click', cargarTurnos);
+
+    let searchTimer;
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function() {
+        filtros.search = e.target.value;
+        renderKanban();
+      }, 250);
+    });
+
+    document.getElementById('filtroVehiculo').addEventListener('change', function(e) {
+      filtros.vehiculo = e.target.value;
+      renderKanban();
+    });
+
+    document.getElementById('filtroOrden').addEventListener('change', function(e) {
+      filtros.orden = e.target.value;
+      renderKanban();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { cerrarEditar(); cerrarEliminar(); }
+    });
+
+    // ══════════════════════════════════════════
+
+    // SESIÓN + LOGOUT
+    // ══════════════════════════════════════════
+    const SESSION_KEY = 'admin_session';
+    if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
+        window.location.href = '/admin/login';
+    }
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+        sessionStorage.removeItem(SESSION_KEY);
+        sessionStorage.removeItem('admin_user');
+        window.location.href = '/admin/login';
+    });
+
+    // ══════════════════════════════════════════
+
+    // INIT
+    // ══════════════════════════════════════════
+    cargarTurnos();
+</script>

@@ -1,0 +1,733 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+    <div class="min-h-screen bg-neutral-950 font-workshop relative overflow-x-hidden">
+
+        <!-- Top accent strip -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-yellow-400 to-blue-600 z-50"></div>
+
+        <!-- Background SVG mechanical parts -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+            <g id="h-gear-lg">
+                <path d="M0,-38 L5,-44 L10,-44 L15,-38 A38,38 0 0,1 18.5,-33.5 L22,-29 L26,-30 L28,-22 A28,28 0 0,1 27.5,-16 L26,-10 L30,-6 L27,2 A38,38 0 0,1 24,8 L20,14 L22,19 L15,23 A28,28 0 0,1 10,25 L6,28 L5,34 L-5,34 L-6,28 L-10,25 A28,28 0 0,1 -15,23 L-22,19 L-20,14 L-24,8 A38,38 0 0,1 -27,2 L-30,-6 L-26,-10 L-27.5,-16 A28,28 0 0,1 -28,-22 L-26,-30 L-22,-29 L-18.5,-33.5 A38,38 0 0,1 -15,-38 L-10,-44 L-5,-44 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="0" cy="0" r="10" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <line x1="-10" y1="0" x2="10" y2="0" stroke="currentColor" stroke-width="1"/>
+                <line x1="0" y1="-10" x2="0" y2="10" stroke="currentColor" stroke-width="1"/>
+            </g>
+            <g id="h-gear-sm">
+                <path d="M0,-20 L4,-24 L8,-24 L10,-20 A20,20 0 0,1 14,-14 L18,-12 L18,-6 A14,14 0 0,1 14,-2 L12,4 L14,8 L10,12 A20,20 0 0,1 4,16 L2,20 L-2,20 L-4,16 A20,20 0 0,1 -10,12 L-14,8 L-12,4 A14,14 0 0,1 -14,-2 L-18,-6 L-18,-12 L-14,-14 A20,20 0 0,1 -10,-20 L-8,-24 L-4,-24 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+                <circle cx="0" cy="0" r="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            </g>
+            <g id="h-wrench">
+                <path d="M-4,-30 Q-2,-26 0,-22 L14,14 Q16,18 14,22 Q10,28 4,26 Q-2,24 -4,18 L-18,-18 Q-20,-22 -18,-26 Q-14,-32 -8,-32 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="-12" cy="-26" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="8" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+            </g>
+            <g id="h-bolt">
+                <polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="0" cy="0" r="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            </g>
+            </defs>
+            <g opacity="0.04" color="#ffffff">
+            <g transform="translate(80,180) rotate(15) scale(2.2)"><use href="#h-gear-lg"/></g>
+            <g transform="translate(1300,600) rotate(-20) scale(2.8)"><use href="#h-gear-lg"/></g>
+            </g>
+            <g opacity="0.055" color="#ffffff">
+            <g transform="translate(1200,90) rotate(8) scale(1.6)"><use href="#h-gear-lg"/></g>
+            <g transform="translate(100,750) rotate(-12) scale(1.8)"><use href="#h-gear-lg"/></g>
+            <g transform="translate(260,50) rotate(-15) scale(1.5)"><use href="#h-wrench"/></g>
+            <g transform="translate(1050,600) rotate(20) scale(1.4)"><use href="#h-bolt"/></g>
+            </g>
+            <g opacity="0.07" color="#ef4444">
+            <g transform="translate(1150,200) rotate(22) scale(1.2)"><use href="#h-gear-sm"/></g>
+            <g transform="translate(50,680) rotate(55) scale(1.3)"><use href="#h-wrench"/></g>
+            </g>
+            <g opacity="0.07" color="#3b82f6">
+            <g transform="translate(600,880) rotate(-10) scale(1.3)"><use href="#h-gear-sm"/></g>
+            <g transform="translate(350,30) rotate(15) scale(1.1)"><use href="#h-bolt"/></g>
+            </g>
+        </svg>
+        </div>
+
+        <!-- Header -->
+        <header class="relative z-10 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-sm sticky top-0">
+        <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+            <div class="w-12 h-12 flex items-center justify-center">
+                <img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
+            </div>
+            <div>
+                <span class="text-white font-black text-xl tracking-widest uppercase">Cardozoperformance</span>
+                <span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Historial de Reservas</span>
+            </div>
+            </div>
+
+            <!-- Nav links -->
+            <div class="hidden md:flex items-center gap-3">
+            <a href="/admin/turnos"
+                class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/>
+                </svg>
+                Kanban
+            </a>
+            <button id="btnLogout"
+                class="flex items-center gap-2 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                </svg>
+                Salir
+            </button>
+            </div>
+        </div>
+        </header>
+
+        <!-- Page title + stats bar -->
+        <div class="relative z-10 border-b border-neutral-800/60 bg-neutral-950/70 backdrop-blur-sm">
+        <div class="max-w-screen-xl mx-auto px-6 py-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-3 mb-1">
+                <div class="w-6 h-6 bg-yellow-400 flex items-center justify-center rounded-sm">
+                    <svg class="w-3.5 h-3.5 text-black" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <h2 class="text-white font-black text-sm tracking-[0.2em] uppercase">Historial Completo</h2>
+                </div>
+                <p class="text-neutral-500 text-xs">Todas las reservas registradas en el sistema</p>
+            </div>
+            <!-- Stats pills -->
+            <div class="flex items-center gap-3 flex-wrap">
+                <div class="flex items-center gap-2 bg-neutral-900 border border-neutral-800 rounded-sm px-3 py-1.5">
+                <span class="w-2 h-2 rounded-full bg-neutral-400"></span>
+                <span class="text-neutral-400 text-[10px] font-bold tracking-widest uppercase">Total</span>
+                <span id="stat-total" class="text-white font-black text-sm ml-1">—</span>
+                </div>
+                <div class="flex items-center gap-2 bg-neutral-900 border border-neutral-800 rounded-sm px-3 py-1.5">
+                <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+                <span class="text-yellow-400 text-[10px] font-bold tracking-widest uppercase">Pendientes</span>
+                <span id="stat-pendiente" class="text-yellow-400 font-black text-sm ml-1">—</span>
+                </div>
+                <div class="flex items-center gap-2 bg-neutral-900 border border-neutral-800 rounded-sm px-3 py-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                <span class="text-blue-400 text-[10px] font-bold tracking-widest uppercase">Confirmados</span>
+                <span id="stat-confirmado" class="text-blue-400 font-black text-sm ml-1">—</span>
+                </div>
+                <div class="flex items-center gap-2 bg-neutral-900 border border-neutral-800 rounded-sm px-3 py-1.5">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span class="text-green-400 text-[10px] font-bold tracking-widest uppercase">Finalizados</span>
+                <span id="stat-finalizado" class="text-green-400 font-black text-sm ml-1">—</span>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Toolbar: búsqueda + filtros -->
+        <div class="relative z-10 border-b border-neutral-800/40 bg-neutral-950/50 backdrop-blur-sm">
+        <div class="max-w-screen-xl mx-auto px-6 py-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+
+            <!-- Buscadores -->
+            <div class="flex items-center gap-2 flex-wrap">
+            <!-- Buscar por nombre -->
+            <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input type="text" id="searchNombre" placeholder="Buscar por nombre..."
+                class="bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 pl-9 pr-4 py-2 text-xs rounded-sm focus:outline-none focus:border-blue-500 w-48 transition-all"/>
+            </div>
+            <!-- Buscar por apellido -->
+            <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input type="text" id="searchApellido" placeholder="Buscar por apellido..."
+                class="bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 pl-9 pr-4 py-2 text-xs rounded-sm focus:outline-none focus:border-blue-500 w-48 transition-all"/>
+            </div>
+            </div>
+
+            <!-- Filtros adicionales -->
+            <div class="flex items-center gap-2 flex-wrap">
+            <select id="filtroEstado" class="select-arrow bg-neutral-800 border border-neutral-700 text-neutral-300 text-xs px-3 py-2 rounded-sm focus:outline-none focus:border-blue-500 appearance-none pr-7 transition-all">
+                <option value="">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="enproceso">En Proceso</option>
+                <option value="finalizado">Finalizado</option>
+                <option value="cancelado">Cancelado</option>
+            </select>
+            <select id="filtroOrden" class="select-arrow bg-neutral-800 border border-neutral-700 text-neutral-300 text-xs px-3 py-2 rounded-sm focus:outline-none focus:border-blue-500 appearance-none pr-7 transition-all">
+                <option value="desc">Más recientes primero</option>
+                <option value="asc">Más antiguos primero</option>
+            </select>
+            <!-- Btn limpiar filtros -->
+            <button id="btnLimpiarFiltros"
+                class="hidden items-center gap-1.5 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-400 text-[10px] font-bold tracking-widest uppercase px-3 py-2 rounded-sm transition-all">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                Limpiar
+            </button>
+            </div>
+        </div>
+        </div>
+
+        <!-- Main content -->
+        <main class="relative z-10 max-w-screen-xl mx-auto px-6 py-8">
+
+        <!-- Loading -->
+        <div id="loadingState" class="flex flex-col items-center justify-center py-24 gap-4">
+            <svg class="w-8 h-8 text-red-500 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            <span class="text-neutral-500 text-xs tracking-widest uppercase">Cargando historial...</span>
+        </div>
+
+        <!-- No results -->
+        <div id="emptyState" class="hidden flex-col items-center justify-center py-24 gap-3">
+            <div class="w-12 h-12 bg-neutral-800 border border-neutral-700 rounded-sm flex items-center justify-center">
+            <svg class="w-6 h-6 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            </div>
+            <p class="text-neutral-400 text-sm font-bold">Sin resultados</p>
+            <p class="text-neutral-600 text-xs">No hay reservas que coincidan con los filtros aplicados</p>
+        </div>
+
+        <!-- Results count -->
+        <div id="resultsBar" class="hidden justify-between items-center mb-5">
+            <span id="resultsCount" class="text-neutral-500 text-xs tracking-widest uppercase"></span>
+        </div>
+
+        <!-- Cards grid -->
+        <div id="cardsGrid" class="hidden grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        </div>
+
+        </main>
+
+        <!-- ══════════ MODAL EDITAR ══════════ -->
+        <div id="modalEditar" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
+        <div id="modalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="relative bg-neutral-900 border border-neutral-700 rounded-sm shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+
+            <!-- Modal header -->
+            <div class="bg-neutral-800 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 bg-blue-600 flex items-center justify-center rounded-sm">
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                </div>
+                <span class="text-white text-xs font-black tracking-[0.2em] uppercase">Editar Reserva</span>
+            </div>
+            <button id="btnCerrarModal" class="text-neutral-600 hover:text-neutral-300 transition-colors p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            </div>
+
+            <input type="hidden" id="editId"/>
+
+            <div class="p-6 space-y-4">
+
+            <!-- Nombre + Apellido -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Nombre</label>
+                <input type="text" id="editNombre" class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-blue-500 transition-all"/>
+                </div>
+                <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Apellido</label>
+                <input type="text" id="editApellido" class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-blue-500 transition-all"/>
+                </div>
+            </div>
+
+            <!-- Celular -->
+            <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Celular</label>
+                <input type="text" id="editCelular" class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-blue-500 transition-all"/>
+            </div>
+
+            <!-- Fecha + Horario -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Fecha</label>
+                <input type="date" id="editFecha" class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-yellow-400 transition-all [color-scheme:dark]"/>
+                </div>
+                <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Horario</label>
+                <select id="editHorario" class="select-arrow w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-yellow-400 appearance-none transition-all">
+                    <option value="08:00">08:00 hs</option>
+                    <option value="09:00">09:00 hs</option>
+                    <option value="10:00">10:00 hs</option>
+                    <option value="11:00">11:00 hs</option>
+                    <option value="12:00">12:00 hs</option>
+                    <option value="14:00">14:00 hs</option>
+                    <option value="15:00">15:00 hs</option>
+                    <option value="16:00">16:00 hs</option>
+                    <option value="17:00">17:00 hs</option>
+                </select>
+                </div>
+            </div>
+
+            <!-- Vehículo + Modelo -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Vehículo</label>
+                <select id="editVehiculo" class="select-arrow w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-red-500 appearance-none transition-all">
+                    <option value="auto">Auto</option>
+                    <option value="moto">Moto</option>
+                    <option value="camioneta">Camioneta</option>
+                    <option value="otro">Otro</option>
+                </select>
+                </div>
+                <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Marca y Modelo</label>
+                <input type="text" id="editModelo" class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-red-500 transition-all"/>
+                </div>
+            </div>
+
+            <!-- Estado -->
+            <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Estado del Turno</label>
+                <select id="editEstado" class="select-arrow w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-blue-500 appearance-none transition-all">
+                <option value="pendiente">Pendiente</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="enproceso">En Proceso</option>
+                <option value="finalizado">Finalizado</option>
+                <option value="cancelado">Cancelado</option>
+                </select>
+            </div>
+
+            <!-- Descripción / Servicio -->
+            <div>
+                <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Servicio / Descripción</label>
+                <textarea id="editDescripcion" rows="3"
+                class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-3 py-2.5 text-sm rounded-sm focus:outline-none focus:border-red-500 transition-all resize-none"></textarea>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-3 pt-2 border-t border-neutral-800">
+                <button id="btnCancelarEdicion"
+                class="flex-1 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase py-3 rounded-sm transition-all">
+                Cancelar
+                </button>
+                <button id="btnGuardarEdicion"
+                class="flex-1 bg-red-600 hover:bg-red-500 text-white text-xs font-bold tracking-widest uppercase py-3 rounded-sm transition-all shadow-lg shadow-red-900/30">
+                Guardar Cambios
+                </button>
+            </div>
+
+            </div>
+        </div>
+        </div>
+
+        <!-- ══════════ TOAST ══════════ -->
+        <div id="toast" class="fixed bottom-6 right-6 z-50 hidden items-center gap-3 px-4 py-3 rounded-sm shadow-xl text-xs font-bold tracking-widest uppercase border transition-all duration-300">
+        <svg id="toastIcon" class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+        <span id="toastMsg"></span>
+        </div>
+
+    </div>
+</Layout>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&display=swap');
+
+    .font-workshop { font-family: 'Barlow', sans-serif; }
+
+    .workshop-input:focus {
+        box-shadow: 0 0 0 2px rgb(59 130 246 / 0.1);
+    }
+
+    .historial-card {
+        animation: fadeUp 0.3s ease-out both;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .select-arrow {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 14px;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%       { transform: translateX(-6px); }
+        40%       { transform: translateX(6px); }
+        60%       { transform: translateX(-4px); }
+        80%       { transform: translateX(4px); }
+    }
+    .shake { animation: shake 0.4s ease-in-out; }
+</style>
+
+<script>
+    // ══════════════════════════════════════════
+    // PROTECCIÓN DE SESIÓN
+    // ══════════════════════════════════════════
+    const SESSION_KEY = 'admin_session';
+    if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
+        window.location.href = '/admin/login';
+    }
+
+    // Logout
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+        sessionStorage.removeItem(SESSION_KEY);
+        sessionStorage.removeItem('admin_user');
+        window.location.href = '/admin/login';
+    });
+
+    // ══════════════════════════════════════════
+    // ESTADO
+    // ══════════════════════════════════════════
+    let reservasData: any[] = [];
+    let filtros = { nombre: '', apellido: '', estado: '', orden: 'desc' };
+
+    const estadoConfig: Record<string, { label: string; badge: string; border: string; dot: string }> = {
+        pendiente:  { label: 'Pendiente',  badge: 'bg-yellow-400/10 border border-yellow-400/20 text-yellow-400', border: 'border-yellow-900/30', dot: 'bg-yellow-400' },
+        confirmado: { label: 'Confirmado', badge: 'bg-blue-500/10 border border-blue-500/20 text-blue-400',       border: 'border-blue-900/30',   dot: 'bg-blue-500'  },
+        enproceso:  { label: 'En Proceso', badge: 'bg-orange-500/10 border border-orange-500/20 text-orange-400', border: 'border-orange-900/30', dot: 'bg-orange-500'},
+        finalizado: { label: 'Finalizado', badge: 'bg-green-500/10 border border-green-500/20 text-green-400',    border: 'border-green-900/30',  dot: 'bg-green-500' },
+        cancelado:  { label: 'Cancelado',  badge: 'bg-red-900/20 border border-red-800/30 text-red-400',          border: 'border-red-900/30',    dot: 'bg-red-500'   },
+    };
+
+    const vehiculoEmoji: Record<string, string> = { auto: '🚗', moto: '🏍️', camioneta: '🚙', otro: '🚐' };
+
+    // ══════════════════════════════════════════
+    // TOAST
+    // ══════════════════════════════════════════
+    function showToast(msg: string, type: 'ok' | 'error' | 'info' = 'ok') {
+        const toast   = document.getElementById('toast')!;
+        const msgEl   = document.getElementById('toastMsg')!;
+        const iconEl  = document.getElementById('toastIcon')!;
+        const configs = {
+            ok:    { cls: 'bg-green-900/90 border-green-700/50 text-green-300', path: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>' },
+            error: { cls: 'bg-red-900/90 border-red-700/50 text-red-300',       path: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>' },
+            info:  { cls: 'bg-neutral-800/90 border-neutral-600/50 text-neutral-300', path: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>' },
+        };
+        const cfg = configs[type];
+        toast.className = `fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-sm shadow-xl text-xs font-bold tracking-widest uppercase border transition-all duration-300 ${cfg.cls}`;
+        iconEl.innerHTML = cfg.path;
+        msgEl.textContent = msg;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    // ══════════════════════════════════════════
+    // FORMATEAR FECHA
+    // ══════════════════════════════════════════
+    function formatFecha(fecha: string): string {
+        const [y, m, d] = fecha.split('-');
+        const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+        return `${d} ${meses[parseInt(m) - 1]} ${y}`;
+    }
+
+    // ══════════════════════════════════════════
+    // CARGAR DATOS
+    // ══════════════════════════════════════════
+    async function cargarReservas() {
+        document.getElementById('loadingState')!.classList.remove('hidden');
+        document.getElementById('cardsGrid')!.classList.add('hidden');
+        document.getElementById('emptyState')!.classList.add('hidden');
+        document.getElementById('emptyState')!.classList.remove('flex');
+        document.getElementById('resultsBar')!.classList.add('hidden');
+
+        try {
+            /* REEMPLAZAR con tu endpoint real:
+               const res = await fetch('/api/turnos');
+               if (!res.ok) throw new Error(`HTTP ${res.status}`);
+               reservasData = await res.json();
+            */
+            await new Promise(r => setTimeout(r, 500));
+            reservasData = [
+                { id: '1', nombre: 'Juan',    apellido: 'García',    celular: '11 2345 6789', fecha: '2025-04-14', horario: '09:00', vehiculo: 'auto',      modelo_vehiculo: 'Volkswagen Gol 2018',    descripcion: 'Cambio de aceite y filtro. Revisar frenos delanteros.',        estado: 'pendiente'  },
+                { id: '2', nombre: 'María',   apellido: 'López',     celular: '11 9876 5432', fecha: '2025-04-14', horario: '11:00', vehiculo: 'moto',      modelo_vehiculo: 'Honda CB 250 2020',      descripcion: 'Revisión general, ajuste de cadena y cambio de pastillas.',    estado: 'confirmado' },
+                { id: '3', nombre: 'Carlos',  apellido: 'Fernández', celular: '11 5555 1234', fecha: '2025-04-15', horario: '10:00', vehiculo: 'camioneta', modelo_vehiculo: 'Ford Ranger 2021',       descripcion: 'Diagnóstico eléctrico. La camioneta no arranca bien en frío.', estado: 'enproceso'  },
+                { id: '4', nombre: 'Ana',     apellido: 'Martínez',  celular: '11 7777 8888', fecha: '2025-04-12', horario: '14:00', vehiculo: 'auto',      modelo_vehiculo: 'Toyota Corolla 2019',    descripcion: 'Service completo de 40.000 km.',                               estado: 'finalizado' },
+                { id: '5', nombre: 'Roberto', apellido: 'Sánchez',   celular: '11 3333 4444', fecha: '2025-04-16', horario: '08:00', vehiculo: 'auto',      modelo_vehiculo: 'Peugeot 208 2022',       descripcion: 'Ruido extraño en suspensión delantera derecha al frenar.',    estado: 'pendiente'  },
+                { id: '6', nombre: 'Laura',   apellido: 'Díaz',      celular: '11 6666 9999', fecha: '2025-04-17', horario: '15:00', vehiculo: 'moto',      modelo_vehiculo: 'Bajaj Pulsar NS200',     descripcion: 'Cambio de aceite, bujía y revisión de luces.',                 estado: 'pendiente'  },
+                { id: '7', nombre: 'Diego',   apellido: 'Romero',    celular: '11 1111 2222', fecha: '2025-04-10', horario: '09:00', vehiculo: 'auto',      modelo_vehiculo: 'Renault Sandero 2020',   descripcion: 'Revisión de transmisión automática y cambio de fluido.',      estado: 'finalizado' },
+                { id: '8', nombre: 'Sofía',   apellido: 'Torres',    celular: '11 4444 5555', fecha: '2025-04-08', horario: '16:00', vehiculo: 'camioneta', modelo_vehiculo: 'Chevrolet S10 2019',     descripcion: 'Cambio de amortiguadores traseros.',                           estado: 'cancelado'  },
+                { id: '9', nombre: 'Miguel',  apellido: 'Vargas',    celular: '11 8888 0000', fecha: '2025-04-18', horario: '11:00', vehiculo: 'auto',      modelo_vehiculo: 'Ford Focus 2017',        descripcion: 'Revisión pre-viaje. Frenos, líquidos y neumáticos.',          estado: 'confirmado' },
+            ];
+
+            renderCards();
+            updateStats();
+            document.getElementById('loadingState')!.classList.add('hidden');
+        } catch (err: any) {
+            document.getElementById('loadingState')!.classList.add('hidden');
+            showToast('Error al cargar las reservas', 'error');
+        }
+    }
+
+    // ══════════════════════════════════════════
+    // FILTRADO
+    // ══════════════════════════════════════════
+    function reservasFiltradas() {
+        return reservasData
+            .filter(r => {
+                const matchNombre   = !filtros.nombre   || r.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
+                const matchApellido = !filtros.apellido || r.apellido.toLowerCase().includes(filtros.apellido.toLowerCase());
+                const matchEstado   = !filtros.estado   || r.estado === filtros.estado;
+                return matchNombre && matchApellido && matchEstado;
+            })
+            .sort((a, b) => {
+                const da = new Date(`${a.fecha}T${a.horario}`).getTime();
+                const db = new Date(`${b.fecha}T${b.horario}`).getTime();
+                return filtros.orden === 'asc' ? da - db : db - da;
+            });
+    }
+
+    // ══════════════════════════════════════════
+    // RENDER CARDS
+    // ══════════════════════════════════════════
+    function renderCards() {
+        const data  = reservasFiltradas();
+        const grid  = document.getElementById('cardsGrid')!;
+        const empty = document.getElementById('emptyState')!;
+        const bar   = document.getElementById('resultsBar')!;
+        const count = document.getElementById('resultsCount')!;
+
+        // Mostrar/ocultar botón limpiar filtros
+        const hayFiltros = filtros.nombre || filtros.apellido || filtros.estado;
+        const btnLimpiar = document.getElementById('btnLimpiarFiltros')!;
+        if (hayFiltros) { btnLimpiar.classList.remove('hidden'); btnLimpiar.classList.add('flex'); }
+        else            { btnLimpiar.classList.add('hidden'); btnLimpiar.classList.remove('flex'); }
+
+        if (data.length === 0) {
+            grid.classList.add('hidden');
+            empty.classList.remove('hidden');
+            empty.classList.add('flex');
+            bar.classList.add('hidden');
+            bar.classList.remove('flex');
+            return;
+        }
+
+        empty.classList.add('hidden');
+        empty.classList.remove('flex');
+        bar.classList.remove('hidden');
+        bar.classList.add('flex');
+        count.textContent = `${data.length} reserva${data.length !== 1 ? 's' : ''} encontrada${data.length !== 1 ? 's' : ''}`;
+
+        grid.innerHTML = data.map((r, i) => cardHTML(r, i)).join('');
+        grid.classList.remove('hidden');
+    }
+
+    function cardHTML(r: any, index: number): string {
+        const cfg   = estadoConfig[r.estado] || estadoConfig['pendiente'];
+        const emoji = vehiculoEmoji[r.vehiculo] || '🚐';
+        const delay = Math.min(index * 0.04, 0.3);
+
+        return `
+        <div class="historial-card bg-neutral-900 border border-neutral-800 ${cfg.border} rounded-sm overflow-hidden hover:border-neutral-600 transition-all duration-200"
+             style="animation-delay: ${delay}s" data-id="${r.id}">
+
+            <!-- Card header -->
+            <div class="flex items-start justify-between px-4 pt-4 pb-3 border-b border-neutral-800">
+            <div>
+                <p class="text-white font-black text-base leading-tight">${r.nombre} ${r.apellido}</p>
+                <a href="tel:${r.celular}" class="text-neutral-500 text-xs hover:text-blue-400 transition-colors mt-0.5 block">${r.celular}</a>
+            </div>
+            <span class="shrink-0 text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded-sm ${cfg.badge}">
+                ${cfg.label}
+            </span>
+            </div>
+
+            <!-- Card body -->
+            <div class="px-4 py-3 space-y-2.5">
+
+            <!-- Fecha y hora -->
+            <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class="text-neutral-300 text-xs font-bold">${formatFecha(r.fecha)}</span>
+                <span class="text-neutral-700">•</span>
+                <span class="text-neutral-400 text-xs">${r.horario} hs</span>
+            </div>
+
+            <!-- Vehículo -->
+            <div class="flex items-center gap-2">
+                <span class="text-base leading-none">${emoji}</span>
+                <span class="text-neutral-400 text-xs capitalize">
+                ${r.vehiculo}${r.modelo_vehiculo ? ' — ' + r.modelo_vehiculo : ''}
+                </span>
+            </div>
+
+            <!-- Servicio / descripción -->
+            <div class="bg-neutral-800/50 border border-neutral-800 rounded-sm px-3 py-2">
+                <p class="text-neutral-500 text-[10px] font-bold tracking-widest uppercase mb-1">Servicio</p>
+                <p class="text-neutral-300 text-xs leading-relaxed line-clamp-2">${r.descripcion}</p>
+            </div>
+
+            </div>
+
+            <!-- Card footer: acciones -->
+            <div class="px-4 pb-4 flex gap-2 border-t border-neutral-800 pt-3">
+            <button onclick="abrirEditar('${r.id}')"
+                class="flex-1 flex items-center justify-center gap-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] font-bold tracking-widest uppercase py-2 rounded-sm transition-all">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                Editar
+            </button>
+            <div class="relative flex-1">
+                <select onchange="cambiarEstadoRapido('${r.id}', this.value)" class="select-arrow w-full bg-blue-600/10 hover:bg-blue-600/20 border border-blue-600/30 text-blue-400 text-[10px] font-bold tracking-wider uppercase py-2 pl-3 pr-6 rounded-sm transition-all appearance-none cursor-pointer focus:outline-none">
+                <option value="" disabled selected>Estado</option>
+                <option value="pendiente"  ${r.estado === 'pendiente'  ? 'disabled' : ''}>→ Pendiente</option>
+                <option value="confirmado" ${r.estado === 'confirmado' ? 'disabled' : ''}>→ Confirmado</option>
+                <option value="enproceso"  ${r.estado === 'enproceso'  ? 'disabled' : ''}>→ En Proceso</option>
+                <option value="finalizado" ${r.estado === 'finalizado' ? 'disabled' : ''}>→ Finalizado</option>
+                <option value="cancelado"  ${r.estado === 'cancelado'  ? 'disabled' : ''}>→ Cancelado</option>
+                </select>
+            </div>
+            </div>
+
+        </div>`;
+    }
+
+    // ══════════════════════════════════════════
+    // STATS
+    // ══════════════════════════════════════════
+    function updateStats() {
+        document.getElementById('stat-total')!.textContent     = String(reservasData.length);
+        document.getElementById('stat-pendiente')!.textContent  = String(reservasData.filter(r => r.estado === 'pendiente').length);
+        document.getElementById('stat-confirmado')!.textContent = String(reservasData.filter(r => r.estado === 'confirmado').length);
+        document.getElementById('stat-finalizado')!.textContent = String(reservasData.filter(r => r.estado === 'finalizado').length);
+    }
+
+    // ══════════════════════════════════════════
+    // CAMBIAR ESTADO RÁPIDO (desde select)
+    // ══════════════════════════════════════════
+    function cambiarEstadoRapido(id: string, nuevoEstado: string) {
+        if (!nuevoEstado) return;
+        const r = reservasData.find((x: any) => x.id === id);
+        if (r) r.estado = nuevoEstado;
+        renderCards();
+        updateStats();
+        const labels: Record<string, string> = { pendiente: 'Turno reabierto', confirmado: 'Turno confirmado', enproceso: 'Turno iniciado', finalizado: 'Turno finalizado', cancelado: 'Turno cancelado' };
+        showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
+    }
+    (window as any).cambiarEstadoRapido = cambiarEstadoRapido;
+
+    // ══════════════════════════════════════════
+    // MODAL EDITAR
+    // ══════════════════════════════════════════
+    function abrirEditar(id: string) {
+        const r = reservasData.find((x: any) => x.id === id);
+        if (!r) return;
+        (document.getElementById('editId')          as HTMLInputElement).value  = r.id;
+        (document.getElementById('editNombre')      as HTMLInputElement).value  = r.nombre;
+        (document.getElementById('editApellido')    as HTMLInputElement).value  = r.apellido;
+        (document.getElementById('editCelular')     as HTMLInputElement).value  = r.celular;
+        (document.getElementById('editFecha')       as HTMLInputElement).value  = r.fecha;
+        (document.getElementById('editHorario')     as HTMLSelectElement).value = r.horario;
+        (document.getElementById('editVehiculo')    as HTMLSelectElement).value = r.vehiculo;
+        (document.getElementById('editModelo')      as HTMLInputElement).value  = r.modelo_vehiculo || '';
+        (document.getElementById('editEstado')      as HTMLSelectElement).value = r.estado;
+        (document.getElementById('editDescripcion') as HTMLTextAreaElement).value = r.descripcion;
+        const modal = document.getElementById('modalEditar')!;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+    (window as any).abrirEditar = abrirEditar;
+
+    function cerrarEditar() {
+        const modal = document.getElementById('modalEditar')!;
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    async function guardarEdicion() {
+        const id = (document.getElementById('editId') as HTMLInputElement).value;
+        const datos = {
+            nombre:          (document.getElementById('editNombre')      as HTMLInputElement).value.trim(),
+            apellido:        (document.getElementById('editApellido')    as HTMLInputElement).value.trim(),
+            celular:         (document.getElementById('editCelular')     as HTMLInputElement).value.trim(),
+            fecha:           (document.getElementById('editFecha')       as HTMLInputElement).value,
+            horario:         (document.getElementById('editHorario')     as HTMLSelectElement).value,
+            vehiculo:        (document.getElementById('editVehiculo')    as HTMLSelectElement).value,
+            modelo_vehiculo: (document.getElementById('editModelo')      as HTMLInputElement).value.trim(),
+            estado:          (document.getElementById('editEstado')      as HTMLSelectElement).value,
+            descripcion:     (document.getElementById('editDescripcion') as HTMLTextAreaElement).value.trim(),
+        };
+        try {
+            /* REEMPLAZAR:
+               await fetch(`/api/turnos/${id}`, {
+                 method: 'PUT',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(datos),
+               }); */
+            const idx = reservasData.findIndex((x: any) => x.id === id);
+            if (idx !== -1) reservasData[idx] = Object.assign({}, reservasData[idx], datos);
+            cerrarEditar();
+            renderCards();
+            updateStats();
+            showToast('Reserva actualizada correctamente', 'ok');
+        } catch {
+            showToast('Error al guardar los cambios', 'error');
+        }
+    }
+
+    // ══════════════════════════════════════════
+    // EVENT LISTENERS
+    // ══════════════════════════════════════════
+    document.getElementById('btnGuardarEdicion')!.addEventListener('click', guardarEdicion);
+    document.getElementById('btnCerrarModal')!.addEventListener('click', cerrarEditar);
+    document.getElementById('btnCancelarEdicion')!.addEventListener('click', cerrarEditar);
+    document.getElementById('modalBackdrop')!.addEventListener('click', cerrarEditar);
+
+    let timer: ReturnType<typeof setTimeout>;
+    function debounceFilter(campo: string, valor: string) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            (filtros as any)[campo] = valor;
+            renderCards();
+        }, 200);
+    }
+
+    document.getElementById('searchNombre')!.addEventListener('input', (e) => {
+        debounceFilter('nombre', (e.target as HTMLInputElement).value);
+    });
+    document.getElementById('searchApellido')!.addEventListener('input', (e) => {
+        debounceFilter('apellido', (e.target as HTMLInputElement).value);
+    });
+    document.getElementById('filtroEstado')!.addEventListener('change', (e) => {
+        filtros.estado = (e.target as HTMLSelectElement).value;
+        renderCards();
+    });
+    document.getElementById('filtroOrden')!.addEventListener('change', (e) => {
+        filtros.orden = (e.target as HTMLSelectElement).value;
+        renderCards();
+    });
+    document.getElementById('btnLimpiarFiltros')!.addEventListener('click', () => {
+        filtros = { nombre: '', apellido: '', estado: '', orden: 'desc' };
+        (document.getElementById('searchNombre')  as HTMLInputElement).value  = '';
+        (document.getElementById('searchApellido')as HTMLInputElement).value  = '';
+        (document.getElementById('filtroEstado')  as HTMLSelectElement).value = '';
+        (document.getElementById('filtroOrden')   as HTMLSelectElement).value = 'desc';
+        renderCards();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') cerrarEditar();
+    });
+
+    // ══════════════════════════════════════════
+    // INIT
+    // ══════════════════════════════════════════
+    cargarReservas();
+</script>
