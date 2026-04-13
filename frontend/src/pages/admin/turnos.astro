@@ -62,15 +62,17 @@ import Layout from '../../layouts/Layout.astro';
         <header class="relative z-10 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-sm sticky top-0">
             <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
                 <!-- Logo -->
-                <div class="flex items-center gap-3">
-                <div class="w-12 h-12 flex items-center justify-center">
-                    <img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
-                </div>
-                <div>
-                    <span class="text-white font-black text-xl tracking-widest uppercase">Cardozoperformance</span>
-                    <span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Panel de Administración</span>
-                </div>
-                </div>
+                <a href="/admin/" class="flex items-center gap-3 group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 flex items-center justify-center">
+                            <img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
+                        </div>
+                        <div>
+                            <span class="text-white font-black text-xl tracking-widest uppercase">Cardozoperformance</span>
+                            <span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Panel de Administración</span>
+                        </div>
+                    </div>
+                </a>
     
                 <!-- Acciones header -->
                 <div class="flex items-center gap-2">

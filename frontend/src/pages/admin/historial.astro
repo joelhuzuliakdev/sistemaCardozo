@@ -55,35 +55,36 @@ import Layout from '../../layouts/Layout.astro';
 
         <!-- Header -->
         <header class="relative z-10 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-sm sticky top-0">
-        <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-            <div class="w-12 h-12 flex items-center justify-center">
-                <img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
-            </div>
-            <div>
-                <span class="text-white font-black text-xl tracking-widest uppercase">Cardozoperformance</span>
-                <span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Historial de Reservas</span>
-            </div>
-            </div>
+            <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+                
+                <a href="/admin/" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 flex items-center justify-center">
+                        <img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
+                    </div>
+                    <div>
+                        <span class="text-white font-black text-xl tracking-widest uppercase group-hover:text-neutral-300 transition-colors">Cardozoperformance</span>
+                        <span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Historial de Reservas</span>
+                    </div>
+                </a>
 
-            <!-- Nav links -->
-            <div class="hidden md:flex items-center gap-3">
-            <a href="/admin/turnos"
-                class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/>
-                </svg>
-                Turnos
-            </a>
-            <button id="btnLogout"
-                class="flex items-center gap-2 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                </svg>
-                Salir
-            </button>
+                <!-- Nav links -->
+                <div class="hidden md:flex items-center gap-3">
+                <a href="/admin/turnos"
+                    class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/>
+                    </svg>
+                    Turnos
+                </a>
+                <button id="btnLogout"
+                    class="flex items-center gap-2 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    Salir
+                </button>
+                </div>
             </div>
-        </div>
         </header>
 
         <!-- Page title + stats bar -->
