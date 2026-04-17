@@ -5,10 +5,8 @@ import Layout from '../../layouts/Layout.astro';
 <Layout title="Panel de Administración | Cardozo Performance">
     <div class="min-h-screen bg-neutral-950 font-workshop relative overflow-x-hidden">
 
-        <!-- Top accent strip -->
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-yellow-400 to-blue-600 z-50"></div>
 
-        <!-- Background SVG mechanical parts -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
             <defs>
@@ -102,7 +100,6 @@ import Layout from '../../layouts/Layout.astro';
         <!-- Main -->
         <main class="relative z-10 max-w-screen-xl mx-auto px-6 pb-20">
 
-            <!-- Stats rápidas -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
                 <div class="bg-neutral-900 border border-neutral-800 rounded-sm px-4 py-4">
                     <span class="block text-neutral-500 text-[10px] font-bold tracking-widest uppercase mb-1">Total</span>
@@ -122,7 +119,6 @@ import Layout from '../../layouts/Layout.astro';
                 </div>
             </div>
 
-            <!-- Secciones -->
             <div class="flex items-center gap-3 mb-6">
                 <span class="text-neutral-300 text-xs font-black tracking-[0.2em] uppercase">Secciones</span>
                 <div class="h-px flex-1 bg-neutral-800"></div>
@@ -130,8 +126,7 @@ import Layout from '../../layouts/Layout.astro';
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-                <!-- Card Turnos -->
-                <a href="/admin/turnos" class="nav-card group block bg-neutral-900 border border-neutral-800 hover:border-red-600/50 rounded-sm overflow-hidden transition-all duration-200 shadow-lg hover:shadow-red-900/20">
+                <a href="/admin/turnos" id="cardTurnos" class="nav-card group block bg-neutral-900 border border-neutral-800 hover:border-red-600/50 rounded-sm overflow-hidden transition-all duration-200 shadow-lg hover:shadow-red-900/20" style="position: relative;">
                     <div class="bg-neutral-800 group-hover:bg-red-600/10 px-6 py-3 flex items-center justify-between transition-all duration-200">
                         <div class="flex items-center gap-2">
                             <div class="w-5 h-5 bg-red-600 flex items-center justify-center rounded-sm">
@@ -163,7 +158,6 @@ import Layout from '../../layouts/Layout.astro';
                     </div>
                 </a>
 
-                <!-- Card Clientes -->
                 <a href="/admin/historial" class="nav-card group block bg-neutral-900 border border-neutral-800 hover:border-yellow-400/50 rounded-sm overflow-hidden transition-all duration-200 shadow-lg hover:shadow-yellow-900/10">
                     <div class="bg-neutral-800 group-hover:bg-yellow-400/10 px-6 py-3 flex items-center justify-between transition-all duration-200">
                         <div class="flex items-center gap-2">
@@ -213,7 +207,9 @@ import Layout from '../../layouts/Layout.astro';
     }
 </style>
 
-<script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script is:inline>
     const SESSION_KEY = 'admin_session';
     if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
         window.location.href = '/admin/login';
@@ -226,35 +222,94 @@ import Layout from '../../layouts/Layout.astro';
         greeting.classList.remove('hidden');
     }
 
-    document.getElementById('btnLogout')?.addEventListener('click', () => {
+    document.getElementById('btnLogout').addEventListener('click', () => {
         sessionStorage.removeItem(SESSION_KEY);
         sessionStorage.removeItem('admin_user');
         window.location.href = '/admin/login';
     });
 
-    // Stats mock — reemplazar con fetch real
-    async function cargarStats() {
-        await new Promise(r => setTimeout(r, 300));
-        const mock = [
-            { estado: 'pendiente' }, { estado: 'pendiente' },
-            { estado: 'confirmado' }, { estado: 'enproceso' },
-            { estado: 'finalizado' }, { estado: 'finalizado' },
-            { estado: 'finalizado' }, { estado: 'cancelado' },
-            { estado: 'confirmado' },
-        ];
-        const total      = mock.length;
-        const pendiente  = mock.filter(t => t.estado === 'pendiente').length;
-        const confirmado = mock.filter(t => t.estado === 'confirmado').length;
-        const finalizado = mock.filter(t => t.estado === 'finalizado').length;
+    let nuevosCount = 0;
 
-        document.getElementById('stat-total')!.textContent      = String(total);
-        document.getElementById('stat-pendiente')!.textContent  = String(pendiente);
-        document.getElementById('stat-confirmado')!.textContent = String(confirmado);
-        document.getElementById('stat-finalizado')!.textContent = String(finalizado);
-        document.getElementById('card-pendiente')!.textContent  = String(pendiente);
-        document.getElementById('card-confirmado')!.textContent = String(confirmado);
-        document.getElementById('card-total')!.textContent      = String(total);
-        document.getElementById('card-finalizado')!.textContent = String(finalizado);
+    function sonarNotificacion() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.setValueAtTime(880, ctx.currentTime);
+            osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.4);
+        } catch(e) {}
     }
+
+    function actualizarBadgeIndex(count) {
+        let badge = document.getElementById('badgeIndex');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.id = 'badgeIndex';
+            badge.style.cssText = `
+                position: absolute; top: -6px; right: -6px;
+                background: #ef4444; color: white;
+                font-size: 10px; font-weight: 900;
+                min-width: 18px; height: 18px;
+                border-radius: 9999px;
+                display: flex; align-items: center; justify-content: center;
+                padding: 0 4px; z-index: 99;
+            `;
+            document.getElementById('cardTurnos').appendChild(badge);
+        }
+        if (count > 0) {
+            badge.textContent = String(count);
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    async function cargarStats() {
+        try {
+            const res = await fetch('http://localhost:3000/api/turnos');
+            const turnos = await res.json();
+            const total      = turnos.length;
+            const pendiente  = turnos.filter(t => t.estado === 'pendiente').length;
+            const confirmado = turnos.filter(t => t.estado === 'confirmado').length;
+            const finalizado = turnos.filter(t => t.estado === 'finalizado').length;
+            document.getElementById('stat-total').textContent      = String(total);
+            document.getElementById('stat-pendiente').textContent  = String(pendiente);
+            document.getElementById('stat-confirmado').textContent = String(confirmado);
+            document.getElementById('stat-finalizado').textContent = String(finalizado);
+            document.getElementById('card-pendiente').textContent  = String(pendiente);
+            document.getElementById('card-confirmado').textContent = String(confirmado);
+            document.getElementById('card-total').textContent      = String(total);
+            document.getElementById('card-finalizado').textContent = String(finalizado);
+        } catch(e) {
+            console.error('Error cargando stats:', e);
+        }
+    }
+
     cargarStats();
+
+    // Supabase Realtime
+    const SUPABASE_URL = 'https://eymmxgpzaxpzovlkakge.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable__G-Nx3ddgGdxPB580-lRlg_Cacgytd1';
+
+    const { createClient } = window.supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    supabaseClient
+        .channel('turnos-index')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'turnos' }, (payload) => {
+            console.log('Nuevo turno:', payload.new);
+            nuevosCount++;
+            actualizarBadgeIndex(nuevosCount);
+            sonarNotificacion();
+            cargarStats();
+        })
+        .subscribe((status) => {
+            console.log('Realtime status:', status);
+        });
 </script>
