@@ -502,160 +502,149 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
-    // Set minimum date to today
-	const fechaInput = document.getElementById('fecha') as HTMLInputElement;
-	if (fechaInput) {
-	const today = new Date().toISOString().split('T')[0];
-	fechaInput.min = today;
-	}
+    const fechaInput = document.getElementById('fecha') as HTMLInputElement;
+    if (fechaInput) {
+        const today = new Date().toISOString().split('T')[0];
+        fechaInput.min = today;
+    }
 
-	// Bloquear horarios ocupados al cambiar fecha
-	const HORARIOS = ['08:00','09:00','10:00','11:00','12:00','14:00','15:00','16:00','17:00'];
+    const HORARIOS = ['08:00','09:00','10:00','11:00','12:00','14:00','15:00','16:00','17:00'];
 
-	function actualizarHorariosDisponibles() {
-	const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
-	const horarioSelect = document.getElementById('horario') as HTMLSelectElement;
-	if (!horarioSelect) return;
+    async function actualizarHorariosDisponibles() {
+        const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+        const horarioSelect = document.getElementById('horario') as HTMLSelectElement;
+        if (!horarioSelect || !fecha) return;
 
-	// Calcular franjas bloqueadas para esa fecha
-	const bloqueados = new Set<string>();
+        const bloqueados = new Set<string>();
 
-	if (fecha) {
-		const turnosGuardados: any[] = JSON.parse(localStorage.getItem('cardozo_turnos') || '[]');
+        try {
+            const res = await fetch('http://localhost:3000/api/turnos');
+            const turnosGuardados: any[] = await res.json();
 
-		turnosGuardados
-		.filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
-		.forEach(t => {
-			const [h, m] = t.horario.split(':').map(Number);
-			const inicioMin = h * 60 + m;
-			const finMin = inicioMin + t.duracion_horas * 60;
-			HORARIOS.forEach(slot => {
-			const [sh, sm] = slot.split(':').map(Number);
-			const slotMin = sh * 60 + sm;
-			if (slotMin >= inicioMin && slotMin < finMin) {
-				bloqueados.add(slot);
-			}
-			});
-		});
-	}
+            turnosGuardados
+                .filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
+                .forEach(t => {
+                    const [h, m] = t.horario.split(':').map(Number);
+                    const inicioMin = h * 60 + m;
+                    const finMin = inicioMin + t.duracion_horas * 60;
+                    HORARIOS.forEach(slot => {
+                        const [sh, sm] = slot.split(':').map(Number);
+                        const slotMin = sh * 60 + sm;
+                        if (slotMin >= inicioMin && slotMin < finMin) {
+                            bloqueados.add(slot);
+                        }
+                    });
+                });
+        } catch (e) {
+            console.error('Error al obtener turnos', e);
+        }
 
-	// Actualizar options
-	Array.from(horarioSelect.options).forEach(opt => {
-		if (!opt.value) return; // placeholder
-		const bloqueado = bloqueados.has(opt.value);
-		opt.disabled = bloqueado;
-		opt.textContent = bloqueado ? `${opt.value} hs — Ocupado` : `${opt.value} hs`;
-		if (bloqueado && horarioSelect.value === opt.value) {
-		horarioSelect.value = '';
-		}
-	});
-	}
+        Array.from(horarioSelect.options).forEach(opt => {
+            if (!opt.value) return;
+            const bloqueado = bloqueados.has(opt.value);
+            opt.disabled = bloqueado;
+            opt.textContent = bloqueado ? `${opt.value} hs — Ocupado` : `${opt.value} hs`;
+            if (bloqueado && horarioSelect.value === opt.value) {
+                horarioSelect.value = '';
+            }
+        });
+    }
 
-	fechaInput?.addEventListener('change', actualizarHorariosDisponibles);
+    fechaInput?.addEventListener('change', actualizarHorariosDisponibles);
 
-	// Character counter for textarea
-	const descripcion = document.getElementById('descripcion') as HTMLTextAreaElement;
-	const charCount = document.getElementById('char-count');
-	if (descripcion && charCount) {
-	descripcion.addEventListener('input', () => {
-		const len = descripcion.value.length;
-		charCount.textContent = `${len} / 300`;
-		if (len > 300) {
-		descripcion.value = descripcion.value.slice(0, 300);
-		charCount.textContent = '300 / 300';
-		}
-	});
-	}
+    const descripcion = document.getElementById('descripcion') as HTMLTextAreaElement;
+    const charCount = document.getElementById('char-count');
+    if (descripcion && charCount) {
+        descripcion.addEventListener('input', () => {
+            const len = descripcion.value.length;
+            charCount.textContent = `${len} / 300`;
+            if (len > 300) {
+                descripcion.value = descripcion.value.slice(0, 300);
+                charCount.textContent = '300 / 300';
+            }
+        });
+    }
 
-	// Form validation + submit
-	const form = document.getElementById('turnoForm') as HTMLFormElement;
-	const successMessage = document.getElementById('successMessage');
+    const form = document.getElementById('turnoForm') as HTMLFormElement;
+    const successMessage = document.getElementById('successMessage');
 
-	function showError(id: string, show: boolean) {
-	const el = document.getElementById(id);
-	if (el) el.classList.toggle('hidden', !show);
-	}
+    function showError(id: string, show: boolean) {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', !show);
+    }
 
-	function validateForm(): boolean {
-	let valid = true;
+    function validateForm(): boolean {
+        let valid = true;
 
-	const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
-	showError('nombre-error', !nombre);
-	if (!nombre) valid = false;
+        const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
+        showError('nombre-error', !nombre);
+        if (!nombre) valid = false;
 
-	const apellido = (document.getElementById('apellido') as HTMLInputElement).value.trim();
-	showError('apellido-error', !apellido);
-	if (!apellido) valid = false;
+        const apellido = (document.getElementById('apellido') as HTMLInputElement).value.trim();
+        showError('apellido-error', !apellido);
+        if (!apellido) valid = false;
 
-	const celular = (document.getElementById('celular') as HTMLInputElement).value.trim();
-	const celularValid = /^\d{8,15}$/.test(celular.replace(/\s/g, ''));
-	showError('celular-error', !celularValid);
-	if (!celularValid) valid = false;
+        const celular = (document.getElementById('celular') as HTMLInputElement).value.trim();
+        const celularValid = /^\d{8,15}$/.test(celular.replace(/\s/g, ''));
+        showError('celular-error', !celularValid);
+        if (!celularValid) valid = false;
 
-	const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
-	showError('fecha-error', !fecha);
-	if (!fecha) valid = false;
+        const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+        showError('fecha-error', !fecha);
+        if (!fecha) valid = false;
 
-	const horario = (document.getElementById('horario') as HTMLSelectElement).value;
-	showError('horario-error', !horario);
-	if (!horario) valid = false;
+        const horario = (document.getElementById('horario') as HTMLSelectElement).value;
+        showError('horario-error', !horario);
+        if (!horario) valid = false;
 
-	const vehiculo = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
-	showError('vehiculo-error', !vehiculo);
-	if (!vehiculo) valid = false;
+        const vehiculo = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
+        showError('vehiculo-error', !vehiculo);
+        if (!vehiculo) valid = false;
 
-	const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
-	showError('descripcion-error', !desc);
-	if (!desc) valid = false;
+        const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
+        showError('descripcion-error', !desc);
+        if (!desc) valid = false;
 
-	return valid;
-	}
+        return valid;
+    }
 
-	form?.addEventListener('submit', async (e) => {
-	e.preventDefault();
-	if (!validateForm()) return;
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
 
-	const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
-	submitBtn.disabled = true;
-	submitBtn.innerHTML = `
-		<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-		<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-		<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-		</svg>
-		Enviando...
-	`;
+        const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            Enviando...
+        `;
 
-	const nuevoTurno = {
-		id: Date.now().toString(),
-		nombre: (document.getElementById('nombre') as HTMLInputElement).value.trim(),
-		apellido: (document.getElementById('apellido') as HTMLInputElement).value.trim(),
-		celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
-		fecha: (document.getElementById('fecha') as HTMLInputElement).value,
-		horario: (document.getElementById('horario') as HTMLSelectElement).value,
-		vehiculo: (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement)?.value,
-		modelo_vehiculo: (document.getElementById('modelo_vehiculo') as HTMLInputElement).value.trim(),
-		descripcion: (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim(),
-		estado: 'pendiente',
-		duracion_horas: null,
-	};
+        const nuevoTurno = {
+            nombre: (document.getElementById('nombre') as HTMLInputElement).value.trim(),
+            apellido: (document.getElementById('apellido') as HTMLInputElement).value.trim(),
+            celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
+            fecha: (document.getElementById('fecha') as HTMLInputElement).value,
+            horario: (document.getElementById('horario') as HTMLSelectElement).value,
+            vehiculo: (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement)?.value,
+            modelo_vehiculo: (document.getElementById('modelo_vehiculo') as HTMLInputElement).value.trim(),
+            descripcion: (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim(),
+            estado: 'pendiente',
+            duracion_horas: null,
+        };
 
-	// Guardar en localStorage (compartido con el panel admin)
-	const turnosGuardados: any[] = JSON.parse(localStorage.getItem('cardozo_turnos') || '[]');
-	turnosGuardados.push(nuevoTurno);
-	localStorage.setItem('cardozo_turnos', JSON.stringify(turnosGuardados));
+        await fetch("http://localhost:3000/api/turnos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(nuevoTurno)
+        });
 
-	// TODO: cuando tengas backend, reemplazá el localStorage por:
-	// await fetch('/api/turnos', {
-	//   method: 'POST',
-	//   headers: { 'Content-Type': 'application/json' },
-	//   body: JSON.stringify(nuevoTurno),
-	// });
+        await new Promise(r => setTimeout(r, 600));
 
-	// Simular delay de red
-	await new Promise(r => setTimeout(r, 600));
-
-	form.classList.add('hidden');
-	successMessage?.classList.remove('hidden');
-	successMessage?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-	});
+        form.classList.add('hidden');
+        successMessage?.classList.remove('hidden');
+        successMessage?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
 </script>
