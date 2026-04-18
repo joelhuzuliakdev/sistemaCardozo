@@ -518,7 +518,7 @@ import Layout from '../layouts/Layout.astro';
         const bloqueados = new Set<string>();
 
         try {
-            const res = await fetch('http://localhost:3000/api/turnos');
+            const res = await fetch('https://backend-cardozo.onrender.com/api/turnos');
             const turnosGuardados: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await res.json();
 
             turnosGuardados
@@ -657,7 +657,7 @@ import Layout from '../layouts/Layout.astro';
             duracion_horas: null,
         };
 
-        await fetch("http://localhost:3000/api/turnos", {
+       await fetch("https://backend-cardozo.onrender.com/api/turnos", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(nuevoTurno)
