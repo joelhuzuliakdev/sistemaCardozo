@@ -356,36 +356,36 @@ import Layout from '../layouts/Layout.astro';
 						Tipo de Vehículo <span class="text-red-500">*</span>
 						</label>
 						<div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="vehiculo-group" role="group" aria-labelledby="vehiculo-label">
-						<!-- Auto -->
-						<label class="workshop-vehicle-card group cursor-pointer">
-							<input type="radio" name="vehiculo" value="auto" class="sr-only workshop-vehicle-radio" required/>
-							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
-							<div class="text-2xl mb-1">🚗</div>
-							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Auto</span>
-							</div>
-						</label>
 						<!-- Moto -->
 						<label class="workshop-vehicle-card group cursor-pointer">
-							<input type="radio" name="vehiculo" value="moto" class="sr-only workshop-vehicle-radio"/>
+							<input type="radio" name="vehiculo" value="moto" class="sr-only workshop-vehicle-radio" required/>
 							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
 							<div class="text-2xl mb-1">🏍️</div>
 							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Moto</span>
 							</div>
 						</label>
-						<!-- Camioneta -->
+						<!-- Servis 110 -->
 						<label class="workshop-vehicle-card group cursor-pointer">
-							<input type="radio" name="vehiculo" value="camioneta" class="sr-only workshop-vehicle-radio"/>
+							<input type="radio" name="vehiculo" value="servis110" class="sr-only workshop-vehicle-radio"/>
 							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
-							<div class="text-2xl mb-1">🚙</div>
-							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Camioneta</span>
+							<div class="text-2xl mb-1">🔧</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Servis 110</span>
 							</div>
 						</label>
-						<!-- Otro -->
+						<!-- Servis 150 -->
 						<label class="workshop-vehicle-card group cursor-pointer">
-							<input type="radio" name="vehiculo" value="otro" class="sr-only workshop-vehicle-radio"/>
+							<input type="radio" name="vehiculo" value="servis150" class="sr-only workshop-vehicle-radio"/>
 							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
-							<div class="text-2xl mb-1">🚐</div>
-							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Otro</span>
+							<div class="text-2xl mb-1">⚙️</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Servis 150</span>
+							</div>
+						</label>
+						<!-- Servis +250 -->
+						<label class="workshop-vehicle-card group cursor-pointer">
+							<input type="radio" name="vehiculo" value="servis250" class="sr-only workshop-vehicle-radio"/>
+							<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+							<div class="text-2xl mb-1">⚡</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Servis +250</span>
 							</div>
 						</label>
 						</div>
@@ -519,7 +519,7 @@ import Layout from '../layouts/Layout.astro';
 
         try {
             const res = await fetch('http://localhost:3000/api/turnos');
-            const turnosGuardados: any[] = await res.json();
+            const turnosGuardados: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await res.json();
 
             turnosGuardados
                 .filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
@@ -565,6 +565,27 @@ import Layout from '../layouts/Layout.astro';
         });
     }
 
+    // Deshabilitar descripción si es un servis
+    const vehiculoRadios = document.querySelectorAll<HTMLInputElement>('.workshop-vehicle-radio');
+    const descripcionField = document.getElementById('descripcion') as HTMLTextAreaElement;
+
+    vehiculoRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            const esServis = ['servis110', 'servis150', 'servis250'].includes(radio.value);
+            if (esServis) {
+                descripcionField.value = '';
+                descripcionField.disabled = true;
+                descripcionField.placeholder = 'No requerido para servicios de mantenimiento';
+                descripcionField.classList.add('opacity-40', 'cursor-not-allowed');
+                if (charCount) charCount.textContent = '0 / 300';
+            } else {
+                descripcionField.disabled = false;
+                descripcionField.placeholder = 'Describí el problema o servicio que necesitás (cambio de aceite, frenos, diagnóstico, etc.)';
+                descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
+            }
+        });
+    });
+
     const form = document.getElementById('turnoForm') as HTMLFormElement;
     const successMessage = document.getElementById('successMessage');
 
@@ -597,13 +618,14 @@ import Layout from '../layouts/Layout.astro';
         showError('horario-error', !horario);
         if (!horario) valid = false;
 
-        const vehiculo = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
-        showError('vehiculo-error', !vehiculo);
-        if (!vehiculo) valid = false;
+        const vehiculoVal = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
+        showError('vehiculo-error', !vehiculoVal);
+        if (!vehiculoVal) valid = false;
 
+        const esServis = ['servis110', 'servis150', 'servis250'].includes(vehiculoVal ?? '');
         const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
-        showError('descripcion-error', !desc);
-        if (!desc) valid = false;
+        showError('descripcion-error', !desc && !esServis);
+        if (!desc && !esServis) valid = false;
 
         return valid;
     }
