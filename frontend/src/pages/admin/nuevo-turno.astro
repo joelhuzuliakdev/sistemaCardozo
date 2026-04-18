@@ -1,0 +1,619 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Agendar Turno | Cardozo Performance Admin">
+	<div class="min-h-screen bg-neutral-950 font-workshop relative overflow-x-hidden">
+
+		<!-- Top accent strip -->
+		<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-yellow-400 to-blue-600 z-50"></div>
+
+		<!-- Background SVG -->
+		<div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+			<svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+				<defs>
+				<g id="nt-gear-lg">
+					<path d="M0,-38 L5,-44 L10,-44 L15,-38 A38,38 0 0,1 18.5,-33.5 L22,-29 L26,-30 L28,-22 A28,28 0 0,1 27.5,-16 L26,-10 L30,-6 L27,2 A38,38 0 0,1 24,8 L20,14 L22,19 L15,23 A28,28 0 0,1 10,25 L6,28 L5,34 L-5,34 L-6,28 L-10,25 A28,28 0 0,1 -15,23 L-22,19 L-20,14 L-24,8 A38,38 0 0,1 -27,2 L-30,-6 L-26,-10 L-27.5,-16 A28,28 0 0,1 -28,-22 L-26,-30 L-22,-29 L-18.5,-33.5 A38,38 0 0,1 -15,-38 L-10,-44 L-5,-44 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<circle cx="0" cy="0" r="10" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<line x1="-10" y1="0" x2="10" y2="0" stroke="currentColor" stroke-width="1"/>
+					<line x1="0" y1="-10" x2="0" y2="10" stroke="currentColor" stroke-width="1"/>
+				</g>
+				<g id="nt-gear-sm">
+					<path d="M0,-20 L4,-24 L8,-24 L10,-20 A20,20 0 0,1 14,-14 L18,-12 L18,-6 A14,14 0 0,1 14,-2 L12,4 L14,8 L10,12 A20,20 0 0,1 4,16 L2,20 L-2,20 L-4,16 A20,20 0 0,1 -10,12 L-14,8 L-12,4 A14,14 0 0,1 -14,-2 L-18,-6 L-18,-12 L-14,-14 A20,20 0 0,1 -10,-20 L-8,-24 L-4,-24 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+					<circle cx="0" cy="0" r="6" fill="none" stroke="currentColor" stroke-width="1"/>
+				</g>
+				<g id="nt-wrench">
+					<path d="M-4,-30 Q-2,-26 0,-22 L14,14 Q16,18 14,22 Q10,28 4,26 Q-2,24 -4,18 L-18,-18 Q-20,-22 -18,-26 Q-14,-32 -8,-32 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<circle cx="-12" cy="-26" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<circle cx="8" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+				</g>
+				<g id="nt-bolt">
+					<polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+					<circle cx="0" cy="0" r="6" fill="none" stroke="currentColor" stroke-width="1"/>
+				</g>
+				</defs>
+				<g opacity="0.04" color="#ffffff">
+					<g transform="translate(80,180) rotate(15) scale(2.2)"><use href="#nt-gear-lg"/></g>
+					<g transform="translate(1300,600) rotate(-20) scale(2.8)"><use href="#nt-gear-lg"/></g>
+				</g>
+				<g opacity="0.055" color="#ffffff">
+					<g transform="translate(1200,90) rotate(8) scale(1.6)"><use href="#nt-gear-lg"/></g>
+					<g transform="translate(100,750) rotate(-12) scale(1.8)"><use href="#nt-gear-lg"/></g>
+					<g transform="translate(260,50) rotate(-15) scale(1.5)"><use href="#nt-wrench"/></g>
+					<g transform="translate(1050,600) rotate(20) scale(1.4)"><use href="#nt-bolt"/></g>
+				</g>
+				<g opacity="0.07" color="#ef4444">
+					<g transform="translate(1150,200) rotate(22) scale(1.2)"><use href="#nt-gear-sm"/></g>
+				</g>
+				<g opacity="0.07" color="#3b82f6">
+					<g transform="translate(600,880) rotate(-10) scale(1.3)"><use href="#nt-gear-sm"/></g>
+				</g>
+			</svg>
+		</div>
+
+		<!-- Header -->
+		<header class="relative z-10 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-sm sticky top-0">
+			<div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<div class="w-12 h-12 flex items-center justify-center">
+						<img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
+					</div>
+					<div>
+						<span class="text-white font-black text-xl tracking-widest uppercase">Cardozoperformance</span>
+						<span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Panel de Administración</span>
+					</div>
+				</div>
+				<div class="flex items-center gap-3">
+					<!-- Volver al panel -->
+					<a href="/admin"
+						class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+						</svg>
+						Panel
+					</a>
+					<button id="btnLogout"
+						class="flex items-center gap-2 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+						</svg>
+						Salir
+					</button>
+				</div>
+			</div>
+		</header>
+
+		<!-- Hero -->
+		<section class="relative z-10 max-w-5xl mx-auto px-6 pt-14 pb-10">
+			<div class="flex flex-col md:flex-row md:items-end gap-6">
+				<div class="flex-1">
+					<div class="inline-flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/20 rounded-sm px-3 py-1 mb-4">
+						<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
+						<span class="text-yellow-400 text-xs tracking-[0.2em] uppercase font-semibold">Nuevo Turno</span>
+					</div>
+					<h1 class="text-white text-4xl md:text-5xl font-black leading-none tracking-tight uppercase">
+						Agendar<br/>
+						<span class="text-red-500">Turno</span>
+					</h1>
+				</div>
+				<p class="text-neutral-400 text-sm max-w-xs leading-relaxed">
+					Cargá un turno manualmente desde el panel de administración.
+				</p>
+			</div>
+			<div class="flex items-center gap-3 mt-8">
+				<div class="h-px flex-1 bg-gradient-to-r from-red-600/50 to-transparent"></div>
+				<svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+					<path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+				</svg>
+				<div class="h-px flex-1 bg-gradient-to-l from-blue-600/50 to-transparent"></div>
+			</div>
+		</section>
+
+		<!-- Main Form -->
+		<main class="relative z-10 max-w-5xl mx-auto px-6 pb-20">
+			<form
+				class="workshop-form bg-neutral-900 border border-neutral-800 rounded-sm shadow-2xl overflow-hidden"
+				id="turnoForm"
+				novalidate
+			>
+				<!-- Form top bar -->
+				<div class="bg-neutral-800 px-8 py-4 flex items-center justify-between">
+					<span class="text-white text-xs font-bold tracking-[0.25em] uppercase">Datos del Turno</span>
+					<div class="flex gap-1.5">
+						<span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+						<span class="w-3 h-3 rounded-full bg-yellow-400/70"></span>
+						<span class="w-3 h-3 rounded-full bg-green-500/70"></span>
+					</div>
+				</div>
+
+				<div class="p-8 space-y-8">
+
+					<!-- SECTION 1: Datos personales -->
+					<div>
+						<div class="flex items-center gap-3 mb-5">
+							<div class="w-6 h-6 bg-blue-600 flex items-center justify-center rounded-sm text-white text-xs font-black">1</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Datos Personales</span>
+							<div class="h-px flex-1 bg-neutral-800"></div>
+						</div>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+							<!-- Nombre -->
+							<div>
+								<label for="nombre" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+									Nombre <span class="text-red-500">*</span>
+								</label>
+								<input type="text" id="nombre" name="nombre"
+									class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all duration-200"
+									placeholder="Ej: Juan" autocomplete="given-name" required/>
+								<span class="text-red-500 text-xs mt-1 hidden" id="nombre-error">Ingresá el nombre</span>
+							</div>
+
+							<!-- Apellido -->
+							<div>
+								<label for="apellido" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+									Apellido <span class="text-red-500">*</span>
+								</label>
+								<input type="text" id="apellido" name="apellido"
+									class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all duration-200"
+									placeholder="Ej: García" autocomplete="family-name" required/>
+								<span class="text-red-500 text-xs mt-1 hidden" id="apellido-error">Ingresá el apellido</span>
+							</div>
+
+							<!-- Celular -->
+							<div class="md:col-span-2">
+								<label for="celular" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+									Número de Celular <span class="text-red-500">*</span>
+								</label>
+								<div class="relative">
+									<span class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 text-sm font-bold select-none">+54</span>
+									<input type="tel" id="celular" name="celular"
+										class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 pl-14 pr-4 py-3 text-sm rounded-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all duration-200"
+										placeholder="11 2345 6789" autocomplete="tel" required/>
+								</div>
+								<span class="text-red-500 text-xs mt-1 hidden" id="celular-error">Ingresá un número válido</span>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- SECTION 2: Turno -->
+					<div>
+						<div class="flex items-center gap-3 mb-5">
+							<div class="w-6 h-6 bg-yellow-400 flex items-center justify-center rounded-sm text-black text-xs font-black">2</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Fecha y Horario</span>
+							<div class="h-px flex-1 bg-neutral-800"></div>
+						</div>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+							<!-- Fecha -->
+							<div>
+								<label for="fecha" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+									Fecha <span class="text-red-500">*</span>
+								</label>
+								<input type="date" id="fecha" name="fecha"
+									class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 [color-scheme:dark]"
+									required/>
+								<span class="text-red-500 text-xs mt-1 hidden" id="fecha-error">Seleccioná una fecha</span>
+							</div>
+
+							<!-- Horario -->
+							<div>
+								<label for="horario" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+									Horario <span class="text-red-500">*</span>
+								</label>
+								<select id="horario" name="horario"
+									class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 appearance-none cursor-pointer"
+									required>
+									<option value="" disabled selected class="text-neutral-600">Seleccioná un horario</option>
+									<option value="08:00">08:00 hs</option>
+									<option value="09:00">09:00 hs</option>
+									<option value="10:00">10:00 hs</option>
+									<option value="11:00">11:00 hs</option>
+									<option value="12:00">12:00 hs</option>
+									<option value="14:00">14:00 hs</option>
+									<option value="15:00">15:00 hs</option>
+									<option value="16:00">16:00 hs</option>
+									<option value="17:00">17:00 hs</option>
+								</select>
+								<span class="text-red-500 text-xs mt-1 hidden" id="horario-error">Elegí un horario</span>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- SECTION 3: Vehículo y servicio -->
+					<div>
+						<div class="flex items-center gap-3 mb-5">
+							<div class="w-6 h-6 bg-red-600 flex items-center justify-center rounded-sm text-white text-xs font-black">3</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Vehículo y Servicio</span>
+							<div class="h-px flex-1 bg-neutral-800"></div>
+						</div>
+						<div class="space-y-5">
+
+							<!-- Tipo de vehículo -->
+							<div>
+								<label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+									Tipo de Vehículo <span class="text-red-500">*</span>
+								</label>
+								<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+									<!-- Moto -->
+									<label class="group cursor-pointer">
+										<input type="radio" name="vehiculo" value="moto" class="sr-only workshop-vehicle-radio" required/>
+										<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+											<div class="text-2xl mb-1">🏍️</div>
+											<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Moto</span>
+										</div>
+									</label>
+									<!-- Servis 110 -->
+									<label class="group cursor-pointer">
+										<input type="radio" name="vehiculo" value="servis110" class="sr-only workshop-vehicle-radio"/>
+										<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+											<div class="text-2xl mb-1">🔧</div>
+											<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Servis 110</span>
+										</div>
+									</label>
+									<!-- Servis 150 -->
+									<label class="group cursor-pointer">
+										<input type="radio" name="vehiculo" value="servis150" class="sr-only workshop-vehicle-radio"/>
+										<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+											<div class="text-2xl mb-1">⚙️</div>
+											<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Servis 150</span>
+										</div>
+									</label>
+									<!-- Servis +250 -->
+									<label class="group cursor-pointer">
+										<input type="radio" name="vehiculo" value="servis250" class="sr-only workshop-vehicle-radio"/>
+										<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+											<div class="text-2xl mb-1">⚡</div>
+											<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Servis +250</span>
+										</div>
+									</label>
+								</div>
+								<span class="text-red-500 text-xs mt-1 hidden" id="vehiculo-error">Seleccioná el tipo de vehículo</span>
+							</div>
+
+							<!-- Marca y Modelo -->
+							<div>
+								<label for="modelo_vehiculo" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+									Marca y Modelo
+								</label>
+								<input type="text" id="modelo_vehiculo" name="modelo_vehiculo"
+									class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/30 transition-all duration-200"
+									placeholder="Ej: Honda CB 150 2022"/>
+							</div>
+
+							<!-- Descripción -->
+							<div>
+								<label for="descripcion" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+									¿Qué tiene que arreglar? <span class="text-red-500">*</span>
+								</label>
+								<textarea id="descripcion" name="descripcion" rows="4"
+									class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/30 transition-all duration-200 resize-none"
+									placeholder="Describí el problema o servicio (cambio de aceite, frenos, diagnóstico, etc.)"
+									required></textarea>
+								<div class="flex justify-between mt-1">
+									<span class="text-red-500 text-xs hidden" id="descripcion-error">Describí el problema o servicio</span>
+									<span class="text-neutral-600 text-xs ml-auto" id="char-count">0 / 300</span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- SECTION 4: Estado inicial (extra para admin) -->
+					<div>
+						<div class="flex items-center gap-3 mb-5">
+							<div class="w-6 h-6 bg-green-600 flex items-center justify-center rounded-sm text-white text-xs font-black">4</div>
+							<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Estado Inicial</span>
+							<div class="h-px flex-1 bg-neutral-800"></div>
+						</div>
+						<div class="grid grid-cols-3 gap-3">
+							<label class="group cursor-pointer">
+								<input type="radio" name="estado" value="pendiente" class="sr-only workshop-estado-radio" checked/>
+								<div class="estado-card-inner border border-yellow-500/30 bg-yellow-500/10 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-yellow-400/60">
+									<div class="text-xl mb-1">🕐</div>
+									<span class="text-yellow-400 text-xs font-bold tracking-wider uppercase">Pendiente</span>
+								</div>
+							</label>
+							<label class="group cursor-pointer">
+								<input type="radio" name="estado" value="confirmado" class="sr-only workshop-estado-radio"/>
+								<div class="estado-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-blue-500/50">
+									<div class="text-xl mb-1">✅</div>
+									<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Confirmado</span>
+								</div>
+							</label>
+							<label class="group cursor-pointer">
+								<input type="radio" name="estado" value="enproceso" class="sr-only workshop-estado-radio"/>
+								<div class="estado-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
+									<div class="text-xl mb-1">🔩</div>
+									<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">En Proceso</span>
+								</div>
+							</label>
+						</div>
+					</div>
+
+					<!-- Submit -->
+					<div class="pt-2 flex gap-3">
+						<a href="/admin"
+							class="flex items-center justify-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 font-bold tracking-[0.15em] uppercase text-sm py-4 px-6 rounded-sm transition-all duration-200">
+							Cancelar
+						</a>
+						<button type="submit" id="submitBtn"
+							class="group flex-1 bg-red-600 hover:bg-red-500 text-white font-black tracking-[0.2em] uppercase text-sm py-4 px-8 rounded-sm transition-all duration-200 flex items-center justify-center gap-3 shadow-lg shadow-red-900/30 hover:shadow-red-900/50 active:scale-[0.98]">
+							<svg class="w-4 h-4 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 20 20">
+								<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+							</svg>
+							Agendar Turno
+						</button>
+					</div>
+
+				</div>
+			</form>
+
+			<!-- Success message -->
+			<div id="successMessage" class="hidden mt-6 bg-green-900/20 border border-green-700/40 rounded-sm p-8 text-center">
+				<div class="text-4xl mb-3">✅</div>
+				<h3 class="text-white font-black text-lg uppercase tracking-widest mb-2">¡Turno Agendado!</h3>
+				<p class="text-neutral-400 text-sm mb-6">El turno fue cargado correctamente en el sistema.</p>
+				<div class="flex gap-3 justify-center">
+					<a href="/admin/turnos"
+						class="bg-blue-600 hover:bg-blue-500 text-white font-black tracking-widest uppercase text-xs py-3 px-6 rounded-sm transition-all duration-200">
+						Ver Turnos
+					</a>
+					<button id="btnNuevoTurno"
+						class="bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 font-bold tracking-widest uppercase text-xs py-3 px-6 rounded-sm transition-all duration-200">
+						Agendar Otro
+					</button>
+				</div>
+			</div>
+
+		</main>
+	</div>
+</Layout>
+
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&display=swap');
+	.font-workshop { font-family: 'Barlow', sans-serif; }
+
+	.workshop-vehicle-radio:checked + .vehicle-card-inner {
+		border-color: rgb(239 68 68);
+		background-color: rgb(239 68 68 / 0.1);
+	}
+
+	.workshop-estado-radio:checked + .estado-card-inner {
+		border-color: rgb(234 179 8);
+		background-color: rgb(234 179 8 / 0.1);
+	}
+
+	.workshop-estado-radio[value="confirmado"]:checked + .estado-card-inner {
+		border-color: rgb(59 130 246);
+		background-color: rgb(59 130 246 / 0.1);
+	}
+
+	.workshop-estado-radio[value="enproceso"]:checked + .estado-card-inner {
+		border-color: rgb(239 68 68);
+		background-color: rgb(239 68 68 / 0.1);
+	}
+
+	.workshop-form {
+		animation: fadeUp 0.4s ease-out both;
+	}
+
+	@keyframes fadeUp {
+		from { opacity: 0; transform: translateY(16px); }
+		to   { opacity: 1; transform: translateY(0); }
+	}
+
+	select.workshop-input {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 12px center;
+		background-size: 16px;
+		padding-right: 40px;
+	}
+</style>
+
+<script>
+    // Auth check
+    const SESSION_KEY = 'admin_session';
+    if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
+        window.location.href = '/admin/login';
+    }
+
+    document.getElementById('btnLogout')?.addEventListener('click', () => {
+        sessionStorage.removeItem(SESSION_KEY);
+        sessionStorage.removeItem('admin_user');
+        window.location.href = '/admin/login';
+    });
+
+    // Fecha mínima hoy
+    const fechaInput = document.getElementById('fecha') as HTMLInputElement;
+    if (fechaInput) {
+        const today = new Date().toISOString().split('T')[0];
+        fechaInput.min = today;
+    }
+
+    // Horarios disponibles
+    const HORARIOS = ['08:00','09:00','10:00','11:00','12:00','14:00','15:00','16:00','17:00'];
+
+    async function actualizarHorariosDisponibles() {
+        const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+        const horarioSelect = document.getElementById('horario') as HTMLSelectElement;
+        if (!horarioSelect || !fecha) return;
+
+        const bloqueados = new Set<string>();
+        try {
+            const res = await fetch('http://localhost:3000/api/turnos');
+            const turnosGuardados: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await res.json();
+            turnosGuardados
+                .filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
+                .forEach(t => {
+                    const [h, m] = t.horario.split(':').map(Number);
+                    const inicioMin = h * 60 + m;
+                    const finMin = inicioMin + t.duracion_horas * 60;
+                    HORARIOS.forEach(slot => {
+                        const [sh, sm] = slot.split(':').map(Number);
+                        const slotMin = sh * 60 + sm;
+                        if (slotMin >= inicioMin && slotMin < finMin) bloqueados.add(slot);
+                    });
+                });
+        } catch (e) {
+            console.error('Error al obtener turnos', e);
+        }
+
+        Array.from(horarioSelect.options).forEach(opt => {
+            if (!opt.value) return;
+            const bloqueado = bloqueados.has(opt.value);
+            opt.disabled = bloqueado;
+            opt.textContent = bloqueado ? `${opt.value} hs — Ocupado` : `${opt.value} hs`;
+            if (bloqueado && horarioSelect.value === opt.value) horarioSelect.value = '';
+        });
+    }
+
+    fechaInput?.addEventListener('change', actualizarHorariosDisponibles);
+
+    // Char counter
+    const descripcion = document.getElementById('descripcion') as HTMLTextAreaElement;
+    const charCount = document.getElementById('char-count');
+    if (descripcion && charCount) {
+        descripcion.addEventListener('input', () => {
+            const len = descripcion.value.length;
+            charCount.textContent = `${len} / 300`;
+            if (len > 300) {
+                descripcion.value = descripcion.value.slice(0, 300);
+                charCount.textContent = '300 / 300';
+            }
+        });
+    }
+
+    // Deshabilitar descripción si es un servis
+    const vehiculoRadios = document.querySelectorAll<HTMLInputElement>('.workshop-vehicle-radio');
+    const descripcionField = document.getElementById('descripcion') as HTMLTextAreaElement;
+
+    vehiculoRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            const esServis = ['servis110', 'servis150', 'servis250'].includes(radio.value);
+            if (esServis) {
+                descripcionField.value = '';
+                descripcionField.disabled = true;
+                descripcionField.placeholder = 'No requerido para servicios de mantenimiento';
+                descripcionField.classList.add('opacity-40', 'cursor-not-allowed');
+                if (charCount) charCount.textContent = '0 / 300';
+            } else {
+                descripcionField.disabled = false;
+                descripcionField.placeholder = 'Describí el problema o servicio (cambio de aceite, frenos, diagnóstico, etc.)';
+                descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
+            }
+        });
+    });
+
+    // Validación
+    function showError(id: string, show: boolean) {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', !show);
+    }
+
+    function validateForm(): boolean {
+        let valid = true;
+
+        const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
+        showError('nombre-error', !nombre);
+        if (!nombre) valid = false;
+
+        const apellido = (document.getElementById('apellido') as HTMLInputElement).value.trim();
+        showError('apellido-error', !apellido);
+        if (!apellido) valid = false;
+
+        const celular = (document.getElementById('celular') as HTMLInputElement).value.trim();
+        const celularValid = /^\d{8,15}$/.test(celular.replace(/\s/g, ''));
+        showError('celular-error', !celularValid);
+        if (!celularValid) valid = false;
+
+        const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+        showError('fecha-error', !fecha);
+        if (!fecha) valid = false;
+
+        const horario = (document.getElementById('horario') as HTMLSelectElement).value;
+        showError('horario-error', !horario);
+        if (!horario) valid = false;
+
+        const vehiculoVal = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
+        showError('vehiculo-error', !vehiculoVal);
+        if (!vehiculoVal) valid = false;
+
+        const esServis = ['servis110', 'servis150', 'servis250'].includes(vehiculoVal ?? '');
+        const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
+        showError('descripcion-error', !desc && !esServis);
+        if (!desc && !esServis) valid = false;
+
+        return valid;
+    }
+
+    // Submit
+    const form = document.getElementById('turnoForm') as HTMLFormElement;
+    const successMessage = document.getElementById('successMessage');
+
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            Guardando...
+        `;
+
+        const nuevoTurno = {
+            nombre: (document.getElementById('nombre') as HTMLInputElement).value.trim(),
+            apellido: (document.getElementById('apellido') as HTMLInputElement).value.trim(),
+            celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
+            fecha: (document.getElementById('fecha') as HTMLInputElement).value,
+            horario: (document.getElementById('horario') as HTMLSelectElement).value,
+            vehiculo: (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement)?.value,
+            modelo_vehiculo: (document.getElementById('modelo_vehiculo') as HTMLInputElement).value.trim(),
+            descripcion: (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim(),
+            estado: (document.querySelector('input[name="estado"]:checked') as HTMLInputElement)?.value ?? 'pendiente',
+            duracion_horas: null,
+        };
+
+        try {
+            await fetch("http://localhost:3000/api/turnos", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(nuevoTurno)
+            });
+        } catch (err) {
+            console.error('Error al guardar turno', err);
+        }
+
+        await new Promise(r => setTimeout(r, 500));
+        form.classList.add('hidden');
+        successMessage?.classList.remove('hidden');
+        successMessage?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // Agendar otro
+    document.getElementById('btnNuevoTurno')?.addEventListener('click', () => {
+        form.reset();
+        form.classList.remove('hidden');
+        successMessage?.classList.add('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+            <svg class="w-4 h-4 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+            </svg>
+            Agendar Turno
+        `;
+        // Resetear estado del textarea
+        descripcionField.disabled = false;
+        descripcionField.placeholder = 'Describí el problema o servicio (cambio de aceite, frenos, diagnóstico, etc.)';
+        descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
+        if (charCount) charCount.textContent = '0 / 300';
+    });
+</script>
