@@ -524,7 +524,7 @@ import Layout from '../../layouts/Layout.astro';
 </style>
 
 <script is:inline>
-   const API_BASE = 'http://localhost:3000/api';
+   const API_BASE = 'https://backend-cardozo.onrender.com/api';
 
     let turnosData = [];
     let filtros = { search: '', vehiculo: '', orden: 'asc' };
@@ -547,52 +547,22 @@ import Layout from '../../layouts/Layout.astro';
       return `${d}/${m}/${y}`;
     }
 
-    // ══════════════════════════════════════════
-    // WHATSAPP — mensajes por estado
-    // ══════════════════════════════════════════
     function generarLinkWA(t, tipo) {
       let numero = (t.celular || '').replace(/[\s\-\(\)]/g, '');
       if (numero.startsWith('0')) numero = '54' + numero.slice(1);
       if (!numero.startsWith('+') && !numero.startsWith('54')) numero = '54' + numero;
       numero = numero.replace('+', '');
-
       let mensaje = '';
-
       if (tipo === 'confirmado') {
-        mensaje =
-    `Hola ${t.nombre}! 👋 Tu turno en *Cardozo Performance* está *confirmado* ✅
-
-    📅 Fecha: ${formatFecha(t.fecha)}
-    🕐 Horario: ${t.horario} hs
-    🚗 Vehículo: ${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}
-    🔧 Servicio: ${t.descripcion}
-
-    Te esperamos puntual! Cualquier consulta escribinos por acá. 🛠️`;
+        mensaje = `Hola ${t.nombre}! 👋 Tu turno en *Cardozo Performance* está *confirmado* ✅\n\n📅 Fecha: ${formatFecha(t.fecha)}\n🕐 Horario: ${t.horario} hs\n🚗 Vehículo: ${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}\n🔧 Servicio: ${t.descripcion}\n\nTe esperamos puntual! Cualquier consulta escribinos por acá. 🛠️`;
       }
-
       if (tipo === 'finalizado') {
-        const trabajosList = (t.trabajos_realizados || [])
-          .map((tr, i) => `   ${i + 1}. ${tr}`)
-          .join('\n');
-        mensaje =
-    `Hola ${t.nombre}! 👋 El trabajo en tu vehículo está *listo* 🎉
-
-    🚗 ${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}
-
-    🔧 *Trabajos realizados:*
-    ${trabajosList}
-
-    💰 *Total: $ ${Number(t.monto_total).toLocaleString('es-AR')}*
-
-    ${t.notas_finalizacion ? `📝 ${t.notas_finalizacion}\n\n` : ''}Te adjuntamos la factura. Gracias por confiar en *Cardozo Performance*! 🛠️`;
+        const trabajosList = (t.trabajos_realizados || []).map((tr, i) => `   ${i + 1}. ${tr}`).join('\n');
+        mensaje = `Hola ${t.nombre}! 👋 El trabajo en tu vehículo está *listo* 🎉\n\n🚗 ${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}\n\n🔧 *Trabajos realizados:*\n${trabajosList}\n\n💰 *Total: $ ${Number(t.monto_total).toLocaleString('es-AR')}*\n\n${t.notas_finalizacion ? '📝 ' + t.notas_finalizacion + '\n\n' : ''}Te adjuntamos la factura. Gracias por confiar en *Cardozo Performance*! 🛠️`;
       }
-
       return `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
     }
 
-    // ══════════════════════════════════════════
-    // TOAST
-    // ══════════════════════════════════════════
     let toastTimer;
     function showToast(msg, tipo = 'ok') {
       const toast = document.getElementById('toast');
@@ -610,41 +580,30 @@ import Layout from '../../layouts/Layout.astro';
       }, 3000);
     }
 
-    // ══════════════════════════════════════════
-    // FETCH TURNOS
-    // ══════════════════════════════════════════
     async function cargarTurnos() {
-  document.getElementById('loadingState').classList.remove('hidden');
-  document.getElementById('kanbanBoard').classList.add('hidden');
-  document.getElementById('errorState').classList.add('hidden');
+      document.getElementById('loadingState').classList.remove('hidden');
+      document.getElementById('kanbanBoard').classList.add('hidden');
+      document.getElementById('errorState').classList.add('hidden');
+      const icon = document.getElementById('iconRecargar');
+      icon.classList.add('spinning');
+      try {
+        const res = await fetch("https://backend-cardozo.onrender.com/api/turnos");
+        turnosData = await res.json();
+        turnosCount = turnosData.length;
+        renderKanban();
+        updateStats();
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('kanbanBoard').classList.remove('hidden');
+      } catch (err) {
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorState').classList.add('flex');
+        document.getElementById('errorMsg').textContent = err.message;
+      } finally {
+        icon.classList.remove('spinning');
+      }
+    }
 
-  const icon = document.getElementById('iconRecargar');
-  icon.classList.add('spinning');
-
-  try {
-    const res = await fetch("http://localhost:3000/api/turnos");
-    turnosData = await res.json();
-
-    renderKanban();
-    updateStats();
-
-    document.getElementById('loadingState').classList.add('hidden');
-    document.getElementById('kanbanBoard').classList.remove('hidden');
-
-  } catch (err) {
-    document.getElementById('loadingState').classList.add('hidden');
-    document.getElementById('errorState').classList.remove('hidden');
-    document.getElementById('errorState').classList.add('flex');
-    document.getElementById('errorMsg').textContent = err.message;
-  } finally {
-    icon.classList.remove('spinning');
-  }
-}
-    
-
-    // ══════════════════════════════════════════
-    // RENDER KANBAN
-    // ══════════════════════════════════════════
     function turnosFiltrados() {
       return turnosData
         .filter(t => {
@@ -666,7 +625,6 @@ import Layout from '../../layouts/Layout.astro';
     function renderKanban() {
       const cols = ['pendiente', 'confirmado', 'enproceso', 'finalizado'];
       const data = turnosFiltrados();
-
       cols.forEach(estado => {
         const col = document.getElementById(`col-${estado}`);
         const count = document.getElementById(`count-${estado}`);
@@ -723,7 +681,7 @@ import Layout from '../../layouts/Layout.astro';
               Editar
             </button>
             <button onclick="abrirEliminar('${t.id}')"
-              class="flex-1 flex items-center justify-center gap-1.5 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-[10px] font-bold tracking-widests uppercase py-1.5 rounded-sm transition-all">
+              class="flex-1 flex items-center justify-center gap-1.5 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               Eliminar
             </button>
@@ -748,9 +706,6 @@ import Layout from '../../layouts/Layout.astro';
       ).join('');
     }
 
-    // ══════════════════════════════════════════
-    // STATS
-    // ══════════════════════════════════════════
     function updateStats() {
       document.getElementById('stat-total').textContent = String(turnosData.length);
       document.getElementById('stat-pendiente').textContent = String(turnosData.filter(t => t.estado === 'pendiente').length);
@@ -758,51 +713,24 @@ import Layout from '../../layouts/Layout.astro';
       document.getElementById('stat-finalizado').textContent = String(turnosData.filter(t => t.estado === 'finalizado').length);
     }
 
-    // ══════════════════════════════════════════
-    // CAMBIAR ESTADO
-    // ══════════════════════════════════════════
-async function cambiarEstado(id, nuevoEstado) {
+    async function cambiarEstado(id, nuevoEstado) {
+      if (nuevoEstado === 'confirmado') { abrirModalDuracion(id); return; }
+      if (nuevoEstado === 'finalizado') { abrirModalFinalizar(id); return; }
+      try {
+        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ estado: nuevoEstado })
+        });
+        await cargarTurnos();
+        const labels = { enproceso: 'Turno iniciado', cancelado: 'Turno cancelado', pendiente: 'Turno reabierto' };
+        showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
+      } catch (error) {
+        console.error(error);
+        showToast('Error al cambiar el estado', 'error');
+      }
+    }
 
-  if (nuevoEstado === 'confirmado') {
-    abrirModalDuracion(id);
-    return;
-  }
-
-  if (nuevoEstado === 'finalizado') {
-    abrirModalFinalizar(id);
-    return;
-  }
-
-  try {
-
-    await fetch(`http://localhost:3000/api/turnos/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        estado: nuevoEstado
-      })
-    });
-
-    await cargarTurnos();
-
-    const labels = {
-      enproceso: 'Turno iniciado',
-      cancelado: 'Turno cancelado',
-      pendiente: 'Turno reabierto'
-    };
-
-    showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
-
-  } catch (error) {
-    console.error(error);
-    showToast('Error al cambiar el estado', 'error');
-  }
-}
-    // ══════════════════════════════════════════
-    // MODAL DURACIÓN
-    // ══════════════════════════════════════════
     function abrirModalDuracion(id) {
       document.getElementById('duracionTurnoId').value = id;
       document.getElementById('duracionHoras').value = '';
@@ -823,69 +751,55 @@ async function cambiarEstado(id, nuevoEstado) {
       modal.classList.remove('flex');
     }
 
-async function confirmarDuracion() {
-  const id = document.getElementById('duracionTurnoId').value;
-  const horas = parseFloat(document.getElementById('duracionHoras').value);
+    async function confirmarDuracion() {
+      const id = document.getElementById('duracionTurnoId').value;
+      const horas = parseFloat(document.getElementById('duracionHoras').value);
+      if (!horas || horas < 0.5 || horas > 12) {
+        document.getElementById('duracionError').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('duracionError').classList.add('hidden');
+      try {
+        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ estado: "confirmado", duracion_horas: horas })
+        });
+        cerrarModalDuracion();
+        await cargarTurnos();
+        showToast('Turno confirmado', 'ok');
+      } catch {
+        showToast('Error al confirmar el turno', 'error');
+      }
+    }
 
-  if (!horas || horas < 0.5 || horas > 12) {
-    document.getElementById('duracionError').classList.remove('hidden');
-    return;
-  }
+    function abrirEditar(id) {
+      const t = turnosData.find(x => String(x.id) === String(id));
+      if (!t) return;
+      document.getElementById('editId').value = t.id;
+      document.getElementById('editNombre').value = t.nombre;
+      document.getElementById('editApellido').value = t.apellido;
+      document.getElementById('editCelular').value = t.celular;
+      document.getElementById('editFecha').value = t.fecha;
+      document.getElementById('editHorario').value = t.horario;
+      document.getElementById('editVehiculo').value = t.vehiculo;
+      document.getElementById('editModelo').value = t.modelo_vehiculo || '';
+      document.getElementById('editEstado').value = t.estado;
+      document.getElementById('editDescripcion').value = t.descripcion;
+      const modal = document.getElementById('modalEditar');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
 
-  document.getElementById('duracionError').classList.add('hidden');
-
-  try {
-
-    await fetch(`http://localhost:3000/api/turnos/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        estado: "confirmado",
-        duracion_horas: horas
-      })
-    });
-
-    cerrarModalDuracion();
-    await cargarTurnos();
-
-    showToast('Turno confirmado', 'ok');
-
-  } catch {
-    showToast('Error al confirmar el turno', 'error');
-  }
-}
-
-    // ══════════════════════════════════════════
-    // MODAL EDITAR
-    // ══════════════════════════════════════════
-function abrirEditar(id) {
-    const t = turnosData.find(x => String(x.id) === String(id)); // ← este cambio
-    if (!t) return;
-    document.getElementById('editId').value = t.id;
-    document.getElementById('editNombre').value = t.nombre;
-    document.getElementById('editApellido').value = t.apellido;
-    document.getElementById('editCelular').value = t.celular;
-    document.getElementById('editFecha').value = t.fecha;
-    document.getElementById('editHorario').value = t.horario;
-    document.getElementById('editVehiculo').value = t.vehiculo;
-    document.getElementById('editModelo').value = t.modelo_vehiculo || '';
-    document.getElementById('editEstado').value = t.estado;
-    document.getElementById('editDescripcion').value = t.descripcion;
-    const modal = document.getElementById('modalEditar');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
     function cerrarEditar() {
       const modal = document.getElementById('modalEditar');
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
 
-async function guardarEdicion() {
-    const id = document.getElementById('editId').value;
-    const datos = {
+    async function guardarEdicion() {
+      const id = document.getElementById('editId').value;
+      const datos = {
         nombre:          document.getElementById('editNombre').value.trim(),
         apellido:        document.getElementById('editApellido').value.trim(),
         celular:         document.getElementById('editCelular').value.trim(),
@@ -895,24 +809,21 @@ async function guardarEdicion() {
         modelo_vehiculo: document.getElementById('editModelo').value.trim(),
         estado:          document.getElementById('editEstado').value,
         descripcion:     document.getElementById('editDescripcion').value.trim(),
-    };
-    try {
-        await fetch(`http://localhost:3000/api/turnos/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
+      };
+      try {
+        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datos)
         });
         cerrarEditar();
         await cargarTurnos();
         showToast('Turno actualizado correctamente', 'ok');
-    } catch {
+      } catch {
         showToast('Error al guardar los cambios', 'error');
+      }
     }
-}
 
-    // ══════════════════════════════════════════
-    // MODAL ELIMINAR
-    // ══════════════════════════════════════════
     function abrirEliminar(id) {
       document.getElementById('eliminarId').value = id;
       const modal = document.getElementById('modalEliminar');
@@ -926,23 +837,18 @@ async function guardarEdicion() {
       modal.classList.remove('flex');
     }
 
- async function confirmarEliminar() {
-    const id = document.getElementById('eliminarId').value;
-    try {
-        await fetch(`http://localhost:3000/api/turnos/${id}`, {
-            method: "DELETE"
-        });
+    async function confirmarEliminar() {
+      const id = document.getElementById('eliminarId').value;
+      try {
+        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, { method: "DELETE" });
         cerrarEliminar();
         await cargarTurnos();
         showToast('Turno eliminado', 'info');
-    } catch {
+      } catch {
         showToast('Error al eliminar el turno', 'error');
+      }
     }
-}
 
-    // ══════════════════════════════════════════
-    // MODAL FINALIZAR + PDF
-    // ══════════════════════════════════════════
     let trabajosFinalizacion = [];
 
     function abrirModalFinalizar(id) {
@@ -999,51 +905,32 @@ async function guardarEdicion() {
     }
 
     async function confirmarFinalizar() {
-  const id = document.getElementById('finalizarTurnoId').value;
-  const monto = parseFloat(document.getElementById('finalizarMonto').value);
-  const notas = document.getElementById('finalizarNotas').value.trim();
-  const trabajos = trabajosFinalizacion.filter(x => x.trim() !== '');
+      const id = document.getElementById('finalizarTurnoId').value;
+      const monto = parseFloat(document.getElementById('finalizarMonto').value);
+      const notas = document.getElementById('finalizarNotas').value.trim();
+      const trabajos = trabajosFinalizacion.filter(x => x.trim() !== '');
+      if (!trabajos.length || isNaN(monto) || monto < 0) {
+        document.getElementById('finalizarError').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('finalizarError').classList.add('hidden');
+      try {
+        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ estado: "finalizado", trabajos_realizados: trabajos, monto_total: monto, notas_finalizacion: notas })
+        });
+        await cargarTurnos();
+        const tActualizado = turnosData.find(x => String(x.id) === String(id));
+        cerrarModalFinalizar();
+        showToast('Turno finalizado. Generando PDF...', 'ok');
+        setTimeout(() => generarPDF(tActualizado), 400);
+      } catch (error) {
+        console.error(error);
+        showToast('Error al finalizar el turno', 'error');
+      }
+    }
 
-  if (!trabajos.length || isNaN(monto) || monto < 0) {
-    document.getElementById('finalizarError').classList.remove('hidden');
-    return;
-  }
-
-  document.getElementById('finalizarError').classList.add('hidden');
-
-  try {
-
-    await fetch(`http://localhost:3000/api/turnos/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        estado: "finalizado",
-        trabajos_realizados: trabajos,
-        monto_total: monto,
-        notas_finalizacion: notas
-      })
-    });
-
-    // recargar datos desde backend
-    await cargarTurnos();
-
-    // buscar el turno actualizado
-    const tActualizado = turnosData.find(x => String(x.id) === String(id));
-
-    cerrarModalFinalizar();
-
-    showToast('Turno finalizado. Generando PDF...', 'ok');
-
-    // generar PDF con datos reales
-    setTimeout(() => generarPDF(tActualizado), 400);
-
-  } catch (error) {
-    console.error(error);
-    showToast('Error al finalizar el turno', 'error');
-  }
-}
     function generarPDF(t) {
       if (typeof window.jspdf === 'undefined') {
         const script = document.createElement('script');
@@ -1060,27 +947,20 @@ async function guardarEdicion() {
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
       const W = 210;
       let y = 0;
-
-      // ── Número de factura correlativo ──
       const FACTURA_KEY = 'cardozo_factura_counter';
       let nroFactura = parseInt(localStorage.getItem(FACTURA_KEY) || '0', 10) + 1;
       localStorage.setItem(FACTURA_KEY, String(nroFactura));
       const nroFacturaStr = String(nroFactura).padStart(5, '0');
-
-      // ── Encabezado ──
       doc.setFillColor(15, 15, 15);
       doc.rect(0, 0, W, 38, 'F');
-
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(18);
       doc.text('CARDOZO PERFORMANCE', 14, 16);
-
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(160, 160, 160);
       doc.text('COMPROBANTE DE SERVICIO', 14, 23);
-
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
       doc.setTextColor(220, 220, 220);
@@ -1090,10 +970,7 @@ async function guardarEdicion() {
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(160, 160, 160);
       doc.text(`Factura N\u00b0 ${nroFacturaStr}`, W - 14, 23, { align: 'right' });
-
       y = 48;
-
-      // ── Datos del cliente ──
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
       doc.setTextColor(100, 100, 100);
@@ -1102,9 +979,7 @@ async function guardarEdicion() {
       doc.setDrawColor(220, 220, 220);
       doc.line(14, y, W - 14, y);
       y += 6;
-
       const col1 = 14, col2 = 110;
-
       function campo(label, valor, cx, cy) {
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(7.5);
@@ -1115,15 +990,12 @@ async function guardarEdicion() {
         doc.setTextColor(20, 20, 20);
         doc.text(valor || '\u2014', cx, cy + 5);
       }
-
       campo('NOMBRE COMPLETO', `${t.nombre} ${t.apellido}`, col1, y);
       campo('CELULAR', t.celular, col2, y);
       y += 14;
       campo('FECHA DEL TURNO', formatFecha(t.fecha), col1, y);
       campo('HORARIO', `${t.horario} hs`, col2, y);
       y += 14;
-
-      // ── Vehículo ──
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
       doc.setTextColor(100, 100, 100);
@@ -1131,12 +1003,9 @@ async function guardarEdicion() {
       y += 4;
       doc.line(14, y, W - 14, y);
       y += 6;
-
       campo('TIPO', t.vehiculo ? t.vehiculo.charAt(0).toUpperCase() + t.vehiculo.slice(1) : '\u2014', col1, y);
       campo('MARCA / MODELO', t.modelo_vehiculo || '\u2014', col2, y);
       y += 14;
-
-      // ── Trabajos ──
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
       doc.setTextColor(100, 100, 100);
@@ -1144,23 +1013,16 @@ async function guardarEdicion() {
       y += 4;
       doc.line(14, y, W - 14, y);
       y += 7;
-
       const trabajos = t.trabajos_realizados || [];
       trabajos.forEach((trabajo, idx) => {
-        if (idx % 2 === 0) {
-          doc.setFillColor(248, 248, 248);
-          doc.rect(14, y - 4, W - 28, 8, 'F');
-        }
+        if (idx % 2 === 0) { doc.setFillColor(248, 248, 248); doc.rect(14, y - 4, W - 28, 8, 'F'); }
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8);
         doc.setTextColor(40, 40, 40);
         doc.text(`${idx + 1}.  ${trabajo}`, 18, y);
         y += 9;
       });
-
       y += 4;
-
-      // ── Observaciones ──
       if (t.notas_finalizacion) {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
@@ -1176,32 +1038,23 @@ async function guardarEdicion() {
         doc.text(lines, 14, y);
         y += lines.length * 5 + 6;
       }
-
-      // ── Total ──
       y += 4;
       doc.setFillColor(15, 15, 15);
       doc.roundedRect(14, y, W - 28, 18, 2, 2, 'F');
-
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
       doc.setTextColor(180, 180, 180);
       doc.text('TOTAL DEL SERVICIO', 22, y + 7);
-
-      // Monto: $ y número en la misma línea baseline
       const montoStr = Number(t.monto_total).toLocaleString('es-AR');
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(14);
       doc.setTextColor(255, 255, 255);
-      // Calcular ancho del número para posicionar el $ pegado a la izquierda
       const montoAncho = doc.getTextWidth(montoStr);
       const montoX = W - 22;
       doc.text(montoStr, montoX, y + 11, { align: 'right' });
       doc.setFontSize(10);
       doc.text('$', montoX - montoAncho - 2, y + 11);
-
       y += 26;
-
-      // ── Pie ──
       doc.setDrawColor(220, 220, 220);
       doc.line(14, y, W - 14, y);
       y += 5;
@@ -1211,22 +1064,21 @@ async function guardarEdicion() {
       doc.text('Cardozo Performance \u2014 Taller Mec\u00e1nico', W / 2, y, { align: 'center' });
       y += 4;
       doc.text('Gracias por confiar en nosotros', W / 2, y, { align: 'center' });
-
-      // ── Guardar ──
       doc.save(`Cardozo Performance - Factura ${nroFacturaStr}.pdf`);
       showToast(`PDF generado \u2014 Factura N\u00b0 ${nroFacturaStr}`, 'ok');
     }
 
-    // ══════════════════════════════════════════
-    // EVENT LISTENERS
-    // ══════════════════════════════════════════
     document.getElementById('btnGuardarEdicion').addEventListener('click', guardarEdicion);
     document.getElementById('btnCerrarModal').addEventListener('click', cerrarEditar);
     document.getElementById('btnCancelarEdicion').addEventListener('click', cerrarEditar);
     document.getElementById('modalBackdrop').addEventListener('click', cerrarEditar);
     document.getElementById('btnCancelarEliminar').addEventListener('click', cerrarEliminar);
     document.getElementById('btnConfirmarEliminar').addEventListener('click', confirmarEliminar);
-    document.getElementById('btnRecargar').addEventListener('click', cargarTurnos);
+    document.getElementById('btnRecargar').addEventListener('click', () => {
+        nuevosCount = 0;
+        actualizarBadge();
+        cargarTurnos();
+    });
 
     let searchTimer;
     document.getElementById('searchInput').addEventListener('input', function(e) {
@@ -1251,9 +1103,6 @@ async function guardarEdicion() {
       if (e.key === 'Escape') { cerrarEditar(); cerrarEliminar(); cerrarModalDuracion(); cerrarModalFinalizar(); }
     });
 
-    // ══════════════════════════════════════════
-    // SESIÓN + LOGOUT
-    // ══════════════════════════════════════════
     const SESSION_KEY = 'admin_session';
     if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
         window.location.href = '/admin/login';
@@ -1264,8 +1113,77 @@ async function guardarEdicion() {
         window.location.href = '/admin/login';
     });
 
-    // ══════════════════════════════════════════
-    // INIT
-    // ══════════════════════════════════════════
+    // REALTIME + AUTO-REFRESH + BADGE + SONIDO
+    const SUPABASE_URL = 'https://eymmxgpzaxpzovlkakge.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable__G-Nx3ddgGdxPB580-lRlg_Cacgytd1';
+
+    let turnosCount = 0;
+    let nuevosCount = 0;
+
+    function sonarNotificacion() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.setValueAtTime(880, ctx.currentTime);
+            osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.4);
+        } catch(e) {}
+    }
+
+    function actualizarBadge() {
+        let badge = document.getElementById('badgeNuevosTurnos');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.id = 'badgeNuevosTurnos';
+            badge.style.cssText = `position: absolute; top: -6px; right: -6px; background: #ef4444; color: white; font-size: 10px; font-weight: 900; min-width: 18px; height: 18px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; padding: 0 4px; z-index: 99;`;
+            const btnRecargar = document.getElementById('btnRecargar');
+            btnRecargar.style.position = 'relative';
+            btnRecargar.appendChild(badge);
+        }
+        if (nuevosCount > 0) {
+            badge.textContent = String(nuevosCount);
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    const supabaseScript = document.createElement('script');
+    supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    supabaseScript.onload = () => {
+        const { createClient } = window.supabase;
+        const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+        client
+            .channel('turnos-nuevos')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'turnos' }, (payload) => {
+                nuevosCount++;
+                actualizarBadge();
+                sonarNotificacion();
+                showToast(`Nuevo turno: ${payload.new.nombre} ${payload.new.apellido}`, 'info');
+                cargarTurnos();
+            })
+            .subscribe();
+    };
+    document.head.appendChild(supabaseScript);
+
+    setInterval(async () => {
+        try {
+            const res = await fetch('https://backend-cardozo.onrender.com/api/turnos');
+            const data = await res.json();
+            if (data.length !== turnosCount) {
+                turnosData = data;
+                turnosCount = data.length;
+                renderKanban();
+                updateStats();
+            }
+        } catch(e) {}
+    }, 10000);
+
     cargarTurnos();
 </script>

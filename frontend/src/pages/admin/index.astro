@@ -252,7 +252,7 @@ import Layout from '../../layouts/Layout.astro';
 
 async function cargarStats() {
 
-    const res = await fetch("http://localhost:3000/api/turnos");
+    const res = await fetch("https://backend-cardozo.onrender.com/api/turnos");
     const turnos: { estado: string }[] = await res.json();
 
     const total      = turnos.length;

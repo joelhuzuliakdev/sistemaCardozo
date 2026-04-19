@@ -375,29 +375,22 @@ import Layout from '../../layouts/Layout.astro';
     .shake { animation: shake 0.4s ease-in-out; }
 </style>
 
-<script>
-    // ══════════════════════════════════════════
-    // PROTECCIÓN DE SESIÓN
-    // ══════════════════════════════════════════
+<script is:inline>
     const SESSION_KEY = 'admin_session';
     if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
         window.location.href = '/admin/login';
     }
 
-    // Logout
     document.getElementById('btnLogout')?.addEventListener('click', () => {
         sessionStorage.removeItem(SESSION_KEY);
         sessionStorage.removeItem('admin_user');
         window.location.href = '/admin/login';
     });
 
-    // ══════════════════════════════════════════
-    // ESTADO
-    // ══════════════════════════════════════════
-    let reservasData: any[] = [];
+    let reservasData = [];
     let filtros = { nombre: '', apellido: '', estado: '', orden: 'desc' };
 
-    const estadoConfig: Record<string, { label: string; badge: string; border: string; dot: string }> = {
+    const estadoConfig = {
         pendiente:  { label: 'Pendiente',  badge: 'bg-yellow-400/10 border border-yellow-400/20 text-yellow-400', border: 'border-yellow-900/30', dot: 'bg-yellow-400' },
         confirmado: { label: 'Confirmado', badge: 'bg-blue-500/10 border border-blue-500/20 text-blue-400',       border: 'border-blue-900/30',   dot: 'bg-blue-500'  },
         enproceso:  { label: 'En Proceso', badge: 'bg-orange-500/10 border border-orange-500/20 text-orange-400', border: 'border-orange-900/30', dot: 'bg-orange-500'},
@@ -405,15 +398,12 @@ import Layout from '../../layouts/Layout.astro';
         cancelado:  { label: 'Cancelado',  badge: 'bg-red-900/20 border border-red-800/30 text-red-400',          border: 'border-red-900/30',    dot: 'bg-red-500'   },
     };
 
-    const vehiculoEmoji: Record<string, string> = { auto: '🚗', moto: '🏍️', camioneta: '🚙', otro: '🚐' };
+    const vehiculoEmoji = { auto: '🚗', moto: '🏍️', camioneta: '🚙', otro: '🚐' };
 
-    // ══════════════════════════════════════════
-    // TOAST
-    // ══════════════════════════════════════════
-    function showToast(msg: string, type: 'ok' | 'error' | 'info' = 'ok') {
-        const toast   = document.getElementById('toast')!;
-        const msgEl   = document.getElementById('toastMsg')!;
-        const iconEl  = document.getElementById('toastIcon')!;
+    function showToast(msg, type = 'ok') {
+        const toast  = document.getElementById('toast');
+        const msgEl  = document.getElementById('toastMsg');
+        const iconEl = document.getElementById('toastIcon');
         const configs = {
             ok:    { cls: 'bg-green-900/90 border-green-700/50 text-green-300', path: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>' },
             error: { cls: 'bg-red-900/90 border-red-700/50 text-red-300',       path: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>' },
@@ -427,40 +417,30 @@ import Layout from '../../layouts/Layout.astro';
         setTimeout(() => toast.classList.add('hidden'), 3000);
     }
 
-    // ══════════════════════════════════════════
-    // FORMATEAR FECHA
-    // ══════════════════════════════════════════
-    function formatFecha(fecha: string): string {
+    function formatFecha(fecha) {
         const [y, m, d] = fecha.split('-');
         const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
         return `${d} ${meses[parseInt(m) - 1]} ${y}`;
     }
 
-    // ══════════════════════════════════════════
-    // CARGAR DATOS
-    // ══════════════════════════════════════════
-async function cargarReservas() {
-    document.getElementById('loadingState').classList.remove('hidden');
-    document.getElementById('cardsGrid').classList.add('hidden');
-    document.getElementById('emptyState').classList.add('hidden');
-    document.getElementById('emptyState').classList.remove('flex');
-    document.getElementById('resultsBar').classList.add('hidden');
-
-    try {
-        const res = await fetch('http://localhost:3000/api/turnos');
-        reservasData = await res.json();
-        renderCards();
-        updateStats();
-        document.getElementById('loadingState').classList.add('hidden');
-    } catch (err) {
-        document.getElementById('loadingState').classList.add('hidden');
-        showToast('Error al cargar las reservas', 'error');
+    async function cargarReservas() {
+        document.getElementById('loadingState').classList.remove('hidden');
+        document.getElementById('cardsGrid').classList.add('hidden');
+        document.getElementById('emptyState').classList.add('hidden');
+        document.getElementById('emptyState').classList.remove('flex');
+        document.getElementById('resultsBar').classList.add('hidden');
+        try {
+            const res = await fetch('https://backend-cardozo.onrender.com/api/turnos');
+            reservasData = await res.json();
+            renderCards();
+            updateStats();
+            document.getElementById('loadingState').classList.add('hidden');
+        } catch (err) {
+            document.getElementById('loadingState').classList.add('hidden');
+            showToast('Error al cargar las reservas', 'error');
+        }
     }
-}
 
-    // ══════════════════════════════════════════
-    // FILTRADO
-    // ══════════════════════════════════════════
     function reservasFiltradas() {
         return reservasData
             .filter(r => {
@@ -476,22 +456,16 @@ async function cargarReservas() {
             });
     }
 
-    // ══════════════════════════════════════════
-    // RENDER CARDS
-    // ══════════════════════════════════════════
     function renderCards() {
         const data  = reservasFiltradas();
-        const grid  = document.getElementById('cardsGrid')!;
-        const empty = document.getElementById('emptyState')!;
-        const bar   = document.getElementById('resultsBar')!;
-        const count = document.getElementById('resultsCount')!;
-
-        // Mostrar/ocultar botón limpiar filtros
+        const grid  = document.getElementById('cardsGrid');
+        const empty = document.getElementById('emptyState');
+        const bar   = document.getElementById('resultsBar');
+        const count = document.getElementById('resultsCount');
         const hayFiltros = filtros.nombre || filtros.apellido || filtros.estado;
-        const btnLimpiar = document.getElementById('btnLimpiarFiltros')!;
+        const btnLimpiar = document.getElementById('btnLimpiarFiltros');
         if (hayFiltros) { btnLimpiar.classList.remove('hidden'); btnLimpiar.classList.add('flex'); }
         else            { btnLimpiar.classList.add('hidden'); btnLimpiar.classList.remove('flex'); }
-
         if (data.length === 0) {
             grid.classList.add('hidden');
             empty.classList.remove('hidden');
@@ -500,202 +474,167 @@ async function cargarReservas() {
             bar.classList.remove('flex');
             return;
         }
-
         empty.classList.add('hidden');
         empty.classList.remove('flex');
         bar.classList.remove('hidden');
         bar.classList.add('flex');
         count.textContent = `${data.length} reserva${data.length !== 1 ? 's' : ''} encontrada${data.length !== 1 ? 's' : ''}`;
-
         grid.innerHTML = data.map((r, i) => cardHTML(r, i)).join('');
         grid.classList.remove('hidden');
     }
 
-    function cardHTML(r: any, index: number): string {
+    function cardHTML(r, index) {
         const cfg   = estadoConfig[r.estado] || estadoConfig['pendiente'];
         const emoji = vehiculoEmoji[r.vehiculo] || '🚐';
         const delay = Math.min(index * 0.04, 0.3);
-
         return `
         <div class="historial-card bg-neutral-900 border border-neutral-800 ${cfg.border} rounded-sm overflow-hidden hover:border-neutral-600 transition-all duration-200"
              style="animation-delay: ${delay}s" data-id="${r.id}">
-
-            <!-- Card header -->
             <div class="flex items-start justify-between px-4 pt-4 pb-3 border-b border-neutral-800">
-            <div>
-                <p class="text-white font-black text-base leading-tight">${r.nombre} ${r.apellido}</p>
-                <a href="tel:${r.celular}" class="text-neutral-500 text-xs hover:text-blue-400 transition-colors mt-0.5 block">${r.celular}</a>
+                <div>
+                    <p class="text-white font-black text-base leading-tight">${r.nombre} ${r.apellido}</p>
+                    <a href="tel:${r.celular}" class="text-neutral-500 text-xs hover:text-blue-400 transition-colors mt-0.5 block">${r.celular}</a>
+                </div>
+                <span class="shrink-0 text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded-sm ${cfg.badge}">${cfg.label}</span>
             </div>
-            <span class="shrink-0 text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded-sm ${cfg.badge}">
-                ${cfg.label}
-            </span>
-            </div>
-
-            <!-- Card body -->
             <div class="px-4 py-3 space-y-2.5">
-
-            <!-- Fecha y hora -->
-            <div class="flex items-center gap-2">
-                <svg class="w-3.5 h-3.5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-                <span class="text-neutral-300 text-xs font-bold">${formatFecha(r.fecha)}</span>
-                <span class="text-neutral-700">•</span>
-                <span class="text-neutral-400 text-xs">${r.horario} hs</span>
+                <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span class="text-neutral-300 text-xs font-bold">${formatFecha(r.fecha)}</span>
+                    <span class="text-neutral-700">•</span>
+                    <span class="text-neutral-400 text-xs">${r.horario} hs</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-base leading-none">${emoji}</span>
+                    <span class="text-neutral-400 text-xs capitalize">${r.vehiculo}${r.modelo_vehiculo ? ' — ' + r.modelo_vehiculo : ''}</span>
+                </div>
+                <div class="bg-neutral-800/50 border border-neutral-800 rounded-sm px-3 py-2">
+                    <p class="text-neutral-500 text-[10px] font-bold tracking-widest uppercase mb-1">Servicio</p>
+                    <p class="text-neutral-300 text-xs leading-relaxed line-clamp-2">${r.descripcion}</p>
+                </div>
             </div>
-
-            <!-- Vehículo -->
-            <div class="flex items-center gap-2">
-                <span class="text-base leading-none">${emoji}</span>
-                <span class="text-neutral-400 text-xs capitalize">
-                ${r.vehiculo}${r.modelo_vehiculo ? ' — ' + r.modelo_vehiculo : ''}
-                </span>
+            <div class="px-4 pb-4 flex gap-2 border-t border-neutral-800 pt-3">
+                <button onclick="abrirEditar('${r.id}')"
+                    class="flex-1 flex items-center justify-center gap-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] font-bold tracking-widest uppercase py-2 rounded-sm transition-all">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    Editar
+                </button>
             </div>
-
-            <!-- Servicio / descripción -->
-            <div class="bg-neutral-800/50 border border-neutral-800 rounded-sm px-3 py-2">
-                <p class="text-neutral-500 text-[10px] font-bold tracking-widest uppercase mb-1">Servicio</p>
-                <p class="text-neutral-300 text-xs leading-relaxed line-clamp-2">${r.descripcion}</p>
-            </div>
-
-            </div>
-
-            <!-- Card footer: acciones -->
-       <div class="px-4 pb-4 flex gap-2 border-t border-neutral-800 pt-3">
-    <button onclick="abrirEditar('${r.id}')"
-        class="flex-1 flex items-center justify-center gap-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] font-bold tracking-widest uppercase py-2 rounded-sm transition-all">
-        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-        </svg>
-        Editar
-    </button>
-</div>
-           
-            </div>
-
         </div>`;
     }
 
-    // ══════════════════════════════════════════
-    // STATS
-    // ══════════════════════════════════════════
     function updateStats() {
-        document.getElementById('stat-total')!.textContent     = String(reservasData.length);
-        document.getElementById('stat-pendiente')!.textContent  = String(reservasData.filter(r => r.estado === 'pendiente').length);
-        document.getElementById('stat-confirmado')!.textContent = String(reservasData.filter(r => r.estado === 'confirmado').length);
-        document.getElementById('stat-finalizado')!.textContent = String(reservasData.filter(r => r.estado === 'finalizado').length);
+        document.getElementById('stat-total').textContent     = String(reservasData.length);
+        document.getElementById('stat-pendiente').textContent  = String(reservasData.filter(r => r.estado === 'pendiente').length);
+        document.getElementById('stat-confirmado').textContent = String(reservasData.filter(r => r.estado === 'confirmado').length);
+        document.getElementById('stat-finalizado').textContent = String(reservasData.filter(r => r.estado === 'finalizado').length);
     }
 
-    // ══════════════════════════════════════════
-    // CAMBIAR ESTADO RÁPIDO (desde select)
-    // ══════════════════════════════════════════
-async function cambiarEstadoRapido(id, nuevoEstado) {
-    if (!nuevoEstado) return;
-    try {
-        await fetch(`http://localhost:3000/api/turnos/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ estado: nuevoEstado })
-        });
-        await cargarReservas();
-        const labels = { pendiente: 'Turno reabierto', confirmado: 'Turno confirmado', enproceso: 'Turno iniciado', finalizado: 'Turno finalizado', cancelado: 'Turno cancelado' };
-        showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
-    } catch {
-        showToast('Error al cambiar el estado', 'error');
+    async function cambiarEstadoRapido(id, nuevoEstado) {
+        if (!nuevoEstado) return;
+        try {
+            await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ estado: nuevoEstado })
+            });
+            await cargarReservas();
+            const labels = { pendiente: 'Turno reabierto', confirmado: 'Turno confirmado', enproceso: 'Turno iniciado', finalizado: 'Turno finalizado', cancelado: 'Turno cancelado' };
+            showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
+        } catch {
+            showToast('Error al cambiar el estado', 'error');
+        }
     }
-}
 
-    // ══════════════════════════════════════════
-    // MODAL EDITAR
-    // ══════════════════════════════════════════
-    function abrirEditar(id: string) {
+    function abrirEditar(id) {
         const r = reservasData.find(x => String(x.id) === String(id));
         if (!r) return;
-        (document.getElementById('editId')          as HTMLInputElement).value  = r.id;
-        (document.getElementById('editNombre')      as HTMLInputElement).value  = r.nombre;
-        (document.getElementById('editApellido')    as HTMLInputElement).value  = r.apellido;
-        (document.getElementById('editCelular')     as HTMLInputElement).value  = r.celular;
-        (document.getElementById('editFecha')       as HTMLInputElement).value  = r.fecha;
-        (document.getElementById('editHorario')     as HTMLSelectElement).value = r.horario;
-        (document.getElementById('editVehiculo')    as HTMLSelectElement).value = r.vehiculo;
-        (document.getElementById('editModelo')      as HTMLInputElement).value  = r.modelo_vehiculo || '';
-        (document.getElementById('editEstado')      as HTMLSelectElement).value = r.estado;
-        (document.getElementById('editDescripcion') as HTMLTextAreaElement).value = r.descripcion;
-        const modal = document.getElementById('modalEditar')!;
+        document.getElementById('editId').value          = r.id;
+        document.getElementById('editNombre').value      = r.nombre;
+        document.getElementById('editApellido').value    = r.apellido;
+        document.getElementById('editCelular').value     = r.celular;
+        document.getElementById('editFecha').value       = r.fecha;
+        document.getElementById('editHorario').value     = r.horario;
+        document.getElementById('editVehiculo').value    = r.vehiculo;
+        document.getElementById('editModelo').value      = r.modelo_vehiculo || '';
+        document.getElementById('editEstado').value      = r.estado;
+        document.getElementById('editDescripcion').value = r.descripcion;
+        const modal = document.getElementById('modalEditar');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
     }
-    (window as any).abrirEditar = abrirEditar;
 
     function cerrarEditar() {
-        const modal = document.getElementById('modalEditar')!;
+        const modal = document.getElementById('modalEditar');
         modal.classList.add('hidden');
         modal.classList.remove('flex');
     }
 
-   async function guardarEdicion() {
-    const id = document.getElementById('editId').value;
-    const datos = {
-        nombre:          document.getElementById('editNombre').value.trim(),
-        apellido:        document.getElementById('editApellido').value.trim(),
-        celular:         document.getElementById('editCelular').value.trim(),
-        fecha:           document.getElementById('editFecha').value,
-        horario:         document.getElementById('editHorario').value,
-        vehiculo:        document.getElementById('editVehiculo').value,
-        modelo_vehiculo: document.getElementById('editModelo').value.trim(),
-        estado:          document.getElementById('editEstado').value,
-        descripcion:     document.getElementById('editDescripcion').value.trim(),
-    };
-    try {
-        await fetch(`http://localhost:3000/api/turnos/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datos)
-        });
-        cerrarEditar();
-        await cargarReservas();
-        showToast('Reserva actualizada correctamente', 'ok');
-    } catch {
-        showToast('Error al guardar los cambios', 'error');
+    async function guardarEdicion() {
+        const id = document.getElementById('editId').value;
+        const datos = {
+            nombre:          document.getElementById('editNombre').value.trim(),
+            apellido:        document.getElementById('editApellido').value.trim(),
+            celular:         document.getElementById('editCelular').value.trim(),
+            fecha:           document.getElementById('editFecha').value,
+            horario:         document.getElementById('editHorario').value,
+            vehiculo:        document.getElementById('editVehiculo').value,
+            modelo_vehiculo: document.getElementById('editModelo').value.trim(),
+            estado:          document.getElementById('editEstado').value,
+            descripcion:     document.getElementById('editDescripcion').value.trim(),
+        };
+        try {
+            await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+            cerrarEditar();
+            await cargarReservas();
+            showToast('Reserva actualizada correctamente', 'ok');
+        } catch {
+            showToast('Error al guardar los cambios', 'error');
+        }
     }
-}
-    // ══════════════════════════════════════════
-    // EVENT LISTENERS
-    // ══════════════════════════════════════════
-    document.getElementById('btnGuardarEdicion')!.addEventListener('click', guardarEdicion);
-    document.getElementById('btnCerrarModal')!.addEventListener('click', cerrarEditar);
-    document.getElementById('btnCancelarEdicion')!.addEventListener('click', cerrarEditar);
-    document.getElementById('modalBackdrop')!.addEventListener('click', cerrarEditar);
 
-    let timer: ReturnType<typeof setTimeout>;
-    function debounceFilter(campo: string, valor: string) {
+    document.getElementById('btnGuardarEdicion').addEventListener('click', guardarEdicion);
+    document.getElementById('btnCerrarModal').addEventListener('click', cerrarEditar);
+    document.getElementById('btnCancelarEdicion').addEventListener('click', cerrarEditar);
+    document.getElementById('modalBackdrop').addEventListener('click', cerrarEditar);
+
+    let timer;
+    function debounceFilter(campo, valor) {
         clearTimeout(timer);
         timer = setTimeout(() => {
-            (filtros as any)[campo] = valor;
+            filtros[campo] = valor;
             renderCards();
         }, 200);
     }
 
-    document.getElementById('searchNombre')!.addEventListener('input', (e) => {
-        debounceFilter('nombre', (e.target as HTMLInputElement).value);
+    document.getElementById('searchNombre').addEventListener('input', (e) => {
+        debounceFilter('nombre', e.target.value);
     });
-    document.getElementById('searchApellido')!.addEventListener('input', (e) => {
-        debounceFilter('apellido', (e.target as HTMLInputElement).value);
+    document.getElementById('searchApellido').addEventListener('input', (e) => {
+        debounceFilter('apellido', e.target.value);
     });
-    document.getElementById('filtroEstado')!.addEventListener('change', (e) => {
-        filtros.estado = (e.target as HTMLSelectElement).value;
+    document.getElementById('filtroEstado').addEventListener('change', (e) => {
+        filtros.estado = e.target.value;
         renderCards();
     });
-    document.getElementById('filtroOrden')!.addEventListener('change', (e) => {
-        filtros.orden = (e.target as HTMLSelectElement).value;
+    document.getElementById('filtroOrden').addEventListener('change', (e) => {
+        filtros.orden = e.target.value;
         renderCards();
     });
-    document.getElementById('btnLimpiarFiltros')!.addEventListener('click', () => {
+    document.getElementById('btnLimpiarFiltros').addEventListener('click', () => {
         filtros = { nombre: '', apellido: '', estado: '', orden: 'desc' };
-        (document.getElementById('searchNombre')  as HTMLInputElement).value  = '';
-        (document.getElementById('searchApellido')as HTMLInputElement).value  = '';
-        (document.getElementById('filtroEstado')  as HTMLSelectElement).value = '';
-        (document.getElementById('filtroOrden')   as HTMLSelectElement).value = 'desc';
+        document.getElementById('searchNombre').value   = '';
+        document.getElementById('searchApellido').value = '';
+        document.getElementById('filtroEstado').value   = '';
+        document.getElementById('filtroOrden').value    = 'desc';
         renderCards();
     });
 
@@ -703,8 +642,5 @@ async function cambiarEstadoRapido(id, nuevoEstado) {
         if (e.key === 'Escape') cerrarEditar();
     });
 
-    // ══════════════════════════════════════════
-    // INIT
-    // ══════════════════════════════════════════
     cargarReservas();
 </script>
