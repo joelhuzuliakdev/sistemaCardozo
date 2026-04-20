@@ -499,13 +499,12 @@ import Layout from '../layouts/Layout.astro';
 		fechaInput.min = today;
 	}
 
-	// Horarios por día
 	const HORARIOS_SEMANA = ['09:00','10:00','11:00','12:00','13:00','16:00','17:00','18:00','19:00','19:30'];
 	const HORARIOS_SABADO = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','17:30'];
 
 	function getHorariosPorFecha(fechaStr: string): string[] {
 		const [y, m, d] = fechaStr.split('-').map(Number);
-		const diaSemana = new Date(y, m - 1, d).getDay(); // 0=Dom, 6=Sab
+		const diaSemana = new Date(y, m - 1, d).getDay();
 		return diaSemana === 6 ? HORARIOS_SABADO : HORARIOS_SEMANA;
 	}
 
@@ -533,9 +532,9 @@ import Layout from '../layouts/Layout.astro';
 
 		const bloqueados = new Set<string>();
 		try {
-			const res = await fetch('http://localhost:3000/api/turnos');
-			const turnosGuardados: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await res.json();
-			turnosGuardados
+			const resTurnos = await fetch('http://localhost:3000/api/turnos');
+			const turnos: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await resTurnos.json();
+			turnos
 				.filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
 				.forEach(t => {
 					const [h, m] = t.horario.split(':').map(Number);
@@ -543,12 +542,23 @@ import Layout from '../layouts/Layout.astro';
 					const finMin = inicioMin + t.duracion_horas * 60;
 					horariosDelDia.forEach(slot => {
 						const [sh, sm] = slot.split(':').map(Number);
-						const slotMin = sh * 60 + sm;
-						if (slotMin >= inicioMin && slotMin < finMin) bloqueados.add(slot);
+						if (sh * 60 + sm >= inicioMin && sh * 60 + sm < finMin) bloqueados.add(slot);
 					});
 				});
+
+			const resBloqueos = await fetch('http://localhost:3000/api/bloqueos');
+			const bloqueos: { fecha: string; horario: string | null }[] = await resBloqueos.json();
+
+			const diaCompleto = bloqueos.some(b => b.fecha === fecha && b.horario === null);
+			if (diaCompleto) {
+				horariosDelDia.forEach(slot => bloqueados.add(slot));
+			} else {
+				bloqueos
+					.filter(b => b.fecha === fecha && b.horario !== null)
+					.forEach(b => bloqueados.add(b.horario!));
+			}
 		} catch (e) {
-			console.error('Error al obtener turnos', e);
+			console.error('Error al obtener disponibilidad', e);
 		}
 
 		Array.from(horarioSelect.options).forEach(opt => {
@@ -576,7 +586,6 @@ import Layout from '../layouts/Layout.astro';
 		});
 	}
 
-	// Deshabilitar descripción si es un servis
 	const vehiculoRadios = document.querySelectorAll<HTMLInputElement>('.workshop-vehicle-radio');
 	const descripcionField = document.getElementById('descripcion') as HTMLTextAreaElement;
 
