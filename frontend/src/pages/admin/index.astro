@@ -215,6 +215,73 @@ import Layout from '../../layouts/Layout.astro';
                 </a>
 
             </div>
+
+            <!-- Sección Bloqueos -->
+            <div class="flex items-center gap-3 mt-10 mb-6">
+                <span class="text-neutral-300 text-xs font-black tracking-[0.2em] uppercase">Bloqueos de Agenda</span>
+                <div class="h-px flex-1 bg-neutral-800"></div>
+            </div>
+
+            <div class="bg-neutral-900 border border-neutral-800 rounded-sm overflow-hidden shadow-lg">
+                <!-- Header -->
+                <div class="bg-neutral-800 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 bg-red-600 flex items-center justify-center rounded-sm">
+                            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                            </svg>
+                        </div>
+                        <span class="text-white text-xs font-black tracking-[0.2em] uppercase">Bloquear Fecha / Horario</span>
+                    </div>
+                </div>
+
+                <div class="p-6 space-y-6">
+
+                    <!-- Formulario de nuevo bloqueo -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+                        <div>
+                            <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Fecha</label>
+                            <input type="date" id="bloqueo-fecha"
+                                class="w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-red-500 transition-all [color-scheme:dark]"/>
+                        </div>
+                        <div>
+                            <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Horario <span class="text-neutral-600 normal-case font-normal">(vacío = día completo)</span></label>
+                            <select id="bloqueo-horario"
+                                class="w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-red-500 transition-all appearance-none cursor-pointer"
+                                style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%236b7280\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E'); background-repeat:no-repeat; background-position: right 12px center; background-size:16px; padding-right:40px">
+                                <option value="">— Día completo —</option>
+                                <option>09:00</option><option>10:00</option><option>11:00</option>
+                                <option>12:00</option><option>13:00</option><option>16:00</option>
+                                <option>17:00</option><option>18:00</option><option>19:00</option>
+                                <option>19:30</option><option>10:00</option><option>14:00</option>
+                                <option>15:00</option><option>17:30</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">Motivo <span class="text-neutral-600 normal-case font-normal">(opcional)</span></label>
+                            <input type="text" id="bloqueo-motivo" placeholder="Ej: Feriado, vacaciones..."
+                                class="w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-red-500 transition-all"/>
+                        </div>
+                        <button id="btnBloquear"
+                            class="bg-red-600 hover:bg-red-500 text-white font-black tracking-widest uppercase text-xs py-3 px-5 rounded-sm transition-all duration-200 flex items-center justify-center gap-2">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Bloquear
+                        </button>
+                    </div>
+
+                    <!-- Lista de bloqueos activos -->
+                    <div>
+                        <p class="text-neutral-500 text-xs font-bold tracking-widest uppercase mb-3">Bloqueos Activos</p>
+                        <div id="bloqueos-lista" class="space-y-2">
+                            <p class="text-neutral-600 text-xs">Cargando...</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
         </main>
 
     </div>
@@ -252,7 +319,7 @@ import Layout from '../../layouts/Layout.astro';
 
 async function cargarStats() {
 
-    const res = await fetch("https://backend-cardozo.onrender.com/api/turnos");
+    const res = await fetch("http://localhost:3000/api/turnos");
     const turnos: { estado: string }[] = await res.json();
 
     const total      = turnos.length;
@@ -271,4 +338,64 @@ async function cargarStats() {
     document.getElementById('card-finalizado')!.textContent = String(finalizado);
 }
     cargarStats();
+
+    // ── BLOQUEOS ──────────────────────────────────────────
+    async function cargarBloqueos() {
+        const lista = document.getElementById('bloqueos-lista')!;
+        try {
+            const res = await fetch('http://localhost:3000/api/bloqueos');
+            const bloqueos: { id: string; fecha: string; horario: string | null; motivo: string | null }[] = await res.json();
+
+            if (!bloqueos.length) {
+                lista.innerHTML = '<p class="text-neutral-600 text-xs">No hay bloqueos activos.</p>';
+                return;
+            }
+
+            lista.innerHTML = bloqueos.map(b => `
+                <div class="flex items-center justify-between bg-neutral-800 border border-neutral-700 rounded-sm px-4 py-3">
+                    <div class="flex items-center gap-4">
+                        <span class="text-red-400 text-xs font-black tracking-widest uppercase">${b.fecha}</span>
+                        <span class="text-white text-xs font-bold">${b.horario ? b.horario + ' hs' : '🔒 Día completo'}</span>
+                        ${b.motivo ? `<span class="text-neutral-500 text-xs">${b.motivo}</span>` : ''}
+                    </div>
+                    <button
+                        onclick="eliminarBloqueo('${b.id}')"
+                        class="text-neutral-600 hover:text-red-400 transition-colors text-xs font-bold tracking-widest uppercase flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                        Quitar
+                    </button>
+                </div>
+            `).join('');
+        } catch {
+            lista.innerHTML = '<p class="text-red-500 text-xs">Error al cargar bloqueos.</p>';
+        }
+    }
+
+    (window as any).eliminarBloqueo = async (id: string) => {
+        await fetch(`http://localhost:3000/api/bloqueos/${id}`, { method: 'DELETE' });
+        cargarBloqueos();
+    };
+
+    document.getElementById('btnBloquear')?.addEventListener('click', async () => {
+        const fecha   = (document.getElementById('bloqueo-fecha') as HTMLInputElement).value;
+        const horario = (document.getElementById('bloqueo-horario') as HTMLSelectElement).value;
+        const motivo  = (document.getElementById('bloqueo-motivo') as HTMLInputElement).value.trim();
+
+        if (!fecha) { alert('Seleccioná una fecha'); return; }
+
+        await fetch('http://localhost:3000/api/bloqueos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fecha, horario: horario || null, motivo: motivo || null })
+        });
+
+        (document.getElementById('bloqueo-fecha') as HTMLInputElement).value = '';
+        (document.getElementById('bloqueo-horario') as HTMLSelectElement).value = '';
+        (document.getElementById('bloqueo-motivo') as HTMLInputElement).value = '';
+        cargarBloqueos();
+    });
+
+    cargarBloqueos();
 </script>
