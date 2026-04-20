@@ -64,6 +64,7 @@ import Layout from '../../layouts/Layout.astro';
 					</div>
 				</div>
 				<div class="flex items-center gap-3">
+					<!-- Volver al panel -->
 					<a href="/admin"
 						class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
 						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,6 +137,7 @@ import Layout from '../../layouts/Layout.astro';
 						</div>
 						<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
+							<!-- Nombre -->
 							<div>
 								<label for="nombre" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
 									Nombre <span class="text-red-500">*</span>
@@ -146,6 +148,7 @@ import Layout from '../../layouts/Layout.astro';
 								<span class="text-red-500 text-xs mt-1 hidden" id="nombre-error">Ingresá el nombre</span>
 							</div>
 
+							<!-- Apellido -->
 							<div>
 								<label for="apellido" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
 									Apellido <span class="text-red-500">*</span>
@@ -156,6 +159,7 @@ import Layout from '../../layouts/Layout.astro';
 								<span class="text-red-500 text-xs mt-1 hidden" id="apellido-error">Ingresá el apellido</span>
 							</div>
 
+							<!-- Celular -->
 							<div class="md:col-span-2">
 								<label for="celular" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
 									Número de Celular <span class="text-red-500">*</span>
@@ -181,6 +185,7 @@ import Layout from '../../layouts/Layout.astro';
 						</div>
 						<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
+							<!-- Fecha -->
 							<div>
 								<label for="fecha" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
 									Fecha <span class="text-red-500">*</span>
@@ -191,6 +196,7 @@ import Layout from '../../layouts/Layout.astro';
 								<span class="text-red-500 text-xs mt-1 hidden" id="fecha-error">Seleccioná una fecha</span>
 							</div>
 
+							<!-- Horario -->
 							<div>
 								<label for="horario" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
 									Horario <span class="text-red-500">*</span>
@@ -199,15 +205,6 @@ import Layout from '../../layouts/Layout.astro';
 									class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 appearance-none cursor-pointer"
 									required>
 									<option value="" disabled selected class="text-neutral-600">Seleccioná un horario</option>
-									<option value="08:00">08:00 hs</option>
-									<option value="09:00">09:00 hs</option>
-									<option value="10:00">10:00 hs</option>
-									<option value="11:00">11:00 hs</option>
-									<option value="12:00">12:00 hs</option>
-									<option value="14:00">14:00 hs</option>
-									<option value="15:00">15:00 hs</option>
-									<option value="16:00">16:00 hs</option>
-									<option value="17:00">17:00 hs</option>
 								</select>
 								<span class="text-red-500 text-xs mt-1 hidden" id="horario-error">Elegí un horario</span>
 							</div>
@@ -224,11 +221,13 @@ import Layout from '../../layouts/Layout.astro';
 						</div>
 						<div class="space-y-5">
 
+							<!-- Tipo de vehículo -->
 							<div>
 								<label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
 									Tipo de Vehículo <span class="text-red-500">*</span>
 								</label>
 								<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+									<!-- Moto -->
 									<label class="group cursor-pointer">
 										<input type="radio" name="vehiculo" value="moto" class="sr-only workshop-vehicle-radio" required/>
 										<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
@@ -236,6 +235,7 @@ import Layout from '../../layouts/Layout.astro';
 											<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Moto</span>
 										</div>
 									</label>
+									<!-- Servis 110 -->
 									<label class="group cursor-pointer">
 										<input type="radio" name="vehiculo" value="servis110" class="sr-only workshop-vehicle-radio"/>
 										<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
@@ -243,6 +243,7 @@ import Layout from '../../layouts/Layout.astro';
 											<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Servis 110</span>
 										</div>
 									</label>
+									<!-- Servis 150 -->
 									<label class="group cursor-pointer">
 										<input type="radio" name="vehiculo" value="servis150" class="sr-only workshop-vehicle-radio"/>
 										<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
@@ -250,6 +251,7 @@ import Layout from '../../layouts/Layout.astro';
 											<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Servis 150</span>
 										</div>
 									</label>
+									<!-- Servis +250 -->
 									<label class="group cursor-pointer">
 										<input type="radio" name="vehiculo" value="servis250" class="sr-only workshop-vehicle-radio"/>
 										<div class="vehicle-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
@@ -261,6 +263,7 @@ import Layout from '../../layouts/Layout.astro';
 								<span class="text-red-500 text-xs mt-1 hidden" id="vehiculo-error">Seleccioná el tipo de vehículo</span>
 							</div>
 
+							<!-- Marca y Modelo -->
 							<div>
 								<label for="modelo_vehiculo" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
 									Marca y Modelo
@@ -270,6 +273,7 @@ import Layout from '../../layouts/Layout.astro';
 									placeholder="Ej: Honda CB 150 2022"/>
 							</div>
 
+							<!-- Descripción -->
 							<div>
 								<label for="descripcion" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
 									¿Qué tiene que arreglar? <span class="text-red-500">*</span>
@@ -287,89 +291,35 @@ import Layout from '../../layouts/Layout.astro';
 						</div>
 					</div>
 
-					<!-- SECTION 4: Estado inicial -->
+					<!-- SECTION 4: Estado inicial (extra para admin) -->
 					<div>
 						<div class="flex items-center gap-3 mb-5">
 							<div class="w-6 h-6 bg-green-600 flex items-center justify-center rounded-sm text-white text-xs font-black">4</div>
 							<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Estado Inicial</span>
 							<div class="h-px flex-1 bg-neutral-800"></div>
 						</div>
-						<div class="flex gap-3 justify-center">
-							<label class="group cursor-pointer w-40">
-								<input type="radio" name="estado" value="confirmado" class="sr-only workshop-estado-radio" checked/>
+						<div class="grid grid-cols-3 gap-3">
+							<label class="group cursor-pointer">
+								<input type="radio" name="estado" value="pendiente" class="sr-only workshop-estado-radio" checked/>
+								<div class="estado-card-inner border border-yellow-500/30 bg-yellow-500/10 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-yellow-400/60">
+									<div class="text-xl mb-1">🕐</div>
+									<span class="text-yellow-400 text-xs font-bold tracking-wider uppercase">Pendiente</span>
+								</div>
+							</label>
+							<label class="group cursor-pointer">
+								<input type="radio" name="estado" value="confirmado" class="sr-only workshop-estado-radio"/>
 								<div class="estado-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-blue-500/50">
 									<div class="text-xl mb-1">✅</div>
 									<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">Confirmado</span>
 								</div>
 							</label>
-							<label class="group cursor-pointer w-40">
+							<label class="group cursor-pointer">
 								<input type="radio" name="estado" value="enproceso" class="sr-only workshop-estado-radio"/>
 								<div class="estado-card-inner border border-neutral-700 bg-neutral-800 rounded-sm p-3 text-center transition-all duration-200 group-hover:border-red-500/50">
 									<div class="text-xl mb-1">🔩</div>
 									<span class="text-neutral-300 text-xs font-bold tracking-wider uppercase">En Proceso</span>
 								</div>
 							</label>
-						</div>
-					</div>
-
-					<!-- SECTION 5: Duración del trabajo -->
-					<div>
-						<div class="flex items-center gap-3 mb-5">
-							<div class="w-6 h-6 bg-orange-500 flex items-center justify-center rounded-sm text-white text-xs font-black">5</div>
-							<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Duración Estimada</span>
-							<div class="h-px flex-1 bg-neutral-800"></div>
-						</div>
-
-						<!-- Info box -->
-						<div class="flex items-start gap-3 bg-blue-500/5 border border-blue-500/20 rounded-sm px-4 py-3 mb-5">
-							<svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-							</svg>
-							<p class="text-blue-400/80 text-xs leading-relaxed">
-								Si cargás una duración, los horarios siguientes se bloquearán automáticamente para que ningún otro cliente pueda reservar mientras dure el trabajo.
-							</p>
-						</div>
-
-						<div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
-
-							<!-- Input duración -->
-							<div>
-								<label for="duracion_horas" class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
-									Horas estimadas
-									<span class="text-neutral-600 font-normal normal-case tracking-normal ml-1">(opcional)</span>
-								</label>
-								<div class="relative">
-									<input
-										type="number"
-										id="duracion_horas"
-										name="duracion_horas"
-										min="0.5"
-										max="12"
-										step="0.5"
-										class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 pr-14 text-sm rounded-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/30 transition-all duration-200"
-										placeholder="Ej: 2"/>
-									<span class="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 text-xs font-bold select-none">hs</span>
-								</div>
-								<p class="text-neutral-600 text-[11px] mt-1.5">Entre 0.5 y 12 horas. Podés usar decimales (1.5 = 1h 30min).</p>
-								<span class="text-red-500 text-xs mt-1 hidden" id="duracion-error">Ingresá un valor entre 0.5 y 12</span>
-							</div>
-
-							<!-- Preview de bloqueo -->
-							<div id="bloqueo-preview-container" class="hidden">
-								<label class="block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
-									Horarios que se bloquearán
-								</label>
-								<div class="bg-orange-500/10 border border-orange-500/20 rounded-sm px-4 py-3">
-									<div class="flex items-center gap-2 mb-2">
-										<svg class="w-3.5 h-3.5 text-orange-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-										</svg>
-										<span class="text-orange-400 text-[10px] font-bold tracking-widest uppercase">Bloqueados</span>
-									</div>
-									<div id="bloqueo-slots" class="flex flex-wrap gap-2"></div>
-								</div>
-							</div>
-
 						</div>
 					</div>
 
@@ -452,284 +402,233 @@ import Layout from '../../layouts/Layout.astro';
 		background-size: 16px;
 		padding-right: 40px;
 	}
-
-	/* Quitar flechas del input number */
-	input[type=number]::-webkit-inner-spin-button,
-	input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-	input[type=number] { -moz-appearance: textfield; }
 </style>
 
 <script>
-    const SESSION_KEY = 'admin_session';
-    if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
-        window.location.href = '/admin/login';
-    }
+    // Auth check
+	const SESSION_KEY = 'admin_session';
+	if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
+		window.location.href = '/admin/login';
+	}
 
-    document.getElementById('btnLogout')?.addEventListener('click', () => {
-        sessionStorage.removeItem(SESSION_KEY);
-        sessionStorage.removeItem('admin_user');
-        window.location.href = '/admin/login';
-    });
+	document.getElementById('btnLogout')?.addEventListener('click', () => {
+		sessionStorage.removeItem(SESSION_KEY);
+		sessionStorage.removeItem('admin_user');
+		window.location.href = '/admin/login';
+	});
 
-    // Fecha mínima hoy
-    const fechaInput = document.getElementById('fecha') as HTMLInputElement;
-    if (fechaInput) {
-        const today = new Date().toISOString().split('T')[0];
-        fechaInput.min = today;
-    }
+	// Fecha mínima hoy
+	const fechaInput = document.getElementById('fecha') as HTMLInputElement;
+	if (fechaInput) {
+		const today = new Date().toISOString().split('T')[0];
+		fechaInput.min = today;
+	}
 
-    const HORARIOS = ['08:00','09:00','10:00','11:00','12:00','14:00','15:00','16:00','17:00'];
+	// Horarios por día
+	const HORARIOS_SEMANA = ['09:00','10:00','11:00','12:00','13:00','16:00','17:00','18:00','19:00','19:30'];
+	const HORARIOS_SABADO = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','17:30'];
 
-    // ─── Horarios disponibles ──────────────────────────────────────────
-    async function actualizarHorariosDisponibles() {
-        const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
-        const horarioSelect = document.getElementById('horario') as HTMLSelectElement;
-        if (!horarioSelect || !fecha) return;
+	function getHorariosPorFecha(fechaStr: string): string[] {
+		const [y, m, d] = fechaStr.split('-').map(Number);
+		const diaSemana = new Date(y, m - 1, d).getDay(); // 0=Dom, 6=Sab
+		return diaSemana === 6 ? HORARIOS_SABADO : HORARIOS_SEMANA;
+	}
 
-        const bloqueados = new Set<string>();
-        try {
-            const res = await fetch('https://backend-cardozo.onrender.com/api/turnos');
-            const turnosGuardados: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await res.json();
-            turnosGuardados
-                .filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
-                .forEach(t => {
-                    const [h, m] = t.horario.split(':').map(Number);
-                    const inicioMin = h * 60 + m;
-                    const finMin = inicioMin + t.duracion_horas * 60;
-                    HORARIOS.forEach(slot => {
-                        const [sh, sm] = slot.split(':').map(Number);
-                        const slotMin = sh * 60 + sm;
-                        if (slotMin >= inicioMin && slotMin < finMin) bloqueados.add(slot);
-                    });
-                });
-        } catch (e) {
-            console.error('Error al obtener turnos', e);
-        }
+	function poblarHorarios(horarios: string[], horarioSelect: HTMLSelectElement) {
+		const valorActual = horarioSelect.value;
+		Array.from(horarioSelect.options).forEach(opt => {
+			if (opt.value) opt.remove();
+		});
+		horarios.forEach(h => {
+			const opt = document.createElement('option');
+			opt.value = h;
+			opt.textContent = `${h} hs`;
+			horarioSelect.appendChild(opt);
+		});
+		if (horarios.includes(valorActual)) horarioSelect.value = valorActual;
+	}
 
-        Array.from(horarioSelect.options).forEach(opt => {
-            if (!opt.value) return;
-            const bloqueado = bloqueados.has(opt.value);
-            opt.disabled = bloqueado;
-            opt.textContent = bloqueado ? `${opt.value} hs — Ocupado` : `${opt.value} hs`;
-            if (bloqueado && horarioSelect.value === opt.value) horarioSelect.value = '';
-        });
+	async function actualizarHorariosDisponibles() {
+		const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+		const horarioSelect = document.getElementById('horario') as HTMLSelectElement;
+		if (!horarioSelect || !fecha) return;
 
-        // Refrescar preview si ya hay horario seleccionado
-        const horarioVal = horarioSelect.value;
-        if (horarioVal) actualizarPreviewBloqueo();
-    }
+		const horariosDelDia = getHorariosPorFecha(fecha);
+		poblarHorarios(horariosDelDia, horarioSelect);
 
-    fechaInput?.addEventListener('change', actualizarHorariosDisponibles);
-    document.getElementById('horario')?.addEventListener('change', actualizarPreviewBloqueo);
-    document.getElementById('duracion_horas')?.addEventListener('input', actualizarPreviewBloqueo);
+		const bloqueados = new Set<string>();
+		try {
+			const res = await fetch('http://localhost:3000/api/turnos');
+			const turnosGuardados: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await res.json();
+			turnosGuardados
+				.filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
+				.forEach(t => {
+					const [h, m] = t.horario.split(':').map(Number);
+					const inicioMin = h * 60 + m;
+					const finMin = inicioMin + t.duracion_horas * 60;
+					horariosDelDia.forEach(slot => {
+						const [sh, sm] = slot.split(':').map(Number);
+						const slotMin = sh * 60 + sm;
+						if (slotMin >= inicioMin && slotMin < finMin) bloqueados.add(slot);
+					});
+				});
+		} catch (e) {
+			console.error('Error al obtener turnos', e);
+		}
 
-    // ─── Preview de bloqueo ────────────────────────────────────────────
-    function actualizarPreviewBloqueo() {
-        const horario = (document.getElementById('horario') as HTMLSelectElement).value;
-        const duracionVal = (document.getElementById('duracion_horas') as HTMLInputElement).value;
-        const horas = parseFloat(duracionVal);
-        const container = document.getElementById('bloqueo-preview-container');
-        const slotsEl = document.getElementById('bloqueo-slots');
+		Array.from(horarioSelect.options).forEach(opt => {
+			if (!opt.value) return;
+			const bloqueado = bloqueados.has(opt.value);
+			opt.disabled = bloqueado;
+			opt.textContent = bloqueado ? `${opt.value} hs — Ocupado` : `${opt.value} hs`;
+			if (bloqueado && horarioSelect.value === opt.value) horarioSelect.value = '';
+		});
+	}
 
-        if (!container || !slotsEl) return;
+	fechaInput?.addEventListener('change', actualizarHorariosDisponibles);
+	if (fechaInput?.value) actualizarHorariosDisponibles();
 
-        if (!horario || !horas || horas < 0.5) {
-            container.classList.add('hidden');
-            return;
-        }
+	// Char counter
+	const descripcion = document.getElementById('descripcion') as HTMLTextAreaElement;
+	const charCount = document.getElementById('char-count');
+	if (descripcion && charCount) {
+		descripcion.addEventListener('input', () => {
+			const len = descripcion.value.length;
+			charCount.textContent = `${len} / 300`;
+			if (len > 300) {
+				descripcion.value = descripcion.value.slice(0, 300);
+				charCount.textContent = '300 / 300';
+			}
+		});
+	}
 
-        const [h, m] = horario.split(':').map(Number);
-        const inicioMin = h * 60 + m;
-        const finMin = inicioMin + horas * 60;
+	// Deshabilitar descripción si es un servis
+	const vehiculoRadios = document.querySelectorAll<HTMLInputElement>('.workshop-vehicle-radio');
+	const descripcionField = document.getElementById('descripcion') as HTMLTextAreaElement;
 
-        // Slots bloqueados (excluye el slot de inicio)
-        const bloqueados = HORARIOS.filter(slot => {
-            const [sh, sm] = slot.split(':').map(Number);
-            const slotMin = sh * 60 + sm;
-            return slotMin > inicioMin && slotMin < finMin;
-        });
+	vehiculoRadios.forEach(radio => {
+		radio.addEventListener('change', () => {
+			const esServis = ['servis110', 'servis150', 'servis250'].includes(radio.value);
+			if (esServis) {
+				descripcionField.value = '';
+				descripcionField.disabled = true;
+				descripcionField.placeholder = 'No requerido para servicios de mantenimiento';
+				descripcionField.classList.add('opacity-40', 'cursor-not-allowed');
+				if (charCount) charCount.textContent = '0 / 300';
+			} else {
+				descripcionField.disabled = false;
+				descripcionField.placeholder = 'Describí el problema o servicio (cambio de aceite, frenos, diagnóstico, etc.)';
+				descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
+			}
+		});
+	});
 
-        if (bloqueados.length === 0) {
-            container.classList.add('hidden');
-            return;
-        }
+	// Validación
+	function showError(id: string, show: boolean) {
+		const el = document.getElementById(id);
+		if (el) el.classList.toggle('hidden', !show);
+	}
 
-        container.classList.remove('hidden');
-        slotsEl.innerHTML = bloqueados.map(slot => `
-            <span class="inline-flex items-center gap-1 bg-orange-500/20 border border-orange-500/30 text-orange-300 text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-sm">
-                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                </svg>
-                ${slot} hs
-            </span>
-        `).join('');
-    }
+	function validateForm(): boolean {
+		let valid = true;
 
-    // ─── Char counter ──────────────────────────────────────────────────
-    const descripcion = document.getElementById('descripcion') as HTMLTextAreaElement;
-    const charCount = document.getElementById('char-count');
-    if (descripcion && charCount) {
-        descripcion.addEventListener('input', () => {
-            const len = descripcion.value.length;
-            charCount.textContent = `${len} / 300`;
-            if (len > 300) {
-                descripcion.value = descripcion.value.slice(0, 300);
-                charCount.textContent = '300 / 300';
-            }
-        });
-    }
+		const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
+		showError('nombre-error', !nombre);
+		if (!nombre) valid = false;
 
-    // ─── Deshabilitar descripción si es servis ─────────────────────────
-    const vehiculoRadios = document.querySelectorAll<HTMLInputElement>('.workshop-vehicle-radio');
-    const descripcionField = document.getElementById('descripcion') as HTMLTextAreaElement;
+		const apellido = (document.getElementById('apellido') as HTMLInputElement).value.trim();
+		showError('apellido-error', !apellido);
+		if (!apellido) valid = false;
 
-    vehiculoRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-            const esServis = ['servis110', 'servis150', 'servis250'].includes(radio.value);
-            if (esServis) {
-                descripcionField.value = '';
-                descripcionField.disabled = true;
-                descripcionField.placeholder = 'No requerido para servicios de mantenimiento';
-                descripcionField.classList.add('opacity-40', 'cursor-not-allowed');
-                if (charCount) charCount.textContent = '0 / 300';
-            } else {
-                descripcionField.disabled = false;
-                descripcionField.placeholder = 'Describí el problema o servicio (cambio de aceite, frenos, diagnóstico, etc.)';
-                descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
-            }
-        });
-    });
+		const celular = (document.getElementById('celular') as HTMLInputElement).value.trim();
+		const celularValid = /^\d{8,15}$/.test(celular.replace(/\s/g, ''));
+		showError('celular-error', !celularValid);
+		if (!celularValid) valid = false;
 
-    // ─── Validación ────────────────────────────────────────────────────
-    function showError(id: string, show: boolean) {
-        const el = document.getElementById(id);
-        if (el) el.classList.toggle('hidden', !show);
-    }
+		const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+		showError('fecha-error', !fecha);
+		if (!fecha) valid = false;
 
-    function validateForm(): boolean {
-        let valid = true;
+		const horario = (document.getElementById('horario') as HTMLSelectElement).value;
+		showError('horario-error', !horario);
+		if (!horario) valid = false;
 
-        const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
-        showError('nombre-error', !nombre);
-        if (!nombre) valid = false;
+		const vehiculoVal = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
+		showError('vehiculo-error', !vehiculoVal);
+		if (!vehiculoVal) valid = false;
 
-        const apellido = (document.getElementById('apellido') as HTMLInputElement).value.trim();
-        showError('apellido-error', !apellido);
-        if (!apellido) valid = false;
+		const esServis = ['servis110', 'servis150', 'servis250'].includes(vehiculoVal ?? '');
+		const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
+		showError('descripcion-error', !desc && !esServis);
+		if (!desc && !esServis) valid = false;
 
-        const celular = (document.getElementById('celular') as HTMLInputElement).value.trim();
-        const celularValid = /^\d{8,15}$/.test(celular.replace(/\s/g, ''));
-        showError('celular-error', !celularValid);
-        if (!celularValid) valid = false;
+		return valid;
+	}
 
-        const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
-        showError('fecha-error', !fecha);
-        if (!fecha) valid = false;
+	// Submit
+	const form = document.getElementById('turnoForm') as HTMLFormElement;
+	const successMessage = document.getElementById('successMessage');
 
-        const horario = (document.getElementById('horario') as HTMLSelectElement).value;
-        showError('horario-error', !horario);
-        if (!horario) valid = false;
+	form?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		if (!validateForm()) return;
 
-        const vehiculoVal = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
-        showError('vehiculo-error', !vehiculoVal);
-        if (!vehiculoVal) valid = false;
+		const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+		submitBtn.disabled = true;
+		submitBtn.innerHTML = `
+			<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+			</svg>
+			Guardando...
+		`;
 
-        const esServis = ['servis110', 'servis150', 'servis250'].includes(vehiculoVal ?? '');
-        const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
-        showError('descripcion-error', !desc && !esServis);
-        if (!desc && !esServis) valid = false;
+		const nuevoTurno = {
+			nombre: (document.getElementById('nombre') as HTMLInputElement).value.trim(),
+			apellido: (document.getElementById('apellido') as HTMLInputElement).value.trim(),
+			celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
+			fecha: (document.getElementById('fecha') as HTMLInputElement).value,
+			horario: (document.getElementById('horario') as HTMLSelectElement).value,
+			vehiculo: (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement)?.value,
+			modelo_vehiculo: (document.getElementById('modelo_vehiculo') as HTMLInputElement).value.trim(),
+			descripcion: (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim(),
+			estado: (document.querySelector('input[name="estado"]:checked') as HTMLInputElement)?.value ?? 'pendiente',
+			duracion_horas: null,
+		};
 
-        // Duración: opcional, pero si se cargó debe ser válida
-        const duracionRaw = (document.getElementById('duracion_horas') as HTMLInputElement).value;
-        if (duracionRaw !== '') {
-            const duracion = parseFloat(duracionRaw);
-            const duracionValida = !isNaN(duracion) && duracion >= 0.5 && duracion <= 12;
-            showError('duracion-error', !duracionValida);
-            if (!duracionValida) valid = false;
-        } else {
-            showError('duracion-error', false);
-        }
+		try {
+			await fetch("http://localhost:3000/api/turnos", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(nuevoTurno)
+			});
+		} catch (err) {
+			console.error('Error al guardar turno', err);
+		}
 
-        return valid;
-    }
+		await new Promise(r => setTimeout(r, 500));
+		form.classList.add('hidden');
+		successMessage?.classList.remove('hidden');
+		successMessage?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+	});
 
-    // ─── Submit ────────────────────────────────────────────────────────
-    const form = document.getElementById('turnoForm') as HTMLFormElement;
-    const successMessage = document.getElementById('successMessage');
-
-    form?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (!validateForm()) return;
-
-        const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-            </svg>
-            Guardando...
-        `;
-
-        const duracionRaw = (document.getElementById('duracion_horas') as HTMLInputElement).value;
-        const duracion_horas = duracionRaw !== '' ? parseFloat(duracionRaw) : null;
-
-        // Si se cargó duración, el turno se confirma automáticamente
-        const estadoManual = (document.querySelector('input[name="estado"]:checked') as HTMLInputElement)?.value ?? 'pendiente';
-        const estado = duracion_horas ? 'confirmado' : estadoManual;
-
-        const nuevoTurno = {
-            nombre: (document.getElementById('nombre') as HTMLInputElement).value.trim(),
-            apellido: (document.getElementById('apellido') as HTMLInputElement).value.trim(),
-            celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
-            fecha: (document.getElementById('fecha') as HTMLInputElement).value,
-            horario: (document.getElementById('horario') as HTMLSelectElement).value,
-            vehiculo: (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement)?.value,
-            modelo_vehiculo: (document.getElementById('modelo_vehiculo') as HTMLInputElement).value.trim(),
-            descripcion: (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim(),
-            estado,
-            duracion_horas,
-            origen: 'admin',
-        };
-
-        try {
-            await fetch("https://backend-cardozo.onrender.com/api/turnos", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(nuevoTurno)
-            });
-        } catch (err) {
-            console.error('Error al guardar turno', err);
-        }
-
-        await new Promise(r => setTimeout(r, 500));
-        form.classList.add('hidden');
-        successMessage?.classList.remove('hidden');
-        successMessage?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-
-    // ─── Agendar otro ──────────────────────────────────────────────────
-    document.getElementById('btnNuevoTurno')?.addEventListener('click', () => {
-        form.reset();
-        form.classList.remove('hidden');
-        successMessage?.classList.add('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `
-            <svg class="w-4 h-4 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-            </svg>
-            Agendar Turno
-        `;
-
-        descripcionField.disabled = false;
-        descripcionField.placeholder = 'Describí el problema o servicio (cambio de aceite, frenos, diagnóstico, etc.)';
-        descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
-        if (charCount) charCount.textContent = '0 / 300';
-
-        // Limpiar preview de bloqueo
-        document.getElementById('bloqueo-preview-container')?.classList.add('hidden');
-    });
+	// Agendar otro
+	document.getElementById('btnNuevoTurno')?.addEventListener('click', () => {
+		form.reset();
+		form.classList.remove('hidden');
+		successMessage?.classList.add('hidden');
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+		const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+		submitBtn.disabled = false;
+		submitBtn.innerHTML = `
+			<svg class="w-4 h-4 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 20 20">
+				<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+			</svg>
+			Agendar Turno
+		`;
+		descripcionField.disabled = false;
+		descripcionField.placeholder = 'Describí el problema o servicio (cambio de aceite, frenos, diagnóstico, etc.)';
+		descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
+		if (charCount) charCount.textContent = '0 / 300';
+	});
 </script>
