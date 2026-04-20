@@ -325,15 +325,6 @@ import Layout from '../layouts/Layout.astro';
 						required
 						>
 						<option value="" disabled selected class="text-neutral-600">Seleccioná un horario</option>
-						<option value="08:00">08:00 hs</option>
-						<option value="09:00">09:00 hs</option>
-						<option value="10:00">10:00 hs</option>
-						<option value="11:00">11:00 hs</option>
-						<option value="12:00">12:00 hs</option>
-						<option value="14:00">14:00 hs</option>
-						<option value="15:00">15:00 hs</option>
-						<option value="16:00">16:00 hs</option>
-						<option value="17:00">17:00 hs</option>
 						</select>
 						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="horario-error">Elegí un horario</span>
 					</div>
@@ -503,170 +494,190 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
     const fechaInput = document.getElementById('fecha') as HTMLInputElement;
-    if (fechaInput) {
-        const today = new Date().toISOString().split('T')[0];
-        fechaInput.min = today;
-    }
+	if (fechaInput) {
+		const today = new Date().toISOString().split('T')[0];
+		fechaInput.min = today;
+	}
 
-    const HORARIOS = ['08:00','09:00','10:00','11:00','12:00','14:00','15:00','16:00','17:00'];
+	// Horarios por día
+	const HORARIOS_SEMANA = ['09:00','10:00','11:00','12:00','13:00','16:00','17:00','18:00','19:00','19:30'];
+	const HORARIOS_SABADO = ['10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','17:30'];
 
-    async function actualizarHorariosDisponibles() {
-        const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
-        const horarioSelect = document.getElementById('horario') as HTMLSelectElement;
-        if (!horarioSelect || !fecha) return;
+	function getHorariosPorFecha(fechaStr: string): string[] {
+		const [y, m, d] = fechaStr.split('-').map(Number);
+		const diaSemana = new Date(y, m - 1, d).getDay(); // 0=Dom, 6=Sab
+		return diaSemana === 6 ? HORARIOS_SABADO : HORARIOS_SEMANA;
+	}
 
-        const bloqueados = new Set<string>();
+	function poblarHorarios(horarios: string[], horarioSelect: HTMLSelectElement) {
+		const valorActual = horarioSelect.value;
+		Array.from(horarioSelect.options).forEach(opt => {
+			if (opt.value) opt.remove();
+		});
+		horarios.forEach(h => {
+			const opt = document.createElement('option');
+			opt.value = h;
+			opt.textContent = `${h} hs`;
+			horarioSelect.appendChild(opt);
+		});
+		if (horarios.includes(valorActual)) horarioSelect.value = valorActual;
+	}
 
-        try {
-            const res = await fetch('https://backend-cardozo.onrender.com/api/turnos');
-            const turnosGuardados: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await res.json();
+	async function actualizarHorariosDisponibles() {
+		const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+		const horarioSelect = document.getElementById('horario') as HTMLSelectElement;
+		if (!horarioSelect || !fecha) return;
 
-            turnosGuardados
-                .filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
-                .forEach(t => {
-                    const [h, m] = t.horario.split(':').map(Number);
-                    const inicioMin = h * 60 + m;
-                    const finMin = inicioMin + t.duracion_horas * 60;
-                    HORARIOS.forEach(slot => {
-                        const [sh, sm] = slot.split(':').map(Number);
-                        const slotMin = sh * 60 + sm;
-                        if (slotMin >= inicioMin && slotMin < finMin) {
-                            bloqueados.add(slot);
-                        }
-                    });
-                });
-        } catch (e) {
-            console.error('Error al obtener turnos', e);
-        }
+		const horariosDelDia = getHorariosPorFecha(fecha);
+		poblarHorarios(horariosDelDia, horarioSelect);
 
-        Array.from(horarioSelect.options).forEach(opt => {
-            if (!opt.value) return;
-            const bloqueado = bloqueados.has(opt.value);
-            opt.disabled = bloqueado;
-            opt.textContent = bloqueado ? `${opt.value} hs — Ocupado` : `${opt.value} hs`;
-            if (bloqueado && horarioSelect.value === opt.value) {
-                horarioSelect.value = '';
-            }
-        });
-    }
+		const bloqueados = new Set<string>();
+		try {
+			const res = await fetch('http://localhost:3000/api/turnos');
+			const turnosGuardados: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await res.json();
+			turnosGuardados
+				.filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
+				.forEach(t => {
+					const [h, m] = t.horario.split(':').map(Number);
+					const inicioMin = h * 60 + m;
+					const finMin = inicioMin + t.duracion_horas * 60;
+					horariosDelDia.forEach(slot => {
+						const [sh, sm] = slot.split(':').map(Number);
+						const slotMin = sh * 60 + sm;
+						if (slotMin >= inicioMin && slotMin < finMin) bloqueados.add(slot);
+					});
+				});
+		} catch (e) {
+			console.error('Error al obtener turnos', e);
+		}
 
-    fechaInput?.addEventListener('change', actualizarHorariosDisponibles);
+		Array.from(horarioSelect.options).forEach(opt => {
+			if (!opt.value) return;
+			const bloqueado = bloqueados.has(opt.value);
+			opt.disabled = bloqueado;
+			opt.textContent = bloqueado ? `${opt.value} hs — Ocupado` : `${opt.value} hs`;
+			if (bloqueado && horarioSelect.value === opt.value) horarioSelect.value = '';
+		});
+	}
 
-    const descripcion = document.getElementById('descripcion') as HTMLTextAreaElement;
-    const charCount = document.getElementById('char-count');
-    if (descripcion && charCount) {
-        descripcion.addEventListener('input', () => {
-            const len = descripcion.value.length;
-            charCount.textContent = `${len} / 300`;
-            if (len > 300) {
-                descripcion.value = descripcion.value.slice(0, 300);
-                charCount.textContent = '300 / 300';
-            }
-        });
-    }
+	fechaInput?.addEventListener('change', actualizarHorariosDisponibles);
+	if (fechaInput?.value) actualizarHorariosDisponibles();
 
-    // Deshabilitar descripción si es un servis
-    const vehiculoRadios = document.querySelectorAll<HTMLInputElement>('.workshop-vehicle-radio');
-    const descripcionField = document.getElementById('descripcion') as HTMLTextAreaElement;
+	const descripcion = document.getElementById('descripcion') as HTMLTextAreaElement;
+	const charCount = document.getElementById('char-count');
+	if (descripcion && charCount) {
+		descripcion.addEventListener('input', () => {
+			const len = descripcion.value.length;
+			charCount.textContent = `${len} / 300`;
+			if (len > 300) {
+				descripcion.value = descripcion.value.slice(0, 300);
+				charCount.textContent = '300 / 300';
+			}
+		});
+	}
 
-    vehiculoRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-            const esServis = ['servis110', 'servis150', 'servis250'].includes(radio.value);
-            if (esServis) {
-                descripcionField.value = '';
-                descripcionField.disabled = true;
-                descripcionField.placeholder = 'No requerido para servicios de mantenimiento';
-                descripcionField.classList.add('opacity-40', 'cursor-not-allowed');
-                if (charCount) charCount.textContent = '0 / 300';
-            } else {
-                descripcionField.disabled = false;
-                descripcionField.placeholder = 'Describí el problema o servicio que necesitás (cambio de aceite, frenos, diagnóstico, etc.)';
-                descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
-            }
-        });
-    });
+	// Deshabilitar descripción si es un servis
+	const vehiculoRadios = document.querySelectorAll<HTMLInputElement>('.workshop-vehicle-radio');
+	const descripcionField = document.getElementById('descripcion') as HTMLTextAreaElement;
 
-    const form = document.getElementById('turnoForm') as HTMLFormElement;
-    const successMessage = document.getElementById('successMessage');
+	vehiculoRadios.forEach(radio => {
+		radio.addEventListener('change', () => {
+			const esServis = ['servis110', 'servis150', 'servis250'].includes(radio.value);
+			if (esServis) {
+				descripcionField.value = '';
+				descripcionField.disabled = true;
+				descripcionField.placeholder = 'No requerido para servicios de mantenimiento';
+				descripcionField.classList.add('opacity-40', 'cursor-not-allowed');
+				if (charCount) charCount.textContent = '0 / 300';
+			} else {
+				descripcionField.disabled = false;
+				descripcionField.placeholder = 'Describí el problema o servicio que necesitás (cambio de aceite, frenos, diagnóstico, etc.)';
+				descripcionField.classList.remove('opacity-40', 'cursor-not-allowed');
+			}
+		});
+	});
 
-    function showError(id: string, show: boolean) {
-        const el = document.getElementById(id);
-        if (el) el.classList.toggle('hidden', !show);
-    }
+	const form = document.getElementById('turnoForm') as HTMLFormElement;
+	const successMessage = document.getElementById('successMessage');
 
-    function validateForm(): boolean {
-        let valid = true;
+	function showError(id: string, show: boolean) {
+		const el = document.getElementById(id);
+		if (el) el.classList.toggle('hidden', !show);
+	}
 
-        const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
-        showError('nombre-error', !nombre);
-        if (!nombre) valid = false;
+	function validateForm(): boolean {
+		let valid = true;
 
-        const apellido = (document.getElementById('apellido') as HTMLInputElement).value.trim();
-        showError('apellido-error', !apellido);
-        if (!apellido) valid = false;
+		const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
+		showError('nombre-error', !nombre);
+		if (!nombre) valid = false;
 
-        const celular = (document.getElementById('celular') as HTMLInputElement).value.trim();
-        const celularValid = /^\d{8,15}$/.test(celular.replace(/\s/g, ''));
-        showError('celular-error', !celularValid);
-        if (!celularValid) valid = false;
+		const apellido = (document.getElementById('apellido') as HTMLInputElement).value.trim();
+		showError('apellido-error', !apellido);
+		if (!apellido) valid = false;
 
-        const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
-        showError('fecha-error', !fecha);
-        if (!fecha) valid = false;
+		const celular = (document.getElementById('celular') as HTMLInputElement).value.trim();
+		const celularValid = /^\d{8,15}$/.test(celular.replace(/\s/g, ''));
+		showError('celular-error', !celularValid);
+		if (!celularValid) valid = false;
 
-        const horario = (document.getElementById('horario') as HTMLSelectElement).value;
-        showError('horario-error', !horario);
-        if (!horario) valid = false;
+		const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+		showError('fecha-error', !fecha);
+		if (!fecha) valid = false;
 
-        const vehiculoVal = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
-        showError('vehiculo-error', !vehiculoVal);
-        if (!vehiculoVal) valid = false;
+		const horario = (document.getElementById('horario') as HTMLSelectElement).value;
+		showError('horario-error', !horario);
+		if (!horario) valid = false;
 
-        const esServis = ['servis110', 'servis150', 'servis250'].includes(vehiculoVal ?? '');
-        const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
-        showError('descripcion-error', !desc && !esServis);
-        if (!desc && !esServis) valid = false;
+		const vehiculoVal = (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement | null)?.value;
+		showError('vehiculo-error', !vehiculoVal);
+		if (!vehiculoVal) valid = false;
 
-        return valid;
-    }
+		const esServis = ['servis110', 'servis150', 'servis250'].includes(vehiculoVal ?? '');
+		const desc = (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim();
+		showError('descripcion-error', !desc && !esServis);
+		if (!desc && !esServis) valid = false;
 
-    form?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (!validateForm()) return;
+		return valid;
+	}
 
-        const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-            </svg>
-            Enviando...
-        `;
+	form?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		if (!validateForm()) return;
 
-        const nuevoTurno = {
-            nombre: (document.getElementById('nombre') as HTMLInputElement).value.trim(),
-            apellido: (document.getElementById('apellido') as HTMLInputElement).value.trim(),
-            celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
-            fecha: (document.getElementById('fecha') as HTMLInputElement).value,
-            horario: (document.getElementById('horario') as HTMLSelectElement).value,
-            vehiculo: (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement)?.value,
-            modelo_vehiculo: (document.getElementById('modelo_vehiculo') as HTMLInputElement).value.trim(),
-            descripcion: (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim(),
-            estado: 'pendiente',
-            duracion_horas: null,
-        };
+		const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+		submitBtn.disabled = true;
+		submitBtn.innerHTML = `
+			<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+			<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+			<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+			</svg>
+			Enviando...
+		`;
 
-       await fetch("https://backend-cardozo.onrender.com/api/turnos", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(nuevoTurno)
-        });
+		const nuevoTurno = {
+			nombre: (document.getElementById('nombre') as HTMLInputElement).value.trim(),
+			apellido: (document.getElementById('apellido') as HTMLInputElement).value.trim(),
+			celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
+			fecha: (document.getElementById('fecha') as HTMLInputElement).value,
+			horario: (document.getElementById('horario') as HTMLSelectElement).value,
+			vehiculo: (document.querySelector('input[name="vehiculo"]:checked') as HTMLInputElement)?.value,
+			modelo_vehiculo: (document.getElementById('modelo_vehiculo') as HTMLInputElement).value.trim(),
+			descripcion: (document.getElementById('descripcion') as HTMLTextAreaElement).value.trim(),
+			estado: 'pendiente',
+			duracion_horas: null,
+		};
 
-        await new Promise(r => setTimeout(r, 600));
+		await fetch("http://localhost:3000/api/turnos", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(nuevoTurno)
+		});
 
-        form.classList.add('hidden');
-        successMessage?.classList.remove('hidden');
-        successMessage?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
+		await new Promise(r => setTimeout(r, 600));
+
+		form.classList.add('hidden');
+		successMessage?.classList.remove('hidden');
+		successMessage?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+	});
 </script>
