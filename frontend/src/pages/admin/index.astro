@@ -298,7 +298,7 @@ import Layout from '../../layouts/Layout.astro';
     }
 </style>
 
-<script>
+<script is:inline>
     const SESSION_KEY = 'admin_session';
     if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
         window.location.href = '/admin/login';
@@ -311,40 +311,41 @@ import Layout from '../../layouts/Layout.astro';
         greeting.classList.remove('hidden');
     }
 
-    document.getElementById('btnLogout')?.addEventListener('click', () => {
+    document.getElementById('btnLogout').addEventListener('click', () => {
         sessionStorage.removeItem(SESSION_KEY);
         sessionStorage.removeItem('admin_user');
         window.location.href = '/admin/login';
     });
 
-async function cargarStats() {
+    async function cargarStats() {
+        try {
+            const res = await fetch('https://backend-cardozo.onrender.com/api/turnos');
+            const turnos = await res.json();
+            const total      = turnos.length;
+            const pendiente  = turnos.filter(t => t.estado === 'pendiente').length;
+            const confirmado = turnos.filter(t => t.estado === 'confirmado').length;
+            const finalizado = turnos.filter(t => t.estado === 'finalizado').length;
+            document.getElementById('stat-total').textContent      = String(total);
+            document.getElementById('stat-pendiente').textContent  = String(pendiente);
+            document.getElementById('stat-confirmado').textContent = String(confirmado);
+            document.getElementById('stat-finalizado').textContent = String(finalizado);
+            document.getElementById('card-pendiente').textContent  = String(pendiente);
+            document.getElementById('card-confirmado').textContent = String(confirmado);
+            document.getElementById('card-total').textContent      = String(total);
+            document.getElementById('card-finalizado').textContent = String(finalizado);
+        } catch(e) {
+            console.error('Error cargando stats:', e);
+        }
+    }
 
-    const res = await fetch("http://localhost:3000/api/turnos");
-    const turnos: { estado: string }[] = await res.json();
-
-    const total      = turnos.length;
-    const pendiente  = turnos.filter(t => t.estado === 'pendiente').length;
-    const confirmado = turnos.filter(t => t.estado === 'confirmado').length;
-    const finalizado = turnos.filter(t => t.estado === 'finalizado').length;
-
-    document.getElementById('stat-total')!.textContent      = String(total);
-    document.getElementById('stat-pendiente')!.textContent  = String(pendiente);
-    document.getElementById('stat-confirmado')!.textContent = String(confirmado);
-    document.getElementById('stat-finalizado')!.textContent = String(finalizado);
-
-    document.getElementById('card-pendiente')!.textContent  = String(pendiente);
-    document.getElementById('card-confirmado')!.textContent = String(confirmado);
-    document.getElementById('card-total')!.textContent      = String(total);
-    document.getElementById('card-finalizado')!.textContent = String(finalizado);
-}
     cargarStats();
 
     // ── BLOQUEOS ──────────────────────────────────────────
     async function cargarBloqueos() {
-        const lista = document.getElementById('bloqueos-lista')!;
+        const lista = document.getElementById('bloqueos-lista');
         try {
-            const res = await fetch('http://localhost:3000/api/bloqueos');
-            const bloqueos: { id: string; fecha: string; horario: string | null; motivo: string | null }[] = await res.json();
+            const res = await fetch('https://backend-cardozo.onrender.com/api/bloqueos');
+            const bloqueos = await res.json();
 
             if (!bloqueos.length) {
                 lista.innerHTML = '<p class="text-neutral-600 text-xs">No hay bloqueos activos.</p>';
@@ -373,29 +374,92 @@ async function cargarStats() {
         }
     }
 
-    (window as any).eliminarBloqueo = async (id: string) => {
-        await fetch(`http://localhost:3000/api/bloqueos/${id}`, { method: 'DELETE' });
-        cargarBloqueos();
-    };
+    function eliminarBloqueo(id) {
+        fetch(`https://backend-cardozo.onrender.com/api/bloqueos/${id}`, { method: 'DELETE' })
+            .then(() => cargarBloqueos());
+    }
 
-    document.getElementById('btnBloquear')?.addEventListener('click', async () => {
-        const fecha   = (document.getElementById('bloqueo-fecha') as HTMLInputElement).value;
-        const horario = (document.getElementById('bloqueo-horario') as HTMLSelectElement).value;
-        const motivo  = (document.getElementById('bloqueo-motivo') as HTMLInputElement).value.trim();
+    document.getElementById('btnBloquear').addEventListener('click', async () => {
+        const fecha   = document.getElementById('bloqueo-fecha').value;
+        const horario = document.getElementById('bloqueo-horario').value;
+        const motivo  = document.getElementById('bloqueo-motivo').value.trim();
 
         if (!fecha) { alert('Seleccioná una fecha'); return; }
 
-        await fetch('http://localhost:3000/api/bloqueos', {
+        await fetch('https://backend-cardozo.onrender.com/api/bloqueos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ fecha, horario: horario || null, motivo: motivo || null })
         });
 
-        (document.getElementById('bloqueo-fecha') as HTMLInputElement).value = '';
-        (document.getElementById('bloqueo-horario') as HTMLSelectElement).value = '';
-        (document.getElementById('bloqueo-motivo') as HTMLInputElement).value = '';
+        document.getElementById('bloqueo-fecha').value = '';
+        document.getElementById('bloqueo-horario').value = '';
+        document.getElementById('bloqueo-motivo').value = '';
         cargarBloqueos();
     });
 
     cargarBloqueos();
+
+    // Supabase Realtime
+    const SUPABASE_URL = 'https://eymmxgpzaxpzovlkakge.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable__G-Nx3ddgGdxPB580-lRlg_Cacgytd1';
+    let nuevosCount = 0;
+
+    function sonarNotificacion() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.setValueAtTime(880, ctx.currentTime);
+            osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.4);
+        } catch(e) {}
+    }
+
+    function actualizarBadgeIndex(count) {
+        let badge = document.getElementById('badgeIndex');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.id = 'badgeIndex';
+            badge.style.cssText = `
+                position: absolute; top: -6px; right: -6px;
+                background: #ef4444; color: white;
+                font-size: 10px; font-weight: 900;
+                min-width: 18px; height: 18px;
+                border-radius: 9999px;
+                display: flex; align-items: center; justify-content: center;
+                padding: 0 4px; z-index: 99;
+            `;
+            const cardTurnos = document.getElementById('cardTurnos');
+            if (cardTurnos) cardTurnos.appendChild(badge);
+        }
+        if (count > 0) {
+            badge.textContent = String(count);
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    const supabaseScript = document.createElement('script');
+    supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    supabaseScript.onload = () => {
+        const { createClient } = window.supabase;
+        const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+        client
+            .channel('turnos-index')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'turnos' }, (payload) => {
+                nuevosCount++;
+                actualizarBadgeIndex(nuevosCount);
+                sonarNotificacion();
+                cargarStats();
+            })
+            .subscribe();
+    };
+    document.head.appendChild(supabaseScript);
 </script>
