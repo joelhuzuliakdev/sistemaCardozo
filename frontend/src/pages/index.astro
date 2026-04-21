@@ -158,19 +158,17 @@ import Layout from '../layouts/Layout.astro';
 
 		<!-- Header -->
 		<header class="workshop-header relative z-10 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-sm sticky top-0">
-			<div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-				<div class="flex items-center gap-3">
-					<!-- Wrench icon -->
-					<div class="workshop-logo w-26 h-26 flex items-center justify-center rounded-sm rotate-3 shadow-lg shadow-red-900/40">
-						<img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-26 h-26 object-contain" />
-						</svg>
+			<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+				<div class="flex items-center gap-2 min-w-0">
+					<div class="w-9 h-9 md:w-14 md:h-14 flex-shrink-0 flex items-center justify-center rounded-sm md:rotate-3 md:shadow-lg md:shadow-red-900/40">
+						<img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-9 h-9 md:w-14 md:h-14 object-contain" />
 					</div>
-					<div>
-						<span class="text-white font-black text-xl tracking-widest uppercase">Cardozoperformance</span>
-						<span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Sistema de Turnos</span>
+					<div class="min-w-0">
+						<span class="text-white font-black text-sm md:text-xl tracking-widest uppercase truncate block">Cardozoperformance</span>
+						<span class="block text-neutral-500 text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase">Sistema de Turnos</span>
 					</div>
 				</div>
-				<div class="hidden md:flex items-center gap-2">
+				<div class="hidden md:flex items-center gap-2 flex-shrink-0">
 					<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
 					<span class="text-neutral-400 text-xs tracking-widest uppercase">Turnos Online</span>
 				</div>
@@ -292,42 +290,42 @@ import Layout from '../layouts/Layout.astro';
 				<!-- SECTION 2: Turno -->
 				<div class="workshop-form-section">
 					<div class="flex items-center gap-3 mb-5">
-					<div class="w-6 h-6 bg-yellow-400 flex items-center justify-center rounded-sm text-black text-xs font-black">2</div>
-					<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Fecha y Horario</span>
-					<div class="h-px flex-1 bg-neutral-800"></div>
+						<div class="w-6 h-6 bg-yellow-400 flex items-center justify-center rounded-sm text-black text-xs font-black">2</div>
+						<span class="text-neutral-300 text-xs font-bold tracking-[0.2em] uppercase">Fecha y Horario</span>
+						<div class="h-px flex-1 bg-neutral-800"></div>
 					</div>
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+					<div class="grid grid-cols-1 gap-5">
 
-					<!-- Fecha -->
-					<div class="workshop-field">
-						<label for="fecha" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
-						Fecha <span class="text-red-500">*</span>
-						</label>
-						<input
-						type="date"
-						id="fecha"
-						name="fecha"
-						class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-600 px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 [color-scheme:dark]"
-						required
-						/>
-						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="fecha-error">Seleccioná una fecha</span>
-					</div>
+						<!-- Fecha -->
+						<div class="workshop-field">
+							<label for="fecha" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+								Fecha <span class="text-red-500">*</span>
+							</label>
+							<input
+								type="date"
+								id="fecha"
+								name="fecha"
+								class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 [color-scheme:dark]"
+								required
+							/>
+							<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="fecha-error">Seleccioná una fecha</span>
+						</div>
 
-					<!-- Horario -->
-					<div class="workshop-field">
-						<label for="horario" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
-						Horario <span class="text-red-500">*</span>
-						</label>
-						<select
-						id="horario"
-						name="horario"
-						class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 appearance-none cursor-pointer"
-						required
-						>
-						<option value="" disabled selected class="text-neutral-600">Seleccioná un horario</option>
-						</select>
-						<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="horario-error">Elegí un horario</span>
-					</div>
+						<!-- Horario -->
+						<div class="workshop-field">
+							<label for="horario" class="workshop-label block text-neutral-400 text-xs font-bold tracking-[0.15em] uppercase mb-2">
+								Horario <span class="text-red-500">*</span>
+							</label>
+							<select
+								id="horario"
+								name="horario"
+								class="workshop-input w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 text-sm rounded-sm focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/30 transition-all duration-200 appearance-none cursor-pointer"
+								required
+							>
+								<option value="" disabled selected class="text-neutral-600">Seleccioná un horario</option>
+							</select>
+							<span class="workshop-error text-red-500 text-xs mt-1 hidden" id="horario-error">Elegí un horario</span>
+						</div>
 
 					</div>
 				</div>
@@ -548,6 +546,7 @@ import Layout from '../layouts/Layout.astro';
 
             const resBloqueos = await fetch('https://backend-cardozo.onrender.com/api/bloqueos');
             const bloqueos: { fecha: string; horario: string | null }[] = await resBloqueos.json();
+			
 
             const diaCompleto = bloqueos.some(b => b.fecha === fecha && b.horario === null);
             if (diaCompleto) {
