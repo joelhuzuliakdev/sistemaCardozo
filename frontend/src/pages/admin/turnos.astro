@@ -731,19 +731,23 @@ import Layout from '../../layouts/Layout.astro';
       }
     }
 
-    function abrirModalDuracion(id) {
-      document.getElementById('duracionTurnoId').value = id;
-      document.getElementById('duracionHoras').value = '';
-      const t = turnosData.find(x => String(x.id) === String(id));
-      if (t) {
+function abrirModalDuracion(id) {
+    document.getElementById('duracionTurnoId').value = id;
+    const t = turnosData.find(x => String(x.id) === String(id));
+
+    const duracionPorServicio = { servis110: 4, servis150: 4, servis250: 6 };
+    const horasPredet = t?.vehiculo ? (duracionPorServicio[t.vehiculo] || '') : '';
+    document.getElementById('duracionHoras').value = String(horasPredet);
+
+    if (t) {
         document.getElementById('duracionInfo').textContent =
-          `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
-      }
-      const modal = document.getElementById('modalDuracion');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      setTimeout(() => document.getElementById('duracionHoras').focus(), 100);
+            `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
     }
+    const modal = document.getElementById('modalDuracion');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => document.getElementById('duracionHoras').focus(), 100);
+}
 
     function cerrarModalDuracion() {
       const modal = document.getElementById('modalDuracion');
