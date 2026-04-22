@@ -55,19 +55,20 @@ import Layout from '../../layouts/Layout.astro';
 
         <!-- Header -->
         <header class="relative z-10 border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-sm sticky top-0">
-            <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
-                
-                <a href="/admin/" class="flex items-center gap-3 group">
-                    <div class="w-12 h-12 flex items-center justify-center">
-                        <img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
-                    </div>
-                    <div>
-                        <span class="text-white font-black text-xl tracking-widest uppercase group-hover:text-neutral-300 transition-colors">Cardozoperformance</span>
-                        <span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Historial de Reservas</span>
-                    </div>
+            <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+
+                <!-- Logo / back -->
+                <a href="/admin/" class="flex items-center gap-3 group min-w-0">
+                <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center">
+                    <img src="/logoCardozo.webp" alt="Cardozo Performance" class="w-12 h-12 object-contain" />
+                </div>
+                <div class="min-w-0">
+                    <span class="text-white font-black text-lg md:text-xl tracking-widest uppercase group-hover:text-neutral-300 transition-colors truncate block">Cardozoperformance</span>
+                    <span class="block text-neutral-500 text-[10px] tracking-[0.3em] uppercase">Historial de Reservas</span>
+                </div>
                 </a>
 
-                <!-- Nav links -->
+                <!-- Desktop nav -->
                 <div class="hidden md:flex items-center gap-3">
                 <a href="/admin/turnos"
                     class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
@@ -78,6 +79,38 @@ import Layout from '../../layouts/Layout.astro';
                 </a>
                 <button id="btnLogout"
                     class="flex items-center gap-2 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-sm transition-all duration-200">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    Salir
+                </button>
+                </div>
+
+                <!-- Mobile hamburger -->
+                <button id="btnMenuMobile"
+                class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 flex-shrink-0 rounded-sm border border-neutral-700 hover:border-neutral-500 transition-all duration-200"
+                aria-label="Abrir menú">
+                <span id="ham1" class="block w-5 h-0.5 bg-neutral-300 transition-all duration-200 origin-center"></span>
+                <span id="ham2" class="block w-5 h-0.5 bg-neutral-300 transition-all duration-200"></span>
+                <span id="ham3" class="block w-5 h-0.5 bg-neutral-300 transition-all duration-200 origin-center"></span>
+                </button>
+
+            </div>
+
+            <!-- Mobile dropdown -->
+            <div id="mobileMenu"
+                class="md:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0"
+                aria-hidden="true">
+                <div class="border-t border-neutral-800 px-6 py-4 space-y-3 bg-neutral-950">
+                <a href="/admin/turnos"
+                    class="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-sm transition-all duration-200 w-full">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/>
+                    </svg>
+                    Turnos
+                </a>
+                <button id="btnLogoutMobile"
+                    class="flex items-center gap-2 w-full bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-xs font-bold tracking-widest uppercase px-4 py-3 rounded-sm transition-all duration-200">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                     </svg>
@@ -381,12 +414,39 @@ import Layout from '../../layouts/Layout.astro';
         window.location.href = '/admin/login';
     }
 
-    document.getElementById('btnLogout')?.addEventListener('click', () => {
+    // Logout (desktop y mobile)
+    function doLogout() {
         sessionStorage.removeItem(SESSION_KEY);
         sessionStorage.removeItem('admin_user');
         window.location.href = '/admin/login';
+    }
+    document.getElementById('btnLogout')?.addEventListener('click', doLogout);
+    document.getElementById('btnLogoutMobile')?.addEventListener('click', doLogout);
+
+    // Hamburguesa
+    const btnMenu    = document.getElementById('btnMenuMobile');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const ham1 = document.getElementById('ham1');
+    const ham2 = document.getElementById('ham2');
+    const ham3 = document.getElementById('ham3');
+    let menuOpen = false;
+
+    btnMenu?.addEventListener('click', () => {
+        menuOpen = !menuOpen;
+        mobileMenu.style.maxHeight = menuOpen ? mobileMenu.scrollHeight + 'px' : '0';
+        mobileMenu.setAttribute('aria-hidden', String(!menuOpen));
+        if (menuOpen) {
+            ham1.style.transform = 'translateY(8px) rotate(45deg)';
+            ham2.style.opacity   = '0';
+            ham3.style.transform = 'translateY(-8px) rotate(-45deg)';
+        } else {
+            ham1.style.transform = '';
+            ham2.style.opacity   = '1';
+            ham3.style.transform = '';
+        }
     });
 
+    // Data y filtros
     let reservasData = [];
     let filtros = { nombre: '', apellido: '', estado: '', orden: 'desc' };
 
@@ -532,22 +592,6 @@ import Layout from '../../layouts/Layout.astro';
         document.getElementById('stat-pendiente').textContent  = String(reservasData.filter(r => r.estado === 'pendiente').length);
         document.getElementById('stat-confirmado').textContent = String(reservasData.filter(r => r.estado === 'confirmado').length);
         document.getElementById('stat-finalizado').textContent = String(reservasData.filter(r => r.estado === 'finalizado').length);
-    }
-
-    async function cambiarEstadoRapido(id, nuevoEstado) {
-        if (!nuevoEstado) return;
-        try {
-            await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ estado: nuevoEstado })
-            });
-            await cargarReservas();
-            const labels = { pendiente: 'Turno reabierto', confirmado: 'Turno confirmado', enproceso: 'Turno iniciado', finalizado: 'Turno finalizado', cancelado: 'Turno cancelado' };
-            showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
-        } catch {
-            showToast('Error al cambiar el estado', 'error');
-        }
     }
 
     function abrirEditar(id) {
