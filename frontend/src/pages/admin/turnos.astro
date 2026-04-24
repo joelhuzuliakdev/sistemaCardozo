@@ -449,147 +449,147 @@ import Layout from '../../layouts/Layout.astro';
         </div>
 
         <!-- ═══════════════ MODAL FINALIZAR ═══════════════ -->
-      <div id="modalFinalizar" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-        <div class="relative bg-neutral-900 border border-green-900/50 rounded-sm w-full max-w-2xl shadow-2xl animate-modal max-h-[90vh] flex flex-col">
-          
-          <!-- Header -->
-          <div class="bg-neutral-800 px-6 py-4 flex items-center justify-between border-b border-neutral-700 shrink-0">
-            <span class="text-white text-xs font-black tracking-[0.25em] uppercase">Finalizar Turno — Presupuesto</span>
-            <button onclick="cerrarModalFinalizar()" class="text-neutral-500 hover:text-white transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-            </button>
+<div id="modalFinalizar" class="fixed inset-0 z-50 hidden items-center justify-center p-2 sm:p-4">
+  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+  <div class="relative bg-neutral-900 border border-green-900/50 rounded-sm w-full max-w-2xl shadow-2xl animate-modal flex flex-col" style="max-height: 95dvh;">
+
+    <!-- Header -->
+    <div class="bg-neutral-800 px-4 py-3 flex items-center justify-between border-b border-neutral-700 shrink-0">
+      <div>
+        <span class="text-white text-xs font-black tracking-[0.2em] uppercase">Finalizar Turno</span>
+        <span class="hidden sm:inline text-neutral-500 text-xs"> — Presupuesto</span>
+      </div>
+      <button onclick="cerrarModalFinalizar()" class="text-neutral-500 hover:text-white transition-colors p-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="overflow-y-auto flex-1 p-3 sm:p-5 space-y-4">
+
+      <!-- Info turno -->
+      <div class="bg-green-500/10 border border-green-500/20 rounded-sm px-3 py-2">
+        <p class="text-green-400 text-xs font-bold tracking-wide" id="finalizarInfo"></p>
+      </div>
+      <input type="hidden" id="finalizarTurnoId"/>
+
+      <!-- ══ RECIBO ══ -->
+      <div class="border border-neutral-700 rounded-sm overflow-hidden text-[11px] sm:text-xs">
+
+        <!-- Cabecera recibo -->
+        <div class="bg-neutral-800 px-3 sm:px-5 py-3 sm:py-4 flex items-start justify-between gap-3 border-b border-neutral-700">
+          <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+            <img src="/logoCardozo.webp" alt="Cardozo" class="w-8 h-8 sm:w-10 sm:h-10 object-contain opacity-90 shrink-0"/>
+            <div class="min-w-0">
+              <p class="text-white font-black text-xs sm:text-sm tracking-widest uppercase truncate">Cardozo Performance</p>
+              <p class="text-neutral-500 text-[9px] sm:text-[10px] truncate">9 Zenón López 2759 — Pilar (5972)</p>
+              <p class="text-neutral-500 text-[9px] sm:text-[10px]">351-2486833</p>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-white font-black text-sm sm:text-base tracking-widest uppercase">Presupuesto</p>
+            <p class="text-red-400 text-[8px] sm:text-[9px] font-bold tracking-widest uppercase">No válido como factura</p>
+            <div class="flex items-center gap-1 mt-1 justify-end">
+              <span class="text-neutral-500 text-[9px] uppercase tracking-wider">Fecha:</span>
+              <span class="text-neutral-300 text-[10px] font-bold" id="recibo-fecha-display">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Datos cliente -->
+        <div class="px-3 sm:px-5 py-2 sm:py-3 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 border-b border-neutral-700 bg-neutral-900/50">
+          <div class="flex gap-1.5 items-baseline">
+            <span class="text-neutral-600 text-[9px] uppercase tracking-wider shrink-0 w-14">Señor/es:</span>
+            <span class="text-neutral-200 font-bold truncate" id="recibo-nombre">—</span>
+          </div>
+          <div class="flex gap-1.5 items-baseline">
+            <span class="text-neutral-600 text-[9px] uppercase tracking-wider shrink-0 w-10">Cel.:</span>
+            <span class="text-neutral-200 font-bold" id="recibo-cel">—</span>
+          </div>
+          <div class="flex gap-1.5 items-baseline">
+            <span class="text-neutral-600 text-[9px] uppercase tracking-wider shrink-0 w-14">Vehículo:</span>
+            <span class="text-neutral-200 font-bold truncate" id="recibo-vehiculo">—</span>
+          </div>
+          <div class="flex gap-1.5 items-baseline">
+            <span class="text-neutral-600 text-[9px] uppercase tracking-wider shrink-0 w-10">D.N.I.:</span>
+            <span class="text-neutral-500">—</span>
+          </div>
+        </div>
+
+        <!-- Tabla trabajos -->
+        <div class="px-3 sm:px-5">
+          <!-- Header tabla -->
+          <div class="grid border-b border-neutral-700 py-1.5" style="grid-template-columns: 44px 1fr 90px 20px;">
+            <span class="text-neutral-500 text-[9px] font-black tracking-widest uppercase">Cant</span>
+            <span class="text-neutral-500 text-[9px] font-black tracking-widest uppercase">Descripción</span>
+            <span class="text-neutral-500 text-[9px] font-black tracking-widest uppercase text-right pr-1">Precio unit.</span>
+            <span></span>
           </div>
 
-          <!-- Scrollable body -->
-          <div class="overflow-y-auto flex-1 p-6 space-y-5">
+          <!-- Filas -->
+          <div id="trabajosTabla" class="divide-y divide-neutral-800/50"></div>
 
-            <!-- Info turno -->
-            <div class="bg-green-500/10 border border-green-500/20 rounded-sm px-4 py-3">
-              <p class="text-green-400 text-xs font-bold tracking-wide" id="finalizarInfo"></p>
-            </div>
-            <input type="hidden" id="finalizarTurnoId"/>
-
-            <!-- Preview estilo recibo -->
-            <div class="border border-neutral-700 rounded-sm overflow-hidden">
-              
-              <!-- Cabecera del recibo -->
-              <div class="bg-neutral-800 px-5 py-4 flex items-start justify-between border-b border-neutral-700">
-                <div class="flex items-center gap-3">
-                  <img src="/logoCardozo.webp" alt="Cardozo" class="w-10 h-10 object-contain opacity-90"/>
-                  <div>
-                    <p class="text-white font-black text-sm tracking-widest uppercase">Cardozo Performance</p>
-                    <p class="text-neutral-500 text-[10px]">9 Zenón López 2759 — Pilar (5972)</p>
-                    <p class="text-neutral-500 text-[10px]">📱 351-2486833</p>
-                  </div>
-                </div>
-                <div class="text-right">
-                  <p class="text-white font-black text-base tracking-widest uppercase">Presupuesto</p>
-                  <p class="text-red-400 text-[9px] font-bold tracking-widest uppercase mt-0.5">No válido como factura</p>
-                  <div class="flex items-center gap-2 mt-2 justify-end">
-                    <span class="text-neutral-500 text-[10px] uppercase tracking-widest">Fecha:</span>
-                    <span class="text-neutral-300 text-xs font-bold" id="recibo-fecha-display">—</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Datos cliente/vehículo -->
-              <div class="px-5 py-3 grid grid-cols-2 gap-x-6 gap-y-1.5 border-b border-neutral-700 bg-neutral-900/50">
-                <div class="flex gap-2">
-                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-16 shrink-0">Señor/es:</span>
-                  <span class="text-neutral-200 text-xs font-bold" id="recibo-nombre">—</span>
-                </div>
-                <div class="flex gap-2">
-                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-12 shrink-0">D.N.I.:</span>
-                  <span class="text-neutral-500 text-xs">—</span>
-                </div>
-                <div class="flex gap-2">
-                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-16 shrink-0">Domicilio:</span>
-                  <span class="text-neutral-500 text-xs">—</span>
-                </div>
-                <div class="flex gap-2">
-                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-12 shrink-0">Cel.:</span>
-                  <span class="text-neutral-200 text-xs font-bold" id="recibo-cel">—</span>
-                </div>
-                <div class="flex gap-2">
-                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-16 shrink-0">Moto/Auto:</span>
-                  <span class="text-neutral-200 text-xs font-bold" id="recibo-vehiculo">—</span>
-                </div>
-                <div class="flex gap-2">
-                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-12 shrink-0">Localidad:</span>
-                  <span class="text-neutral-500 text-xs">—</span>
-                </div>
-              </div>
-
-              <!-- Tabla de trabajos -->
-              <div class="px-5 py-0">
-                <!-- Encabezado tabla -->
-                <div class="grid grid-cols-[60px_1fr_100px] border-b border-neutral-700 py-2">
-                  <span class="text-neutral-500 text-[10px] font-black tracking-widest uppercase">Cant</span>
-                  <span class="text-neutral-500 text-[10px] font-black tracking-widest uppercase">Descripción</span>
-                  <span class="text-neutral-500 text-[10px] font-black tracking-widest uppercase text-right">Precio</span>
-                </div>
-
-                <!-- Filas dinámicas -->
-                <div id="trabajosTabla" class="divide-y divide-neutral-800/60 text-white"></div>
-
-                <!-- Botón agregar fila -->
-                <div class="py-2.5 border-t border-neutral-800">
-                  <button onclick="agregarFila()"
-                    class="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 text-[10px] font-bold tracking-widest uppercase transition-colors">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Agregar ítem
-                  </button>
-                </div>
-              </div>
-
-              <!-- Footer recibo: nota + total -->
-              <div class="border-t border-neutral-700 bg-neutral-800/40">
-                <!-- Notas -->
-                <div class="px-5 py-3 border-b border-neutral-700/50">
-                  <label class="block text-neutral-500 text-[10px] font-bold tracking-widest uppercase mb-1.5">Observaciones (opcional)</label>
-                  <textarea id="finalizarNotas" rows="2"
-                    style="background: rgb(30 30 30); border: 1px solid rgb(64 64 64); color: white; font-size: 0.8125rem; padding: 0.5rem 0.75rem; border-radius: 2px; outline: none; width: 100%; resize: none; transition: border-color 0.2s;"
-                    onfocus="this.style.borderColor='rgb(59 130 246)'"
-                    onblur="this.style.borderColor='rgb(64 64 64)'"
-                    placeholder="Próximo servicio recomendado, observaciones..."></textarea>
-                  <p class="text-neutral-700 text-[10px] mt-1.5 uppercase tracking-widest">Precios sujetos a variación del dólar</p>
-                </div>
-
-                <!-- Total -->
-                <div class="px-5 py-4 flex items-center justify-between">
-                  <span class="text-neutral-400 text-xs font-black tracking-[0.2em] uppercase">Total</span>
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-neutral-500 text-sm font-bold">$</span>
-                    <span id="totalCalculado" class="text-white font-black text-2xl tracking-tight">0</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <p class="text-red-400 text-xs hidden" id="finalizarError">Completá al menos un ítem con descripción y precio.</p>
-          </div>
-
-          <!-- Footer botones -->
-          <div class="px-6 py-4 flex gap-3 justify-end border-t border-neutral-800 shrink-0 bg-neutral-900">
-            <button onclick="cerrarModalFinalizar()"
-              class="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all">
-              Cancelar
-            </button>
-            <button onclick="confirmarFinalizar()"
-              class="bg-green-700 hover:bg-green-600 text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all flex items-center gap-2">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          <!-- Botón agregar -->
+          <div class="py-2 border-t border-neutral-800">
+            <button onclick="agregarFila()"
+              class="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 text-[10px] font-bold tracking-widest uppercase transition-colors">
+              <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
               </svg>
-              Finalizar y generar PDF
+              Agregar ítem
             </button>
           </div>
         </div>
+
+        <!-- Footer recibo -->
+        <div class="border-t border-neutral-700 bg-neutral-800/40">
+          <!-- Subtotales por fila (solo muestra si hay precio) -->
+          <div id="subtotalesPanel" class="px-3 sm:px-5 py-2 space-y-0.5 border-b border-neutral-700/50 hidden">
+            <p class="text-neutral-600 text-[9px] uppercase tracking-widest mb-1">Detalle</p>
+            <div id="subtotalesList" class="space-y-0.5"></div>
+          </div>
+
+          <!-- Observaciones -->
+          <div class="px-3 sm:px-5 py-2 sm:py-3 border-b border-neutral-700/50">
+            <label class="block text-neutral-500 text-[9px] font-bold tracking-widest uppercase mb-1">Observaciones (opcional)</label>
+            <textarea id="finalizarNotas" rows="2"
+              class="recibo-input w-full resize-none"
+              placeholder="Próximo servicio recomendado, observaciones..."></textarea>
+            <p class="text-neutral-700 text-[9px] mt-1 uppercase tracking-widest">Precios sujetos a variación del dólar</p>
+          </div>
+
+          <!-- Total -->
+          <div class="px-3 sm:px-5 py-3 flex items-center justify-between">
+            <span class="text-neutral-400 text-xs font-black tracking-[0.2em] uppercase">Total</span>
+            <div class="flex items-center gap-1">
+              <span class="text-neutral-500 font-bold text-sm">$</span>
+              <span id="totalCalculado" class="text-white font-black text-xl sm:text-2xl tracking-tight">0</span>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <p class="text-red-400 text-xs hidden" id="finalizarError">Completá al menos un ítem con descripción.</p>
+    </div>
+
+    <!-- Footer botones -->
+    <div class="px-3 sm:px-6 py-3 flex gap-2 sm:gap-3 justify-end border-t border-neutral-800 shrink-0 bg-neutral-900">
+      <button onclick="cerrarModalFinalizar()"
+        class="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] font-bold tracking-widest uppercase px-3 sm:px-5 py-2 sm:py-2.5 rounded-sm transition-all">
+        Cancelar
+      </button>
+      <button onclick="confirmarFinalizar()"
+        class="bg-green-700 hover:bg-green-600 text-white text-[10px] font-bold tracking-widest uppercase px-3 sm:px-5 py-2 sm:py-2.5 rounded-sm transition-all flex items-center gap-1.5">
+        <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span class="hidden xs:inline">Finalizar y generar </span>PDF
+      </button>
+    </div>
+  </div>
+</div>
 
     </div>
 
@@ -618,19 +618,26 @@ import Layout from '../../layouts/Layout.astro';
     }
     .admin-input:focus { border-color: rgb(59 130 246); }
 
+    /* Recibo inputs */
     .recibo-input {
-  width: 100%;
-  min-width: 0;
-  background: #1f1f1f;
-  border: 1px solid #404040;
-  color: white;
-  font-size: 12px;
-  padding: 8px 10px;
-  border-radius: 2px;
-  outline: none;
-}
+      width: 100%;
+      min-width: 0;
+      background: #1a1a1a;
+      border: 1px solid #3a3a3a;
+      color: white;
+      font-size: 11px;
+      padding: 5px 7px;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
     .recibo-input:focus { border-color: rgb(59 130 246); }
-    .recibo-input::placeholder { color: rgb(82 82 82); }
+    .recibo-input::placeholder { color: #4a4a4a; }
+
+    /* Quitar flechas number inputs en webkit */
+    .recibo-input[type=number]::-webkit-inner-spin-button,
+    .recibo-input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .recibo-input[type=number] { -moz-appearance: textfield; }
 
     @keyframes modalIn {
       from { opacity: 0; transform: translateY(12px) scale(0.98); }
@@ -987,291 +994,376 @@ import Layout from '../../layouts/Layout.astro';
 
   // ─── MODAL FINALIZAR (tabla tipo recibo) ───────────────────────────────────
 
-  let filasRecibo = [];
+let filasRecibo = [];
 
-  function abrirModalFinalizar(id) {
-    const t = turnosData.find(x => String(x.id) === String(id));
-    if (!t) return;
-    document.getElementById('finalizarTurnoId').value = id;
-    document.getElementById('finalizarNotas').value = '';
-    document.getElementById('finalizarError').classList.add('hidden');
-    document.getElementById('finalizarInfo').textContent =
-      `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
+function abrirModalFinalizar(id) {
+  const t = turnosData.find(x => String(x.id) === String(id));
+  if (!t) return;
+  document.getElementById('finalizarTurnoId').value = id;
+  document.getElementById('finalizarNotas').value = '';
+  document.getElementById('finalizarError').classList.add('hidden');
+  document.getElementById('finalizarInfo').textContent =
+    `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
 
-    document.getElementById('recibo-nombre').textContent = `${t.nombre} ${t.apellido}`;
-    document.getElementById('recibo-cel').textContent = t.celular || '—';
-    document.getElementById('recibo-vehiculo').textContent =
-      `${t.vehiculo ? t.vehiculo.charAt(0).toUpperCase() + t.vehiculo.slice(1) : '—'}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}`;
-    const hoy = new Date();
-    document.getElementById('recibo-fecha-display').textContent =
-      `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
+  document.getElementById('recibo-nombre').textContent = `${t.nombre} ${t.apellido}`;
+  document.getElementById('recibo-cel').textContent = t.celular || '—';
+  document.getElementById('recibo-vehiculo').textContent =
+    `${t.vehiculo ? t.vehiculo.charAt(0).toUpperCase() + t.vehiculo.slice(1) : '—'}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}`;
+  const hoy = new Date();
+  document.getElementById('recibo-fecha-display').textContent =
+    `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
 
-    filasRecibo = [{ cant: '1', desc: t.descripcion || '', precio: '' }];
-    renderFilas();
+  filasRecibo = [{ cant: '1', desc: t.descripcion || '', precio: '' }];
+  renderFilas();
 
-    const modal = document.getElementById('modalFinalizar');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  }
+  const modal = document.getElementById('modalFinalizar');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
 
-  function cerrarModalFinalizar() {
-    document.getElementById('modalFinalizar').classList.add('hidden');
-    document.getElementById('modalFinalizar').classList.remove('flex');
-  }
+function cerrarModalFinalizar() {
+  document.getElementById('modalFinalizar').classList.add('hidden');
+  document.getElementById('modalFinalizar').classList.remove('flex');
+}
 
-  function renderFilas() {
+function renderFilas() {
   const container = document.getElementById('trabajosTabla');
-
   container.innerHTML = filasRecibo.map((f, i) => `
-    <div class="grid grid-cols-[70px_minmax(0,1fr)_120px] gap-3 py-2 items-center group">
-      
-      <input 
-        type="number" 
-        min="1" 
-        value="${f.cant}"
+    <div class="grid gap-1.5 py-1.5 items-center group" style="grid-template-columns: 44px 1fr 90px 20px;">
+      <input type="number" min="1" value="${f.cant}"
         oninput="filasRecibo[${i}].cant = this.value; recalcularTotal()"
-        class="recibo-input text-center w-full min-w-0"
-        placeholder="1"
-      />
-
-      <input 
-        type="text" 
-        value="${f.desc.replace(/"/g,'&quot;')}"
+        class="recibo-input text-center" placeholder="1"/>
+      <input type="text" value="${f.desc.replace(/"/g,'&quot;')}"
         oninput="filasRecibo[${i}].desc = this.value"
-        class="recibo-input w-full min-w-0"
-        placeholder="Descripción del trabajo o repuesto..."
-      />
-
-      <div class="flex items-center gap-1 w-full min-w-0">
-        <span class="text-neutral-500 text-xs shrink-0">$</span>
-
-        <input 
-          type="number" 
-          min="0" 
-          step="100" 
-          value="${f.precio}"
-          oninput="filasRecibo[${i}].precio = this.value; recalcularTotal()"
-          class="recibo-input text-right flex-1 min-w-0"
-          placeholder="0"
-        />
-
+        class="recibo-input" placeholder="Descripción..."/>
+      <input type="number" min="0" step="100" value="${f.precio}"
+        oninput="filasRecibo[${i}].precio = this.value; recalcularTotal()"
+        class="recibo-input text-right" placeholder="0"/>
+      <div class="flex items-center justify-center">
         ${filasRecibo.length > 1
-          ? `<button onclick="quitarFila(${i})" 
-              class="text-neutral-700 hover:text-red-400 transition-colors shrink-0 opacity-0 group-hover:opacity-100">
+          ? `<button onclick="quitarFila(${i})"
+              class="text-neutral-700 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
               </svg>
             </button>`
-          : `<span class="w-4 shrink-0"></span>`}
+          : ''}
       </div>
-    </div>
-  `).join('');
-
+    </div>`).join('');
   recalcularTotal();
 }
 
-  function agregarFila() {
-    filasRecibo.push({ cant: '1', desc: '', precio: '' });
-    renderFilas();
-    const inputs = document.querySelectorAll('#trabajosTabla .recibo-input');
-    const grupos = Math.floor(inputs.length / 3);
-    const offset = (grupos - 1) * 3 + 1;
-    if (inputs[offset]) inputs[offset].focus();
-  }
+function agregarFila() {
+  filasRecibo.push({ cant: '1', desc: '', precio: '' });
+  renderFilas();
+  // foco en descripción de la última fila
+  const inputs = document.querySelectorAll('#trabajosTabla input[type="text"]');
+  if (inputs.length) inputs[inputs.length - 1].focus();
+}
 
-  function quitarFila(i) {
-    filasRecibo.splice(i, 1);
-    renderFilas();
-  }
+function quitarFila(i) {
+  filasRecibo.splice(i, 1);
+  renderFilas();
+}
 
-  function recalcularTotal() {
-    const total = filasRecibo.reduce((sum, f) => {
-      const precio = parseFloat(f.precio) || 0;
+function recalcularTotal() {
+  const total = filasRecibo.reduce((sum, f) => {
+    return sum + ((parseFloat(f.precio) || 0) * (parseFloat(f.cant) || 1));
+  }, 0);
+  document.getElementById('totalCalculado').textContent = total.toLocaleString('es-AR');
+
+  // Panel de subtotales
+  const panel = document.getElementById('subtotalesPanel');
+  const list  = document.getElementById('subtotalesList');
+  const filasConPrecio = filasRecibo.filter(f => f.desc.trim() && parseFloat(f.precio) > 0);
+  if (filasConPrecio.length > 1) {
+    panel.classList.remove('hidden');
+    list.innerHTML = filasConPrecio.map(f => {
       const cant = parseFloat(f.cant) || 1;
-      return sum + (precio * cant);
-    }, 0);
-    document.getElementById('totalCalculado').textContent = total.toLocaleString('es-AR');
+      const sub  = (parseFloat(f.precio) || 0) * cant;
+      return `<div class="flex justify-between text-[10px]">
+        <span class="text-neutral-500 truncate mr-2">${cant > 1 ? cant + 'x ' : ''}${f.desc.trim()}</span>
+        <span class="text-neutral-400 shrink-0">$ ${sub.toLocaleString('es-AR')}</span>
+      </div>`;
+    }).join('');
+  } else {
+    panel.classList.add('hidden');
   }
+}
 
-  async function confirmarFinalizar() {
-    const id = document.getElementById('finalizarTurnoId').value;
-    const notas = document.getElementById('finalizarNotas').value.trim();
-    const filasValidas = filasRecibo.filter(f => f.desc.trim() !== '');
-    const total = filasRecibo.reduce((sum, f) => {
-      return sum + ((parseFloat(f.precio) || 0) * (parseFloat(f.cant) || 1));
-    }, 0);
+async function confirmarFinalizar() {
+  const id = document.getElementById('finalizarTurnoId').value;
+  const notas = document.getElementById('finalizarNotas').value.trim();
+  const filasValidas = filasRecibo.filter(f => f.desc.trim() !== '');
+  const total = filasRecibo.reduce((sum, f) => {
+    return sum + ((parseFloat(f.precio) || 0) * (parseFloat(f.cant) || 1));
+  }, 0);
 
-    if (!filasValidas.length) {
-      document.getElementById('finalizarError').classList.remove('hidden');
-      return;
-    }
-    document.getElementById('finalizarError').classList.add('hidden');
+  if (!filasValidas.length) {
+    document.getElementById('finalizarError').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('finalizarError').classList.add('hidden');
 
-    const trabajos = filasValidas.map(f => {
-      const cant = parseFloat(f.cant) || 1;
-      return `${cant > 1 ? cant + 'x ' : ''}${f.desc.trim()}${f.precio ? ' — $' + Number(parseFloat(f.precio) * cant).toLocaleString('es-AR') : ''}`;
+  // Guardamos cant+desc+precio para el PDF
+  const trabajosParaBackend = filasValidas.map(f => {
+    const cant = parseFloat(f.cant) || 1;
+    const precio = parseFloat(f.precio) || 0;
+    return `${cant > 1 ? cant + 'x ' : ''}${f.desc.trim()}${precio ? ' — $' + (precio * cant).toLocaleString('es-AR') : ''}`;
+  });
+
+  // También guardamos las filas crudas para el PDF con tabla
+  const filasParaPDF = filasValidas.map(f => ({
+    cant: parseFloat(f.cant) || 1,
+    desc: f.desc.trim(),
+    precio: parseFloat(f.precio) || 0
+  }));
+
+  try {
+    await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        estado: "finalizado",
+        trabajos_realizados: trabajosParaBackend,
+        monto_total: total,
+        notas_finalizacion: notas
+      })
     });
+    await cargarTurnos();
+    const tActualizado = turnosData.find(x => String(x.id) === String(id));
+    cerrarModalFinalizar();
+    showToast('Turno finalizado. Generando PDF...', 'ok');
+    setTimeout(() => generarPDF(tActualizado, filasParaPDF, notas, total), 400);
+  } catch (error) {
+    console.error(error);
+    showToast('Error al finalizar el turno', 'error');
+  }
+}
 
+// ─── GENERACIÓN DE PDF ─────────────────────────────────────────────────────
+
+function generarPDF(t, filasTabla, notasPDF, totalPDF) {
+  if (typeof window.jspdf === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    script.onload = () => _crearPDF(t, filasTabla, notasPDF, totalPDF);
+    document.head.appendChild(script);
+  } else {
+    _crearPDF(t, filasTabla, notasPDF, totalPDF);
+  }
+}
+
+function _crearPDF(t, filasTabla, notasPDF, totalPDF) {
+  // Primero cargamos el logo como base64
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function() {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const logoBase64 = canvas.toDataURL('image/png');
+    _construirPDF(t, filasTabla, notasPDF, totalPDF, logoBase64);
+  };
+  img.onerror = function() {
+    // Si falla la carga del logo, generamos el PDF igual sin él
+    _construirPDF(t, filasTabla, notasPDF, totalPDF, null);
+  };
+  img.src = '/logoCardozo.webp?' + Date.now();
+}
+
+function _construirPDF(t, filasTabla, notasPDF, totalPDF, logoBase64) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a5' });
+  const W = 148;
+  const ML = 10;
+  const MR = 10;
+  const CW = W - ML - MR;
+  let y = 8;
+
+  const FACTURA_KEY = 'cardozo_factura_counter';
+  let nroFactura = parseInt(localStorage.getItem(FACTURA_KEY) || '0', 10) + 1;
+  localStorage.setItem(FACTURA_KEY, String(nroFactura));
+  const nroStr = String(nroFactura).padStart(5, '0');
+
+  const hoy = new Date();
+  const fechaStr = `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
+
+  // ── HEADER negro ──────────────────────────────────────────────────────────
+  doc.setFillColor(15, 15, 15);
+  doc.rect(0, 0, W, 30, 'F');
+
+  // Logo
+  if (logoBase64) {
     try {
-      await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          estado: "finalizado",
-          trabajos_realizados: trabajos,
-          monto_total: total,
-          notas_finalizacion: notas
-        })
-      });
-      await cargarTurnos();
-      const tActualizado = turnosData.find(x => String(x.id) === String(id));
-      cerrarModalFinalizar();
-      showToast('Turno finalizado. Generando PDF...', 'ok');
-      setTimeout(() => generarPDF(tActualizado || { trabajos_realizados: trabajos, monto_total: total, notas_finalizacion: notas }), 400);
-    } catch (error) {
-      console.error(error);
-      showToast('Error al finalizar el turno', 'error');
+      doc.addImage(logoBase64, 'PNG', ML, 3, 22, 22);
+    } catch(e) {
+      // fallback: círculo gris si falla
+      doc.setFillColor(40, 40, 40);
+      doc.circle(ML + 7, 14, 7, 'F');
     }
+  } else {
+    doc.setFillColor(40, 40, 40);
+    doc.circle(ML + 7, 14, 7, 'F');
   }
 
-  // ─── GENERACIÓN DE PDF ─────────────────────────────────────────────────────
+  // Nombre empresa
+  const textX = ML + 26;
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('CARDOZO PERFORMANCE', textX, 13);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.5);
+  doc.setTextColor(160, 160, 160);
+  doc.text('9 Zenón López 2759 — Pilar (5972)  |  Tel: 351-2486833', textX, 19);
 
-  function generarPDF(t) {
-    if (typeof window.jspdf === 'undefined') {
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      script.onload = () => _crearPDF(t);
-      document.head.appendChild(script);
-    } else {
-      _crearPDF(t);
-    }
+  // Presupuesto + nro (derecha)
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(255, 255, 255);
+  doc.text('PRESUPUESTO', W - MR, 10, { align: 'right' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6);
+  doc.setTextColor(200, 80, 80);
+  doc.text('NO VÁLIDO COMO FACTURA', W - MR, 15, { align: 'right' });
+  doc.setTextColor(160, 160, 160);
+  doc.text(`N° ${nroStr}`, W - MR, 20, { align: 'right' });
+  doc.text(`Fecha: ${fechaStr}`, W - MR, 25, { align: 'right' });
+
+  y = 35;
+
+  // ── DATOS CLIENTE ─────────────────────────────────────────────────────────
+  doc.setFillColor(245, 245, 245);
+  doc.rect(ML, y, CW, 24, 'F');
+  doc.setDrawColor(200, 200, 200);
+  doc.rect(ML, y, CW, 24);
+
+  const col1x = ML + 3;
+  const col2x = ML + CW / 2 + 2;
+  const lh = 5;
+
+  function campoCliente(label, valor, cx, cy) {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6.5);
+    doc.setTextColor(120, 120, 120);
+    doc.text(label, cx, cy);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(20, 20, 20);
+    doc.text(valor || '—', cx + doc.getTextWidth(label) + 1.5, cy);
   }
 
-  function _crearPDF(t) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    const W = 210;
-    let y = 0;
-    const FACTURA_KEY = 'cardozo_factura_counter';
-    let nroFactura = parseInt(localStorage.getItem(FACTURA_KEY) || '0', 10) + 1;
-    localStorage.setItem(FACTURA_KEY, String(nroFactura));
-    const nroFacturaStr = String(nroFactura).padStart(5, '0');
-    doc.setFillColor(15, 15, 15);
-    doc.rect(0, 0, W, 38, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.text('CARDOZO PERFORMANCE', 14, 16);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(160, 160, 160);
-    doc.text('COMPROBANTE DE SERVICIO', 14, 23);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(220, 220, 220);
-    const hoy = new Date();
-    const fechaEmision = `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
-    doc.text(`Emitido: ${fechaEmision}`, W - 14, 16, { align: 'right' });
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(160, 160, 160);
-    doc.text(`Factura N\u00b0 ${nroFacturaStr}`, W - 14, 23, { align: 'right' });
-    y = 48;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
-    doc.text('DATOS DEL CLIENTE', 14, y);
-    y += 4;
+  campoCliente('Señor/es: ', `${t.nombre} ${t.apellido}`, col1x, y + 6);
+  campoCliente('Cel.: ', t.celular || '—', col2x, y + 6);
+  campoCliente('Domicilio: ', '', col1x, y + 6 + lh);
+  campoCliente('Localidad: ', '', col2x, y + 6 + lh);
+
+  const vehiculoStr = `${t.vehiculo ? t.vehiculo.charAt(0).toUpperCase() + t.vehiculo.slice(1) : '—'}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}`;
+  campoCliente('Moto/Auto: ', vehiculoStr, col1x, y + 6 + lh * 2);
+  campoCliente('D.N.I.: ', '', col2x, y + 6 + lh * 2);
+
+  campoCliente('Turno: ', `${formatFecha(t.fecha)}  ${t.horario} hs`, col1x, y + 6 + lh * 3);
+
+  y += 28;
+
+  // ── TABLA TRABAJOS ────────────────────────────────────────────────────────
+  const colCantW = 14;
+  const colPrecW = 30;
+  const colDescW = CW - colCantW - colPrecW;
+
+  // Header tabla
+  doc.setFillColor(20, 20, 20);
+  doc.rect(ML, y, CW, 6.5, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6);
+  doc.setTextColor(200, 200, 200);
+  doc.text('CANT', ML + colCantW / 2, y + 4.2, { align: 'center' });
+  doc.text('DESCRIPCIÓN', ML + colCantW + 2, y + 4.2);
+  doc.text('PRECIO UNIT.', W - MR - 1, y + 4.2, { align: 'right' });
+  y += 6.5;
+
+  const filas = filasTabla && filasTabla.length
+    ? filasTabla
+    : (t.trabajos_realizados || []).map(tr => ({ cant: 1, desc: tr, precio: 0 }));
+
+  const rowH = 7;
+  filas.forEach((f, idx) => {
+    doc.setFillColor(idx % 2 === 0 ? 252 : 244, idx % 2 === 0 ? 252 : 244, idx % 2 === 0 ? 252 : 244);
+    doc.rect(ML, y, CW, rowH, 'F');
     doc.setDrawColor(220, 220, 220);
-    doc.line(14, y, W - 14, y);
-    y += 6;
-    const col1 = 14, col2 = 110;
-    function campo(label, valor, cx, cy) {
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7.5);
-      doc.setTextColor(130, 130, 130);
-      doc.text(label, cx, cy);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.setTextColor(20, 20, 20);
-      doc.text(valor || '\u2014', cx, cy + 5);
-    }
-    campo('NOMBRE COMPLETO', `${t.nombre} ${t.apellido}`, col1, y);
-    campo('CELULAR', t.celular, col2, y);
-    y += 14;
-    campo('FECHA DEL TURNO', formatFecha(t.fecha), col1, y);
-    campo('HORARIO', `${t.horario} hs`, col2, y);
-    y += 14;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
-    doc.text('VEH\u00cdCULO', 14, y);
-    y += 4;
-    doc.line(14, y, W - 14, y);
-    y += 6;
-    campo('TIPO', t.vehiculo ? t.vehiculo.charAt(0).toUpperCase() + t.vehiculo.slice(1) : '\u2014', col1, y);
-    campo('MARCA / MODELO', t.modelo_vehiculo || '\u2014', col2, y);
-    y += 14;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
-    doc.text('TRABAJOS REALIZADOS', 14, y);
-    y += 4;
-    doc.line(14, y, W - 14, y);
-    y += 7;
-    const trabajos = t.trabajos_realizados || [];
-    trabajos.forEach((trabajo, idx) => {
-      if (idx % 2 === 0) { doc.setFillColor(248, 248, 248); doc.rect(14, y - 4, W - 28, 8, 'F'); }
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.setTextColor(40, 40, 40);
-      doc.text(`${idx + 1}.  ${trabajo}`, 18, y);
-      y += 9;
-    });
-    y += 4;
-    if (t.notas_finalizacion) {
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(100, 100, 100);
-      doc.text('OBSERVACIONES', 14, y);
-      y += 4;
-      doc.line(14, y, W - 14, y);
-      y += 6;
-      doc.setFont('helvetica', 'italic');
-      doc.setFontSize(8);
-      doc.setTextColor(80, 80, 80);
-      const lines = doc.splitTextToSize(t.notas_finalizacion, W - 28);
-      doc.text(lines, 14, y);
-      y += lines.length * 5 + 6;
-    }
-    y += 4;
-    doc.setFillColor(15, 15, 15);
-    doc.roundedRect(14, y, W - 28, 18, 2, 2, 'F');
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.setTextColor(180, 180, 180);
-    doc.text('TOTAL DEL SERVICIO', 22, y + 7);
-    const montoStr = Number(t.monto_total).toLocaleString('es-AR');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(255, 255, 255);
-    const montoAncho = doc.getTextWidth(montoStr);
-    const montoX = W - 22;
-    doc.text(montoStr, montoX, y + 11, { align: 'right' });
-    doc.setFontSize(10);
-    doc.text('$', montoX - montoAncho - 2, y + 11);
-    y += 26;
-    doc.setDrawColor(220, 220, 220);
-    doc.line(14, y, W - 14, y);
-    y += 5;
+    doc.line(ML, y + rowH, ML + CW, y + rowH);
+
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
-    doc.setTextColor(160, 160, 160);
-    doc.text('Cardozo Performance \u2014 Taller Mec\u00e1nico', W / 2, y, { align: 'center' });
-    y += 4;
-    doc.text('Gracias por confiar en nosotros', W / 2, y, { align: 'center' });
-    doc.save(`Cardozo Performance - Factura ${nroFacturaStr}.pdf`);
-    showToast(`PDF generado \u2014 Factura N\u00b0 ${nroFacturaStr}`, 'ok');
+    doc.setTextColor(30, 30, 30);
+
+    // Cantidad (centrada)
+    doc.text(String(f.cant || 1), ML + colCantW / 2, y + 4.7, { align: 'center' });
+
+    // Descripción
+    const descFit = doc.splitTextToSize(f.desc || '', colDescW - 3);
+    doc.text(descFit[0] || '', ML + colCantW + 2, y + 4.7);
+
+    // Precio
+    const precioStr = f.precio > 0 ? `$ ${Number(f.precio).toLocaleString('es-AR')}` : '—';
+    doc.text(precioStr, W - MR - 1, y + 4.7, { align: 'right' });
+
+    y += rowH;
+  });
+
+  // Borde exterior tabla
+  doc.setDrawColor(180, 180, 180);
+  doc.rect(ML, y - filas.length * rowH - 6.5, CW, filas.length * rowH + 6.5);
+
+  y += 5;
+
+  // ── OBSERVACIONES ─────────────────────────────────────────────────────────
+  const notasFinal = notasPDF || t.notas_finalizacion || '';
+  if (notasFinal) {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(6.5);
+    doc.setTextColor(100, 100, 100);
+    const notaLines = doc.splitTextToSize(notasFinal, CW);
+    doc.text(notaLines, ML, y);
+    y += notaLines.length * 4 + 3;
   }
+
+  // ── PIE: nota dólar + TOTAL ───────────────────────────────────────────────
+  y += 2;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6);
+  doc.setTextColor(140, 140, 140);
+  doc.text('PRECIOS SUJETOS A VARIACIÓN DEL DÓLAR', ML, y);
+
+  // Caja TOTAL (derecha)
+  const totalFinal = totalPDF !== undefined ? totalPDF : (Number(t.monto_total) || 0);
+  const totalStr = totalFinal.toLocaleString('es-AR');
+  doc.setFillColor(15, 15, 15);
+  doc.roundedRect(W - MR - 55, y - 5.5, 55, 11, 1.5, 1.5, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(180, 180, 180);
+  doc.text('TOTAL', W - MR - 51, y + 0.5);
+  doc.setFontSize(10);
+  doc.setTextColor(255, 255, 255);
+  doc.text(`$ ${totalStr}`, W - MR - 2, y + 1.5, { align: 'right' });
+
+  y += 14;
+
+  // ── FIRMA ─────────────────────────────────────────────────────────────────
+  doc.setDrawColor(180, 180, 180);
+  doc.line(ML, y, ML + 45, y);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6);
+  doc.setTextColor(160, 160, 160);
+  doc.text('Firma / Sello', ML, y + 3.5);
+  doc.text('Gracias por confiar en Cardozo Performance', W / 2, y + 3.5, { align: 'center' });
+
+  doc.save(`Cardozo-Presupuesto-${nroStr}.pdf`);
+  showToast(`PDF generado — N° ${nroStr}`, 'ok');
+}
 
   // ─── EVENT LISTENERS ───────────────────────────────────────────────────────
 
