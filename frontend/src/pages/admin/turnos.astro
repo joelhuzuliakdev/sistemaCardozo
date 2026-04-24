@@ -449,82 +449,147 @@ import Layout from '../../layouts/Layout.astro';
         </div>
 
         <!-- ═══════════════ MODAL FINALIZAR ═══════════════ -->
-        <div id="modalFinalizar" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-          <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-          <div class="relative bg-neutral-900 border border-green-900/50 rounded-sm w-full max-w-lg shadow-2xl animate-modal">
-            <div class="bg-neutral-800 px-6 py-4 flex items-center justify-between border-b border-neutral-700">
-              <span class="text-white text-xs font-black tracking-[0.25em] uppercase">Finalizar Turno</span>
-              <button onclick="cerrarModalFinalizar()" class="text-neutral-500 hover:text-white transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>
+      <div id="modalFinalizar" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="relative bg-neutral-900 border border-green-900/50 rounded-sm w-full max-w-2xl shadow-2xl animate-modal max-h-[90vh] flex flex-col">
+          
+          <!-- Header -->
+          <div class="bg-neutral-800 px-6 py-4 flex items-center justify-between border-b border-neutral-700 shrink-0">
+            <span class="text-white text-xs font-black tracking-[0.25em] uppercase">Finalizar Turno — Presupuesto</span>
+            <button onclick="cerrarModalFinalizar()" class="text-neutral-500 hover:text-white transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Scrollable body -->
+          <div class="overflow-y-auto flex-1 p-6 space-y-5">
+
+            <!-- Info turno -->
+            <div class="bg-green-500/10 border border-green-500/20 rounded-sm px-4 py-3">
+              <p class="text-green-400 text-xs font-bold tracking-wide" id="finalizarInfo"></p>
             </div>
-            <div class="p-6 space-y-4">
-              <div class="bg-green-500/10 border border-green-500/20 rounded-sm px-4 py-3">
-                <p class="text-green-400 text-xs font-bold tracking-wide" id="finalizarInfo"></p>
-              </div>
-              <input type="hidden" id="finalizarTurnoId"/>
+            <input type="hidden" id="finalizarTurnoId"/>
 
-              <!-- Trabajos realizados -->
-              <div>
-                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">
-                  Trabajos realizados
-                </label>
-                <div id="trabajosList" class="space-y-2 mb-2"></div>
-                <button onclick="agregarTrabajo()"
-                  class="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 text-[10px] font-bold tracking-widest uppercase transition-colors">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                  </svg>
-                  Agregar trabajo
-                </button>
-              </div>
-
-              <!-- Monto total -->
-              <div>
-                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">
-                  Monto total del servicio
-                </label>
-                <div class="flex items-center">
-                  <span style="background: rgb(38 38 38); border: 1px solid rgb(64 64 64); border-right: none; color: rgb(163 163 163); font-size: 0.8125rem; font-weight: 700; padding: 0.5rem 0.75rem; border-radius: 2px 0 0 2px; user-select: none; line-height: 1.25rem;">$</span>
-                  <input type="number" id="finalizarMonto" min="0" step="100"
-                    style="background: rgb(38 38 38); border: 1px solid rgb(64 64 64); color: white; font-size: 0.8125rem; padding: 0.5rem 0.75rem; border-radius: 0 2px 2px 0; outline: none; flex: 1; transition: border-color 0.2s;"
-                    onfocus="this.style.borderColor='rgb(59 130 246)'; this.previousElementSibling.style.borderColor='rgb(59 130 246)'"
-                    onblur="this.style.borderColor='rgb(64 64 64)'; this.previousElementSibling.style.borderColor='rgb(64 64 64)'"
-                    placeholder="0"/>
+            <!-- Preview estilo recibo -->
+            <div class="border border-neutral-700 rounded-sm overflow-hidden">
+              
+              <!-- Cabecera del recibo -->
+              <div class="bg-neutral-800 px-5 py-4 flex items-start justify-between border-b border-neutral-700">
+                <div class="flex items-center gap-3">
+                  <img src="/logoCardozo.webp" alt="Cardozo" class="w-10 h-10 object-contain opacity-90"/>
+                  <div>
+                    <p class="text-white font-black text-sm tracking-widest uppercase">Cardozo Performance</p>
+                    <p class="text-neutral-500 text-[10px]">9 Zenón López 2759 — Pilar (5972)</p>
+                    <p class="text-neutral-500 text-[10px]">📱 351-2486833</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="text-white font-black text-base tracking-widest uppercase">Presupuesto</p>
+                  <p class="text-red-400 text-[9px] font-bold tracking-widest uppercase mt-0.5">No válido como factura</p>
+                  <div class="flex items-center gap-2 mt-2 justify-end">
+                    <span class="text-neutral-500 text-[10px] uppercase tracking-widest">Fecha:</span>
+                    <span class="text-neutral-300 text-xs font-bold" id="recibo-fecha-display">—</span>
+                  </div>
                 </div>
               </div>
 
-              <!-- Notas adicionales -->
-              <div>
-                <label class="block text-neutral-400 text-[10px] font-bold tracking-[0.15em] uppercase mb-1.5">
-                  Notas adicionales (opcional)
-                </label>
-                <textarea id="finalizarNotas" rows="2"
-                  style="background: rgb(38 38 38); border: 1px solid rgb(64 64 64); color: white; font-size: 0.8125rem; padding: 0.5rem 0.75rem; border-radius: 2px; outline: none; width: 100%; resize: none; transition: border-color 0.2s;"
-                  onfocus="this.style.borderColor='rgb(59 130 246)'"
-                  onblur="this.style.borderColor='rgb(64 64 64)'"
-                  placeholder="Observaciones, próximo servicio recomendado..."></textarea>
+              <!-- Datos cliente/vehículo -->
+              <div class="px-5 py-3 grid grid-cols-2 gap-x-6 gap-y-1.5 border-b border-neutral-700 bg-neutral-900/50">
+                <div class="flex gap-2">
+                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-16 shrink-0">Señor/es:</span>
+                  <span class="text-neutral-200 text-xs font-bold" id="recibo-nombre">—</span>
+                </div>
+                <div class="flex gap-2">
+                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-12 shrink-0">D.N.I.:</span>
+                  <span class="text-neutral-500 text-xs">—</span>
+                </div>
+                <div class="flex gap-2">
+                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-16 shrink-0">Domicilio:</span>
+                  <span class="text-neutral-500 text-xs">—</span>
+                </div>
+                <div class="flex gap-2">
+                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-12 shrink-0">Cel.:</span>
+                  <span class="text-neutral-200 text-xs font-bold" id="recibo-cel">—</span>
+                </div>
+                <div class="flex gap-2">
+                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-16 shrink-0">Moto/Auto:</span>
+                  <span class="text-neutral-200 text-xs font-bold" id="recibo-vehiculo">—</span>
+                </div>
+                <div class="flex gap-2">
+                  <span class="text-neutral-600 text-[10px] uppercase tracking-wider w-12 shrink-0">Localidad:</span>
+                  <span class="text-neutral-500 text-xs">—</span>
+                </div>
               </div>
 
-              <p class="text-red-400 text-xs hidden" id="finalizarError">Completá al menos un trabajo y el monto.</p>
+              <!-- Tabla de trabajos -->
+              <div class="px-5 py-0">
+                <!-- Encabezado tabla -->
+                <div class="grid grid-cols-[60px_1fr_100px] border-b border-neutral-700 py-2">
+                  <span class="text-neutral-500 text-[10px] font-black tracking-widest uppercase">Cant</span>
+                  <span class="text-neutral-500 text-[10px] font-black tracking-widest uppercase">Descripción</span>
+                  <span class="text-neutral-500 text-[10px] font-black tracking-widest uppercase text-right">Precio</span>
+                </div>
+
+                <!-- Filas dinámicas -->
+                <div id="trabajosTabla" class="divide-y divide-neutral-800/60 text-white"></div>
+
+                <!-- Botón agregar fila -->
+                <div class="py-2.5 border-t border-neutral-800">
+                  <button onclick="agregarFila()"
+                    class="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 text-[10px] font-bold tracking-widest uppercase transition-colors">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Agregar ítem
+                  </button>
+                </div>
+              </div>
+
+              <!-- Footer recibo: nota + total -->
+              <div class="border-t border-neutral-700 bg-neutral-800/40">
+                <!-- Notas -->
+                <div class="px-5 py-3 border-b border-neutral-700/50">
+                  <label class="block text-neutral-500 text-[10px] font-bold tracking-widest uppercase mb-1.5">Observaciones (opcional)</label>
+                  <textarea id="finalizarNotas" rows="2"
+                    style="background: rgb(30 30 30); border: 1px solid rgb(64 64 64); color: white; font-size: 0.8125rem; padding: 0.5rem 0.75rem; border-radius: 2px; outline: none; width: 100%; resize: none; transition: border-color 0.2s;"
+                    onfocus="this.style.borderColor='rgb(59 130 246)'"
+                    onblur="this.style.borderColor='rgb(64 64 64)'"
+                    placeholder="Próximo servicio recomendado, observaciones..."></textarea>
+                  <p class="text-neutral-700 text-[10px] mt-1.5 uppercase tracking-widest">Precios sujetos a variación del dólar</p>
+                </div>
+
+                <!-- Total -->
+                <div class="px-5 py-4 flex items-center justify-between">
+                  <span class="text-neutral-400 text-xs font-black tracking-[0.2em] uppercase">Total</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-neutral-500 text-sm font-bold">$</span>
+                    <span id="totalCalculado" class="text-white font-black text-2xl tracking-tight">0</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="px-6 pb-6 flex gap-3 justify-end">
-              <button onclick="cerrarModalFinalizar()"
-                class="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all">
-                Cancelar
-              </button>
-              <button onclick="confirmarFinalizar()"
-                class="bg-green-700 hover:bg-green-600 text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all flex items-center gap-2">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                Finalizar y generar PDF
-              </button>
-            </div>
+
+            <p class="text-red-400 text-xs hidden" id="finalizarError">Completá al menos un ítem con descripción y precio.</p>
+          </div>
+
+          <!-- Footer botones -->
+          <div class="px-6 py-4 flex gap-3 justify-end border-t border-neutral-800 shrink-0 bg-neutral-900">
+            <button onclick="cerrarModalFinalizar()"
+              class="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all">
+              Cancelar
+            </button>
+            <button onclick="confirmarFinalizar()"
+              class="bg-green-700 hover:bg-green-600 text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-sm transition-all flex items-center gap-2">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Finalizar y generar PDF
+            </button>
           </div>
         </div>
+      </div>
 
     </div>
 
@@ -553,6 +618,20 @@ import Layout from '../../layouts/Layout.astro';
     }
     .admin-input:focus { border-color: rgb(59 130 246); }
 
+    .recibo-input {
+  width: 100%;
+  min-width: 0;
+  background: #1f1f1f;
+  border: 1px solid #404040;
+  color: white;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 2px;
+  outline: none;
+}
+    .recibo-input:focus { border-color: rgb(59 130 246); }
+    .recibo-input::placeholder { color: rgb(82 82 82); }
+
     @keyframes modalIn {
       from { opacity: 0; transform: translateY(12px) scale(0.98); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -573,707 +652,788 @@ import Layout from '../../layouts/Layout.astro';
 </style>
 
 <script is:inline>
-   const API_BASE = 'https://backend-cardozo.onrender.com/api';
+  const API_BASE = 'https://backend-cardozo.onrender.com/api';
 
-    let turnosData = [];
-    let filtros = { search: '', vehiculo: '', orden: 'asc' };
+  let turnosData = [];
+  let filtros = { search: '', vehiculo: '', orden: 'asc' };
 
-    const vehiculoEmoji = {
-      auto: '🚗', moto: '🏍️', camioneta: '🚙', otro: '🚐'
-    };
+  const vehiculoEmoji = {
+    auto: '🚗', moto: '🏍️', camioneta: '🚙', otro: '🚐'
+  };
 
-    const estadoConfig = {
-      pendiente:  { label: 'Pendiente',   border: 'border-yellow-400/20', badge: 'bg-yellow-400/10 text-yellow-400' },
-      confirmado: { label: 'Confirmado',  border: 'border-blue-500/20',   badge: 'bg-blue-500/10 text-blue-400' },
-      enproceso:  { label: 'En Proceso',  border: 'border-orange-500/20', badge: 'bg-orange-500/10 text-orange-400' },
-      finalizado: { label: 'Finalizado',  border: 'border-green-500/20',  badge: 'bg-green-500/10 text-green-400' },
-      cancelado:  { label: 'Cancelado',   border: 'border-red-500/20',    badge: 'bg-red-500/10 text-red-400' },
-    };
+  const estadoConfig = {
+    pendiente:  { label: 'Pendiente',   border: 'border-yellow-400/20', badge: 'bg-yellow-400/10 text-yellow-400' },
+    confirmado: { label: 'Confirmado',  border: 'border-blue-500/20',   badge: 'bg-blue-500/10 text-blue-400' },
+    enproceso:  { label: 'En Proceso',  border: 'border-orange-500/20', badge: 'bg-orange-500/10 text-orange-400' },
+    finalizado: { label: 'Finalizado',  border: 'border-green-500/20',  badge: 'bg-green-500/10 text-green-400' },
+    cancelado:  { label: 'Cancelado',   border: 'border-red-500/20',    badge: 'bg-red-500/10 text-red-400' },
+  };
 
-    function formatFecha(fecha) {
-      if (!fecha) return '—';
-      const [y, m, d] = fecha.split('-');
-      return `${d}/${m}/${y}`;
+  function formatFecha(fecha) {
+    if (!fecha) return '—';
+    const [y, m, d] = fecha.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  function generarLinkWA(t, tipo) {
+    let numero = (t.celular || '').replace(/[\s\-\(\)]/g, '');
+    if (numero.startsWith('0')) numero = '54' + numero.slice(1);
+    if (!numero.startsWith('+') && !numero.startsWith('54')) numero = '54' + numero;
+    numero = numero.replace('+', '');
+    let mensaje = '';
+    if (tipo === 'confirmado') {
+      mensaje = `Hola ${t.nombre}! 👋 Tu turno en *Cardozo Performance* está *confirmado* ✅\n\n📅 Fecha: ${formatFecha(t.fecha)}\n🕐 Horario: ${t.horario} hs\n🚗 Vehículo: ${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}\n🔧 Servicio: ${t.descripcion}\n\nTe esperamos puntual! Cualquier consulta escribinos por acá. 🛠️`;
     }
-
-    function generarLinkWA(t, tipo) {
-      let numero = (t.celular || '').replace(/[\s\-\(\)]/g, '');
-      if (numero.startsWith('0')) numero = '54' + numero.slice(1);
-      if (!numero.startsWith('+') && !numero.startsWith('54')) numero = '54' + numero;
-      numero = numero.replace('+', '');
-      let mensaje = '';
-      if (tipo === 'confirmado') {
-        mensaje = `Hola ${t.nombre}! 👋 Tu turno en *Cardozo Performance* está *confirmado* ✅\n\n📅 Fecha: ${formatFecha(t.fecha)}\n🕐 Horario: ${t.horario} hs\n🚗 Vehículo: ${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}\n🔧 Servicio: ${t.descripcion}\n\nTe esperamos puntual! Cualquier consulta escribinos por acá. 🛠️`;
-      }
-      if (tipo === 'finalizado') {
-        const trabajosList = (t.trabajos_realizados || []).map((tr, i) => `   ${i + 1}. ${tr}`).join('\n');
-        mensaje = `Hola ${t.nombre}! 👋 El trabajo en tu vehículo está *listo* 🎉\n\n🚗 ${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}\n\n🔧 *Trabajos realizados:*\n${trabajosList}\n\n💰 *Total: $ ${Number(t.monto_total).toLocaleString('es-AR')}*\n\n${t.notas_finalizacion ? '📝 ' + t.notas_finalizacion + '\n\n' : ''}Te adjuntamos la factura. Gracias por confiar en *Cardozo Performance*! 🛠️`;
-      }
-      return `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+    if (tipo === 'finalizado') {
+      const trabajosList = (t.trabajos_realizados || []).map((tr, i) => `   ${i + 1}. ${tr}`).join('\n');
+      mensaje = `Hola ${t.nombre}! 👋 El trabajo en tu vehículo está *listo* 🎉\n\n🚗 ${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}\n\n🔧 *Trabajos realizados:*\n${trabajosList}\n\n💰 *Total: $ ${Number(t.monto_total).toLocaleString('es-AR')}*\n\n${t.notas_finalizacion ? '📝 ' + t.notas_finalizacion + '\n\n' : ''}Te adjuntamos la factura. Gracias por confiar en *Cardozo Performance*! 🛠️`;
     }
+    return `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+  }
 
-    let toastTimer;
-    function showToast(msg, tipo = 'ok') {
-      const toast = document.getElementById('toast');
-      const iconMap = { ok: '✓', error: '✕', info: 'ℹ' };
-      const colorMap = { ok: 'text-green-400', error: 'text-red-400', info: 'text-blue-400' };
-      document.getElementById('toastMsg').textContent = msg;
-      document.getElementById('toastIcon').textContent = iconMap[tipo];
-      document.getElementById('toastIcon').className = `text-base ${colorMap[tipo]}`;
-      toast.classList.remove('hidden');
-      toast.classList.add('flex', 'toast-show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.add('hidden');
-        toast.classList.remove('flex', 'toast-show');
-      }, 3000);
+  let toastTimer;
+  function showToast(msg, tipo = 'ok') {
+    const toast = document.getElementById('toast');
+    const iconMap = { ok: '✓', error: '✕', info: 'ℹ' };
+    const colorMap = { ok: 'text-green-400', error: 'text-red-400', info: 'text-blue-400' };
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = iconMap[tipo];
+    document.getElementById('toastIcon').className = `text-base ${colorMap[tipo]}`;
+    toast.classList.remove('hidden');
+    toast.classList.add('flex', 'toast-show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.classList.add('hidden');
+      toast.classList.remove('flex', 'toast-show');
+    }, 3000);
+  }
+
+  async function cargarTurnos() {
+    document.getElementById('loadingState').classList.remove('hidden');
+    document.getElementById('kanbanBoard').classList.add('hidden');
+    document.getElementById('errorState').classList.add('hidden');
+    const icon = document.getElementById('iconRecargar');
+    icon.classList.add('spinning');
+    try {
+      const res = await fetch("https://backend-cardozo.onrender.com/api/turnos");
+      turnosData = await res.json();
+      turnosCount = turnosData.length;
+      renderKanban();
+      updateStats();
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('kanbanBoard').classList.remove('hidden');
+    } catch (err) {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('errorState').classList.remove('hidden');
+      document.getElementById('errorState').classList.add('flex');
+      document.getElementById('errorMsg').textContent = err.message;
+    } finally {
+      icon.classList.remove('spinning');
     }
+  }
 
-    async function cargarTurnos() {
-      document.getElementById('loadingState').classList.remove('hidden');
-      document.getElementById('kanbanBoard').classList.add('hidden');
-      document.getElementById('errorState').classList.add('hidden');
-      const icon = document.getElementById('iconRecargar');
-      icon.classList.add('spinning');
-      try {
-        const res = await fetch("https://backend-cardozo.onrender.com/api/turnos");
-        turnosData = await res.json();
-        turnosCount = turnosData.length;
-        renderKanban();
-        updateStats();
-        document.getElementById('loadingState').classList.add('hidden');
-        document.getElementById('kanbanBoard').classList.remove('hidden');
-      } catch (err) {
-        document.getElementById('loadingState').classList.add('hidden');
-        document.getElementById('errorState').classList.remove('hidden');
-        document.getElementById('errorState').classList.add('flex');
-        document.getElementById('errorMsg').textContent = err.message;
-      } finally {
-        icon.classList.remove('spinning');
-      }
-    }
-
-    function turnosFiltrados() {
-      return turnosData
-        .filter(t => {
-          const q = filtros.search.toLowerCase();
-          const matchSearch = !q ||
-            `${t.nombre} ${t.apellido}`.toLowerCase().includes(q) ||
-            (t.descripcion || '').toLowerCase().includes(q) ||
-            (t.modelo_vehiculo || '').toLowerCase().includes(q);
-          const matchVehiculo = !filtros.vehiculo || t.vehiculo === filtros.vehiculo;
-          return matchSearch && matchVehiculo;
-        })
-        .sort((a, b) => {
-          const da = new Date(`${a.fecha}T${a.horario}`).getTime();
-          const db = new Date(`${b.fecha}T${b.horario}`).getTime();
-          return filtros.orden === 'asc' ? da - db : db - da;
-        });
-    }
-
-    function renderKanban() {
-      const cols = ['pendiente', 'confirmado', 'enproceso', 'finalizado'];
-      const data = turnosFiltrados();
-      cols.forEach(estado => {
-        const col = document.getElementById(`col-${estado}`);
-        const count = document.getElementById(`count-${estado}`);
-        const items = data.filter(t => t.estado === estado);
-        count.textContent = String(items.length);
-        col.innerHTML = items.length === 0
-          ? `<div class="border border-dashed border-neutral-800 rounded-sm p-6 text-center text-neutral-700 text-xs tracking-widest uppercase">Sin turnos</div>`
-          : items.map(t => cardHTML(t)).join('');
+  function turnosFiltrados() {
+    return turnosData
+      .filter(t => {
+        const q = filtros.search.toLowerCase();
+        const matchSearch = !q ||
+          `${t.nombre} ${t.apellido}`.toLowerCase().includes(q) ||
+          (t.descripcion || '').toLowerCase().includes(q) ||
+          (t.modelo_vehiculo || '').toLowerCase().includes(q);
+        const matchVehiculo = !filtros.vehiculo || t.vehiculo === filtros.vehiculo;
+        return matchSearch && matchVehiculo;
+      })
+      .sort((a, b) => {
+        const da = new Date(`${a.fecha}T${a.horario}`).getTime();
+        const db = new Date(`${b.fecha}T${b.horario}`).getTime();
+        return filtros.orden === 'asc' ? da - db : db - da;
       });
-    }
+  }
 
-    function cardHTML(t) {
-      const cfg = estadoConfig[t.estado] || estadoConfig['pendiente'];
-      const emoji = vehiculoEmoji[t.vehiculo] || '🚐';
-      return `
-        <div class="turno-card bg-neutral-900 border ${cfg.border} border border-neutral-800 rounded-sm p-4 hover:border-neutral-600" data-id="${t.id}">
-          <div class="flex items-start justify-between gap-2 mb-3">
-            <div>
-              <p class="text-white font-black text-sm leading-tight">${t.nombre} ${t.apellido}</p>
-              <a href="tel:${t.celular}" class="text-neutral-500 text-xs hover:text-blue-400 transition-colors">${t.celular}</a>
-            </div>
-            <span class="shrink-0 text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-sm ${cfg.badge}">${cfg.label}</span>
-          </div>
-          <div class="flex items-center gap-2 mb-2">
-            <svg class="w-3 h-3 text-neutral-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-            <span class="text-neutral-300 text-xs font-bold">${formatFecha(t.fecha)}</span>
-            <span class="text-neutral-600 text-xs">•</span>
-            <span class="text-neutral-400 text-xs">${t.horario} hs</span>
-          </div>
-          <div class="flex items-center gap-2 mb-3">
-            <span class="text-sm leading-none">${emoji}</span>
-            <span class="text-neutral-400 text-xs capitalize">${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}</span>
-          </div>
-          <p class="text-neutral-500 text-xs leading-relaxed line-clamp-2 border-t border-neutral-800 pt-2 mb-3">${t.descripcion}</p>
-          <div class="flex gap-1.5 mb-3 flex-wrap">
-            ${accionesEstadoHTML(t)}
-          </div>
-          <div class="flex gap-2 border-t border-neutral-800 pt-3">
-            ${t.estado === 'confirmado' ? `
-            <a href="${generarLinkWA(t, 'confirmado')}" target="_blank"
-              class="flex-1 flex items-center justify-center text-center gap-1.5 bg-green-900/20 hover:bg-green-900/40 border border-green-900/30 text-green-400 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
-              Avisar turno
-            </a>` : ''}
-            ${t.estado === 'finalizado' ? `
-            <a href="${generarLinkWA(t, 'finalizado')}" target="_blank"
-              class="flex-1 flex items-center justify-center text-center gap-1.5 bg-green-900/20 hover:bg-green-900/40 border border-green-900/30 text-green-400 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
-              Enviar factura
-            </a>` : ''}
-            <button onclick="abrirEditar('${t.id}')"
-              class="flex-1 flex items-center justify-center gap-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-              Editar
-            </button>
-            <button onclick="abrirEliminar('${t.id}')"
-              class="flex-1 flex items-center justify-center gap-1.5 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-              Eliminar
-            </button>
-          </div>
-        </div>`;
-    }
+  function renderKanban() {
+    const cols = ['pendiente', 'confirmado', 'enproceso', 'finalizado'];
+    const data = turnosFiltrados();
+    cols.forEach(estado => {
+      const col = document.getElementById(`col-${estado}`);
+      const count = document.getElementById(`count-${estado}`);
+      const items = data.filter(t => t.estado === estado);
+      count.textContent = String(items.length);
+      col.innerHTML = items.length === 0
+        ? `<div class="border border-dashed border-neutral-800 rounded-sm p-6 text-center text-neutral-700 text-xs tracking-widest uppercase">Sin turnos</div>`
+        : items.map(t => cardHTML(t)).join('');
+    });
+  }
 
-    function accionesEstadoHTML(t) {
-      const transiciones = {
-        pendiente:  [{ to: 'confirmado', label: 'Confirmar', color: 'bg-blue-600 hover:bg-blue-500 text-white' }, { to: 'cancelado', label: 'Cancelar', color: 'bg-red-900/30 hover:bg-red-900/60 border border-red-800/50 text-red-400' }],
-        confirmado: [{ to: 'enproceso', label: '&#9654; Iniciar', color: 'bg-orange-600 hover:bg-orange-500 text-white' }, { to: 'cancelado', label: 'Cancelar', color: 'bg-red-900/30 hover:bg-red-900/60 border border-red-800/50 text-red-400' }],
-        enproceso:  [{ to: 'finalizado', label: '&#10003; Finalizar', color: 'bg-green-700 hover:bg-green-600 text-white' }],
-        finalizado: [],
-        cancelado:  [{ to: 'pendiente', label: 'Reabrir', color: 'bg-neutral-700 hover:bg-neutral-600 text-neutral-300' }],
-      };
-      const ops = transiciones[t.estado] || [];
-      return ops.map(op =>
-        `<button onclick="cambiarEstado('${t.id}', '${op.to}')"
-          class="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-sm transition-all ${op.color}">
-          ${op.label}
-        </button>`
-      ).join('');
-    }
+  function cardHTML(t) {
+    const cfg = estadoConfig[t.estado] || estadoConfig['pendiente'];
+    const emoji = vehiculoEmoji[t.vehiculo] || '🚐';
+    return `
+      <div class="turno-card bg-neutral-900 border ${cfg.border} border border-neutral-800 rounded-sm p-4 hover:border-neutral-600" data-id="${t.id}">
+        <div class="flex items-start justify-between gap-2 mb-3">
+          <div>
+            <p class="text-white font-black text-sm leading-tight">${t.nombre} ${t.apellido}</p>
+            <a href="tel:${t.celular}" class="text-neutral-500 text-xs hover:text-blue-400 transition-colors">${t.celular}</a>
+          </div>
+          <span class="shrink-0 text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-sm ${cfg.badge}">${cfg.label}</span>
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+          <svg class="w-3 h-3 text-neutral-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          <span class="text-neutral-300 text-xs font-bold">${formatFecha(t.fecha)}</span>
+          <span class="text-neutral-600 text-xs">•</span>
+          <span class="text-neutral-400 text-xs">${t.horario} hs</span>
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-sm leading-none">${emoji}</span>
+          <span class="text-neutral-400 text-xs capitalize">${t.vehiculo}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}</span>
+        </div>
+        <p class="text-neutral-500 text-xs leading-relaxed line-clamp-2 border-t border-neutral-800 pt-2 mb-3">${t.descripcion}</p>
+        <div class="flex gap-1.5 mb-3 flex-wrap">
+          ${accionesEstadoHTML(t)}
+        </div>
+        <div class="flex gap-2 border-t border-neutral-800 pt-3">
+          ${t.estado === 'confirmado' ? `
+          <a href="${generarLinkWA(t, 'confirmado')}" target="_blank"
+            class="flex-1 flex items-center justify-center text-center gap-1.5 bg-green-900/20 hover:bg-green-900/40 border border-green-900/30 text-green-400 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
+            Avisar turno
+          </a>` : ''}
+          ${t.estado === 'finalizado' ? `
+          <a href="${generarLinkWA(t, 'finalizado')}" target="_blank"
+            class="flex-1 flex items-center justify-center text-center gap-1.5 bg-green-900/20 hover:bg-green-900/40 border border-green-900/30 text-green-400 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
+            Enviar factura
+          </a>` : ''}
+          <button onclick="abrirEditar('${t.id}')"
+            class="flex-1 flex items-center justify-center gap-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            Editar
+          </button>
+          <button onclick="abrirEliminar('${t.id}')"
+            class="flex-1 flex items-center justify-center gap-1.5 bg-red-900/20 hover:bg-red-900/40 border border-red-900/30 text-red-400 text-[10px] font-bold tracking-widest uppercase py-1.5 rounded-sm transition-all">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            Eliminar
+          </button>
+        </div>
+      </div>`;
+  }
 
-    function updateStats() {
-      document.getElementById('stat-total').textContent = String(turnosData.length);
-      document.getElementById('stat-pendiente').textContent = String(turnosData.filter(t => t.estado === 'pendiente').length);
-      document.getElementById('stat-confirmado').textContent = String(turnosData.filter(t => t.estado === 'confirmado').length);
-      document.getElementById('stat-finalizado').textContent = String(turnosData.filter(t => t.estado === 'finalizado').length);
-    }
+  function accionesEstadoHTML(t) {
+    const transiciones = {
+      pendiente:  [{ to: 'confirmado', label: 'Confirmar', color: 'bg-blue-600 hover:bg-blue-500 text-white' }, { to: 'cancelado', label: 'Cancelar', color: 'bg-red-900/30 hover:bg-red-900/60 border border-red-800/50 text-red-400' }],
+      confirmado: [{ to: 'enproceso', label: '&#9654; Iniciar', color: 'bg-orange-600 hover:bg-orange-500 text-white' }, { to: 'cancelado', label: 'Cancelar', color: 'bg-red-900/30 hover:bg-red-900/60 border border-red-800/50 text-red-400' }],
+      enproceso:  [{ to: 'finalizado', label: '&#10003; Finalizar', color: 'bg-green-700 hover:bg-green-600 text-white' }],
+      finalizado: [],
+      cancelado:  [{ to: 'pendiente', label: 'Reabrir', color: 'bg-neutral-700 hover:bg-neutral-600 text-neutral-300' }],
+    };
+    const ops = transiciones[t.estado] || [];
+    return ops.map(op =>
+      `<button onclick="cambiarEstado('${t.id}', '${op.to}')"
+        class="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-sm transition-all ${op.color}">
+        ${op.label}
+      </button>`
+    ).join('');
+  }
 
-    async function cambiarEstado(id, nuevoEstado) {
-      if (nuevoEstado === 'confirmado') { abrirModalDuracion(id); return; }
-      if (nuevoEstado === 'finalizado') { abrirModalFinalizar(id); return; }
-      try {
-        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ estado: nuevoEstado })
-        });
-        await cargarTurnos();
-        const labels = { enproceso: 'Turno iniciado', cancelado: 'Turno cancelado', pendiente: 'Turno reabierto' };
-        showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
-      } catch (error) {
-        console.error(error);
-        showToast('Error al cambiar el estado', 'error');
-      }
-    }
+  function updateStats() {
+    document.getElementById('stat-total').textContent = String(turnosData.length);
+    document.getElementById('stat-pendiente').textContent = String(turnosData.filter(t => t.estado === 'pendiente').length);
+    document.getElementById('stat-confirmado').textContent = String(turnosData.filter(t => t.estado === 'confirmado').length);
+    document.getElementById('stat-finalizado').textContent = String(turnosData.filter(t => t.estado === 'finalizado').length);
+  }
 
-function abrirModalDuracion(id) {
+  async function cambiarEstado(id, nuevoEstado) {
+    if (nuevoEstado === 'confirmado') { abrirModalDuracion(id); return; }
+    if (nuevoEstado === 'finalizado') { abrirModalFinalizar(id); return; }
+    try {
+      await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ estado: nuevoEstado })
+      });
+      await cargarTurnos();
+      const labels = { enproceso: 'Turno iniciado', cancelado: 'Turno cancelado', pendiente: 'Turno reabierto' };
+      showToast(labels[nuevoEstado] || 'Estado actualizado', 'ok');
+    } catch (error) {
+      console.error(error);
+      showToast('Error al cambiar el estado', 'error');
+    }
+  }
+
+  // ─── MODAL DURACIÓN ────────────────────────────────────────────────────────
+
+  function abrirModalDuracion(id) {
     document.getElementById('duracionTurnoId').value = id;
     const t = turnosData.find(x => String(x.id) === String(id));
-
     const duracionPorServicio = { servis110: 4, servis150: 4, servis250: 6 };
     const horasPredet = t?.vehiculo ? (duracionPorServicio[t.vehiculo] || '') : '';
     document.getElementById('duracionHoras').value = String(horasPredet);
-
     if (t) {
-        document.getElementById('duracionInfo').textContent =
-            `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
+      document.getElementById('duracionInfo').textContent =
+        `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
     }
     const modal = document.getElementById('modalDuracion');
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     setTimeout(() => document.getElementById('duracionHoras').focus(), 100);
+  }
+
+  function cerrarModalDuracion() {
+    const modal = document.getElementById('modalDuracion');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  async function confirmarDuracion() {
+    const id = document.getElementById('duracionTurnoId').value;
+    const horas = parseFloat(document.getElementById('duracionHoras').value);
+    if (!horas || horas < 0.5 || horas > 12) {
+      document.getElementById('duracionError').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('duracionError').classList.add('hidden');
+    try {
+      await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ estado: "confirmado", duracion_horas: horas })
+      });
+      cerrarModalDuracion();
+      await cargarTurnos();
+      showToast('Turno confirmado', 'ok');
+    } catch {
+      showToast('Error al confirmar el turno', 'error');
+    }
+  }
+
+  // ─── MODAL EDITAR ──────────────────────────────────────────────────────────
+
+  function abrirEditar(id) {
+    const t = turnosData.find(x => String(x.id) === String(id));
+    if (!t) return;
+    document.getElementById('editId').value = t.id;
+    document.getElementById('editNombre').value = t.nombre;
+    document.getElementById('editApellido').value = t.apellido;
+    document.getElementById('editCelular').value = t.celular;
+    document.getElementById('editFecha').value = t.fecha;
+    document.getElementById('editHorario').value = t.horario;
+    document.getElementById('editVehiculo').value = t.vehiculo;
+    document.getElementById('editModelo').value = t.modelo_vehiculo || '';
+    document.getElementById('editEstado').value = t.estado;
+    document.getElementById('editDescripcion').value = t.descripcion;
+    const modal = document.getElementById('modalEditar');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function cerrarEditar() {
+    const modal = document.getElementById('modalEditar');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  async function guardarEdicion() {
+    const id = document.getElementById('editId').value;
+    const datos = {
+      nombre:          document.getElementById('editNombre').value.trim(),
+      apellido:        document.getElementById('editApellido').value.trim(),
+      celular:         document.getElementById('editCelular').value.trim(),
+      fecha:           document.getElementById('editFecha').value,
+      horario:         document.getElementById('editHorario').value,
+      vehiculo:        document.getElementById('editVehiculo').value,
+      modelo_vehiculo: document.getElementById('editModelo').value.trim(),
+      estado:          document.getElementById('editEstado').value,
+      descripcion:     document.getElementById('editDescripcion').value.trim(),
+    };
+    try {
+      await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos)
+      });
+      cerrarEditar();
+      await cargarTurnos();
+      showToast('Turno actualizado correctamente', 'ok');
+    } catch {
+      showToast('Error al guardar los cambios', 'error');
+    }
+  }
+
+  // ─── MODAL ELIMINAR ────────────────────────────────────────────────────────
+
+  function abrirEliminar(id) {
+    document.getElementById('eliminarId').value = id;
+    const modal = document.getElementById('modalEliminar');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function cerrarEliminar() {
+    const modal = document.getElementById('modalEliminar');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  async function confirmarEliminar() {
+    const id = document.getElementById('eliminarId').value;
+    try {
+      await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, { method: "DELETE" });
+      cerrarEliminar();
+      await cargarTurnos();
+      showToast('Turno eliminado', 'info');
+    } catch {
+      showToast('Error al eliminar el turno', 'error');
+    }
+  }
+
+  // ─── MODAL FINALIZAR (tabla tipo recibo) ───────────────────────────────────
+
+  let filasRecibo = [];
+
+  function abrirModalFinalizar(id) {
+    const t = turnosData.find(x => String(x.id) === String(id));
+    if (!t) return;
+    document.getElementById('finalizarTurnoId').value = id;
+    document.getElementById('finalizarNotas').value = '';
+    document.getElementById('finalizarError').classList.add('hidden');
+    document.getElementById('finalizarInfo').textContent =
+      `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
+
+    document.getElementById('recibo-nombre').textContent = `${t.nombre} ${t.apellido}`;
+    document.getElementById('recibo-cel').textContent = t.celular || '—';
+    document.getElementById('recibo-vehiculo').textContent =
+      `${t.vehiculo ? t.vehiculo.charAt(0).toUpperCase() + t.vehiculo.slice(1) : '—'}${t.modelo_vehiculo ? ' — ' + t.modelo_vehiculo : ''}`;
+    const hoy = new Date();
+    document.getElementById('recibo-fecha-display').textContent =
+      `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
+
+    filasRecibo = [{ cant: '1', desc: t.descripcion || '', precio: '' }];
+    renderFilas();
+
+    const modal = document.getElementById('modalFinalizar');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function cerrarModalFinalizar() {
+    document.getElementById('modalFinalizar').classList.add('hidden');
+    document.getElementById('modalFinalizar').classList.remove('flex');
+  }
+
+  function renderFilas() {
+  const container = document.getElementById('trabajosTabla');
+
+  container.innerHTML = filasRecibo.map((f, i) => `
+    <div class="grid grid-cols-[70px_minmax(0,1fr)_120px] gap-3 py-2 items-center group">
+      
+      <input 
+        type="number" 
+        min="1" 
+        value="${f.cant}"
+        oninput="filasRecibo[${i}].cant = this.value; recalcularTotal()"
+        class="recibo-input text-center w-full min-w-0"
+        placeholder="1"
+      />
+
+      <input 
+        type="text" 
+        value="${f.desc.replace(/"/g,'&quot;')}"
+        oninput="filasRecibo[${i}].desc = this.value"
+        class="recibo-input w-full min-w-0"
+        placeholder="Descripción del trabajo o repuesto..."
+      />
+
+      <div class="flex items-center gap-1 w-full min-w-0">
+        <span class="text-neutral-500 text-xs shrink-0">$</span>
+
+        <input 
+          type="number" 
+          min="0" 
+          step="100" 
+          value="${f.precio}"
+          oninput="filasRecibo[${i}].precio = this.value; recalcularTotal()"
+          class="recibo-input text-right flex-1 min-w-0"
+          placeholder="0"
+        />
+
+        ${filasRecibo.length > 1
+          ? `<button onclick="quitarFila(${i})" 
+              class="text-neutral-700 hover:text-red-400 transition-colors shrink-0 opacity-0 group-hover:opacity-100">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>`
+          : `<span class="w-4 shrink-0"></span>`}
+      </div>
+    </div>
+  `).join('');
+
+  recalcularTotal();
 }
 
-    function cerrarModalDuracion() {
-      const modal = document.getElementById('modalDuracion');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+  function agregarFila() {
+    filasRecibo.push({ cant: '1', desc: '', precio: '' });
+    renderFilas();
+    const inputs = document.querySelectorAll('#trabajosTabla .recibo-input');
+    const grupos = Math.floor(inputs.length / 3);
+    const offset = (grupos - 1) * 3 + 1;
+    if (inputs[offset]) inputs[offset].focus();
+  }
+
+  function quitarFila(i) {
+    filasRecibo.splice(i, 1);
+    renderFilas();
+  }
+
+  function recalcularTotal() {
+    const total = filasRecibo.reduce((sum, f) => {
+      const precio = parseFloat(f.precio) || 0;
+      const cant = parseFloat(f.cant) || 1;
+      return sum + (precio * cant);
+    }, 0);
+    document.getElementById('totalCalculado').textContent = total.toLocaleString('es-AR');
+  }
+
+  async function confirmarFinalizar() {
+    const id = document.getElementById('finalizarTurnoId').value;
+    const notas = document.getElementById('finalizarNotas').value.trim();
+    const filasValidas = filasRecibo.filter(f => f.desc.trim() !== '');
+    const total = filasRecibo.reduce((sum, f) => {
+      return sum + ((parseFloat(f.precio) || 0) * (parseFloat(f.cant) || 1));
+    }, 0);
+
+    if (!filasValidas.length) {
+      document.getElementById('finalizarError').classList.remove('hidden');
+      return;
     }
+    document.getElementById('finalizarError').classList.add('hidden');
 
-    async function confirmarDuracion() {
-      const id = document.getElementById('duracionTurnoId').value;
-      const horas = parseFloat(document.getElementById('duracionHoras').value);
-      if (!horas || horas < 0.5 || horas > 12) {
-        document.getElementById('duracionError').classList.remove('hidden');
-        return;
-      }
-      document.getElementById('duracionError').classList.add('hidden');
-      try {
-        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ estado: "confirmado", duracion_horas: horas })
-        });
-        cerrarModalDuracion();
-        await cargarTurnos();
-        showToast('Turno confirmado', 'ok');
-      } catch {
-        showToast('Error al confirmar el turno', 'error');
-      }
-    }
+    const trabajos = filasValidas.map(f => {
+      const cant = parseFloat(f.cant) || 1;
+      return `${cant > 1 ? cant + 'x ' : ''}${f.desc.trim()}${f.precio ? ' — $' + Number(parseFloat(f.precio) * cant).toLocaleString('es-AR') : ''}`;
+    });
 
-    function abrirEditar(id) {
-      const t = turnosData.find(x => String(x.id) === String(id));
-      if (!t) return;
-      document.getElementById('editId').value = t.id;
-      document.getElementById('editNombre').value = t.nombre;
-      document.getElementById('editApellido').value = t.apellido;
-      document.getElementById('editCelular').value = t.celular;
-      document.getElementById('editFecha').value = t.fecha;
-      document.getElementById('editHorario').value = t.horario;
-      document.getElementById('editVehiculo').value = t.vehiculo;
-      document.getElementById('editModelo').value = t.modelo_vehiculo || '';
-      document.getElementById('editEstado').value = t.estado;
-      document.getElementById('editDescripcion').value = t.descripcion;
-      const modal = document.getElementById('modalEditar');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function cerrarEditar() {
-      const modal = document.getElementById('modalEditar');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    async function guardarEdicion() {
-      const id = document.getElementById('editId').value;
-      const datos = {
-        nombre:          document.getElementById('editNombre').value.trim(),
-        apellido:        document.getElementById('editApellido').value.trim(),
-        celular:         document.getElementById('editCelular').value.trim(),
-        fecha:           document.getElementById('editFecha').value,
-        horario:         document.getElementById('editHorario').value,
-        vehiculo:        document.getElementById('editVehiculo').value,
-        modelo_vehiculo: document.getElementById('editModelo').value.trim(),
-        estado:          document.getElementById('editEstado').value,
-        descripcion:     document.getElementById('editDescripcion').value.trim(),
-      };
-      try {
-        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datos)
-        });
-        cerrarEditar();
-        await cargarTurnos();
-        showToast('Turno actualizado correctamente', 'ok');
-      } catch {
-        showToast('Error al guardar los cambios', 'error');
-      }
-    }
-
-    function abrirEliminar(id) {
-      document.getElementById('eliminarId').value = id;
-      const modal = document.getElementById('modalEliminar');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function cerrarEliminar() {
-      const modal = document.getElementById('modalEliminar');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    async function confirmarEliminar() {
-      const id = document.getElementById('eliminarId').value;
-      try {
-        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, { method: "DELETE" });
-        cerrarEliminar();
-        await cargarTurnos();
-        showToast('Turno eliminado', 'info');
-      } catch {
-        showToast('Error al eliminar el turno', 'error');
-      }
-    }
-
-    let trabajosFinalizacion = [];
-
-    function abrirModalFinalizar(id) {
-      const t = turnosData.find(x => String(x.id) === String(id));
-      if (!t) return;
-      document.getElementById('finalizarTurnoId').value = id;
-      document.getElementById('finalizarMonto').value = '';
-      document.getElementById('finalizarNotas').value = '';
-      document.getElementById('finalizarError').classList.add('hidden');
-      document.getElementById('finalizarInfo').textContent =
-        `${t.nombre} ${t.apellido} — ${formatFecha(t.fecha)} a las ${t.horario} hs`;
-      trabajosFinalizacion = [''];
-      renderTrabajos();
-      const modal = document.getElementById('modalFinalizar');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function cerrarModalFinalizar() {
-      document.getElementById('modalFinalizar').classList.add('hidden');
-      document.getElementById('modalFinalizar').classList.remove('flex');
-    }
-
-    function renderTrabajos() {
-      const container = document.getElementById('trabajosList');
-      container.innerHTML = trabajosFinalizacion.map((val, i) => `
-        <div class="flex gap-2 items-center">
-          <input type="text" value="${val.replace(/"/g, '&quot;')}"
-            oninput="trabajosFinalizacion[${i}] = this.value"
-            placeholder="Ej: Cambio de aceite 10W-40, Revisión frenos..."
-            style="background: rgb(38 38 38); border: 1px solid rgb(64 64 64); color: white; font-size: 0.8125rem; padding: 0.5rem 0.75rem; border-radius: 2px; outline: none; flex: 1;"
-            onfocus="this.style.borderColor='rgb(59 130 246)'"
-            onblur="this.style.borderColor='rgb(64 64 64)'"/>
-          ${trabajosFinalizacion.length > 1
-            ? `<button onclick="quitarTrabajo(${i})" class="text-neutral-600 hover:text-red-400 transition-colors shrink-0">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </button>`
-            : ''}
-        </div>`).join('');
-    }
-
-    function agregarTrabajo() {
-      trabajosFinalizacion.push('');
-      renderTrabajos();
-      const inputs = document.querySelectorAll('#trabajosList input');
-      if (inputs.length) inputs[inputs.length - 1].focus();
-    }
-
-    function quitarTrabajo(i) {
-      trabajosFinalizacion.splice(i, 1);
-      renderTrabajos();
-    }
-
-    async function confirmarFinalizar() {
-      const id = document.getElementById('finalizarTurnoId').value;
-      const monto = parseFloat(document.getElementById('finalizarMonto').value);
-      const notas = document.getElementById('finalizarNotas').value.trim();
-      const trabajos = trabajosFinalizacion.filter(x => x.trim() !== '');
-      if (!trabajos.length || isNaN(monto) || monto < 0) {
-        document.getElementById('finalizarError').classList.remove('hidden');
-        return;
-      }
-      document.getElementById('finalizarError').classList.add('hidden');
-      try {
-        await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ estado: "finalizado", trabajos_realizados: trabajos, monto_total: monto, notas_finalizacion: notas })
-        });
-        await cargarTurnos();
-        const tActualizado = turnosData.find(x => String(x.id) === String(id));
-        cerrarModalFinalizar();
-        showToast('Turno finalizado. Generando PDF...', 'ok');
-        setTimeout(() => generarPDF(tActualizado), 400);
-      } catch (error) {
-        console.error(error);
-        showToast('Error al finalizar el turno', 'error');
-      }
-    }
-
-    function generarPDF(t) {
-      if (typeof window.jspdf === 'undefined') {
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-        script.onload = () => _crearPDF(t);
-        document.head.appendChild(script);
-      } else {
-        _crearPDF(t);
-      }
-    }
-
-    function _crearPDF(t) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-      const W = 210;
-      let y = 0;
-      const FACTURA_KEY = 'cardozo_factura_counter';
-      let nroFactura = parseInt(localStorage.getItem(FACTURA_KEY) || '0', 10) + 1;
-      localStorage.setItem(FACTURA_KEY, String(nroFactura));
-      const nroFacturaStr = String(nroFactura).padStart(5, '0');
-      doc.setFillColor(15, 15, 15);
-      doc.rect(0, 0, W, 38, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(18);
-      doc.text('CARDOZO PERFORMANCE', 14, 16);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.setTextColor(160, 160, 160);
-      doc.text('COMPROBANTE DE SERVICIO', 14, 23);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(220, 220, 220);
-      const hoy = new Date();
-      const fechaEmision = `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
-      doc.text(`Emitido: ${fechaEmision}`, W - 14, 16, { align: 'right' });
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(160, 160, 160);
-      doc.text(`Factura N\u00b0 ${nroFacturaStr}`, W - 14, 23, { align: 'right' });
-      y = 48;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(100, 100, 100);
-      doc.text('DATOS DEL CLIENTE', 14, y);
-      y += 4;
-      doc.setDrawColor(220, 220, 220);
-      doc.line(14, y, W - 14, y);
-      y += 6;
-      const col1 = 14, col2 = 110;
-      function campo(label, valor, cx, cy) {
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(7.5);
-        doc.setTextColor(130, 130, 130);
-        doc.text(label, cx, cy);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
-        doc.setTextColor(20, 20, 20);
-        doc.text(valor || '\u2014', cx, cy + 5);
-      }
-      campo('NOMBRE COMPLETO', `${t.nombre} ${t.apellido}`, col1, y);
-      campo('CELULAR', t.celular, col2, y);
-      y += 14;
-      campo('FECHA DEL TURNO', formatFecha(t.fecha), col1, y);
-      campo('HORARIO', `${t.horario} hs`, col2, y);
-      y += 14;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(100, 100, 100);
-      doc.text('VEH\u00cdCULO', 14, y);
-      y += 4;
-      doc.line(14, y, W - 14, y);
-      y += 6;
-      campo('TIPO', t.vehiculo ? t.vehiculo.charAt(0).toUpperCase() + t.vehiculo.slice(1) : '\u2014', col1, y);
-      campo('MARCA / MODELO', t.modelo_vehiculo || '\u2014', col2, y);
-      y += 14;
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(100, 100, 100);
-      doc.text('TRABAJOS REALIZADOS', 14, y);
-      y += 4;
-      doc.line(14, y, W - 14, y);
-      y += 7;
-      const trabajos = t.trabajos_realizados || [];
-      trabajos.forEach((trabajo, idx) => {
-        if (idx % 2 === 0) { doc.setFillColor(248, 248, 248); doc.rect(14, y - 4, W - 28, 8, 'F'); }
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(8);
-        doc.setTextColor(40, 40, 40);
-        doc.text(`${idx + 1}.  ${trabajo}`, 18, y);
-        y += 9;
+    try {
+      await fetch(`https://backend-cardozo.onrender.com/api/turnos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          estado: "finalizado",
+          trabajos_realizados: trabajos,
+          monto_total: total,
+          notas_finalizacion: notas
+        })
       });
-      y += 4;
-      if (t.notas_finalizacion) {
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8);
-        doc.setTextColor(100, 100, 100);
-        doc.text('OBSERVACIONES', 14, y);
-        y += 4;
-        doc.line(14, y, W - 14, y);
-        y += 6;
-        doc.setFont('helvetica', 'italic');
-        doc.setFontSize(8);
-        doc.setTextColor(80, 80, 80);
-        const lines = doc.splitTextToSize(t.notas_finalizacion, W - 28);
-        doc.text(lines, 14, y);
-        y += lines.length * 5 + 6;
-      }
-      y += 4;
-      doc.setFillColor(15, 15, 15);
-      doc.roundedRect(14, y, W - 28, 18, 2, 2, 'F');
+      await cargarTurnos();
+      const tActualizado = turnosData.find(x => String(x.id) === String(id));
+      cerrarModalFinalizar();
+      showToast('Turno finalizado. Generando PDF...', 'ok');
+      setTimeout(() => generarPDF(tActualizado || { trabajos_realizados: trabajos, monto_total: total, notas_finalizacion: notas }), 400);
+    } catch (error) {
+      console.error(error);
+      showToast('Error al finalizar el turno', 'error');
+    }
+  }
+
+  // ─── GENERACIÓN DE PDF ─────────────────────────────────────────────────────
+
+  function generarPDF(t) {
+    if (typeof window.jspdf === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      script.onload = () => _crearPDF(t);
+      document.head.appendChild(script);
+    } else {
+      _crearPDF(t);
+    }
+  }
+
+  function _crearPDF(t) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const W = 210;
+    let y = 0;
+    const FACTURA_KEY = 'cardozo_factura_counter';
+    let nroFactura = parseInt(localStorage.getItem(FACTURA_KEY) || '0', 10) + 1;
+    localStorage.setItem(FACTURA_KEY, String(nroFactura));
+    const nroFacturaStr = String(nroFactura).padStart(5, '0');
+    doc.setFillColor(15, 15, 15);
+    doc.rect(0, 0, W, 38, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.text('CARDOZO PERFORMANCE', 14, 16);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(160, 160, 160);
+    doc.text('COMPROBANTE DE SERVICIO', 14, 23);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(220, 220, 220);
+    const hoy = new Date();
+    const fechaEmision = `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
+    doc.text(`Emitido: ${fechaEmision}`, W - 14, 16, { align: 'right' });
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(160, 160, 160);
+    doc.text(`Factura N\u00b0 ${nroFacturaStr}`, W - 14, 23, { align: 'right' });
+    y = 48;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text('DATOS DEL CLIENTE', 14, y);
+    y += 4;
+    doc.setDrawColor(220, 220, 220);
+    doc.line(14, y, W - 14, y);
+    y += 6;
+    const col1 = 14, col2 = 110;
+    function campo(label, valor, cx, cy) {
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9);
-      doc.setTextColor(180, 180, 180);
-      doc.text('TOTAL DEL SERVICIO', 22, y + 7);
-      const montoStr = Number(t.monto_total).toLocaleString('es-AR');
+      doc.setFontSize(7.5);
+      doc.setTextColor(130, 130, 130);
+      doc.text(label, cx, cy);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
-      doc.setTextColor(255, 255, 255);
-      const montoAncho = doc.getTextWidth(montoStr);
-      const montoX = W - 22;
-      doc.text(montoStr, montoX, y + 11, { align: 'right' });
-      doc.setFontSize(10);
-      doc.text('$', montoX - montoAncho - 2, y + 11);
-      y += 26;
-      doc.setDrawColor(220, 220, 220);
-      doc.line(14, y, W - 14, y);
-      y += 5;
+      doc.setFontSize(9);
+      doc.setTextColor(20, 20, 20);
+      doc.text(valor || '\u2014', cx, cy + 5);
+    }
+    campo('NOMBRE COMPLETO', `${t.nombre} ${t.apellido}`, col1, y);
+    campo('CELULAR', t.celular, col2, y);
+    y += 14;
+    campo('FECHA DEL TURNO', formatFecha(t.fecha), col1, y);
+    campo('HORARIO', `${t.horario} hs`, col2, y);
+    y += 14;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text('VEH\u00cdCULO', 14, y);
+    y += 4;
+    doc.line(14, y, W - 14, y);
+    y += 6;
+    campo('TIPO', t.vehiculo ? t.vehiculo.charAt(0).toUpperCase() + t.vehiculo.slice(1) : '\u2014', col1, y);
+    campo('MARCA / MODELO', t.modelo_vehiculo || '\u2014', col2, y);
+    y += 14;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text('TRABAJOS REALIZADOS', 14, y);
+    y += 4;
+    doc.line(14, y, W - 14, y);
+    y += 7;
+    const trabajos = t.trabajos_realizados || [];
+    trabajos.forEach((trabajo, idx) => {
+      if (idx % 2 === 0) { doc.setFillColor(248, 248, 248); doc.rect(14, y - 4, W - 28, 8, 'F'); }
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7);
-      doc.setTextColor(160, 160, 160);
-      doc.text('Cardozo Performance \u2014 Taller Mec\u00e1nico', W / 2, y, { align: 'center' });
+      doc.setFontSize(8);
+      doc.setTextColor(40, 40, 40);
+      doc.text(`${idx + 1}.  ${trabajo}`, 18, y);
+      y += 9;
+    });
+    y += 4;
+    if (t.notas_finalizacion) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text('OBSERVACIONES', 14, y);
       y += 4;
-      doc.text('Gracias por confiar en nosotros', W / 2, y, { align: 'center' });
-      doc.save(`Cardozo Performance - Factura ${nroFacturaStr}.pdf`);
-      showToast(`PDF generado \u2014 Factura N\u00b0 ${nroFacturaStr}`, 'ok');
+      doc.line(14, y, W - 14, y);
+      y += 6;
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(8);
+      doc.setTextColor(80, 80, 80);
+      const lines = doc.splitTextToSize(t.notas_finalizacion, W - 28);
+      doc.text(lines, 14, y);
+      y += lines.length * 5 + 6;
     }
+    y += 4;
+    doc.setFillColor(15, 15, 15);
+    doc.roundedRect(14, y, W - 28, 18, 2, 2, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(180, 180, 180);
+    doc.text('TOTAL DEL SERVICIO', 22, y + 7);
+    const montoStr = Number(t.monto_total).toLocaleString('es-AR');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(255, 255, 255);
+    const montoAncho = doc.getTextWidth(montoStr);
+    const montoX = W - 22;
+    doc.text(montoStr, montoX, y + 11, { align: 'right' });
+    doc.setFontSize(10);
+    doc.text('$', montoX - montoAncho - 2, y + 11);
+    y += 26;
+    doc.setDrawColor(220, 220, 220);
+    doc.line(14, y, W - 14, y);
+    y += 5;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(160, 160, 160);
+    doc.text('Cardozo Performance \u2014 Taller Mec\u00e1nico', W / 2, y, { align: 'center' });
+    y += 4;
+    doc.text('Gracias por confiar en nosotros', W / 2, y, { align: 'center' });
+    doc.save(`Cardozo Performance - Factura ${nroFacturaStr}.pdf`);
+    showToast(`PDF generado \u2014 Factura N\u00b0 ${nroFacturaStr}`, 'ok');
+  }
 
-    document.getElementById('btnGuardarEdicion').addEventListener('click', guardarEdicion);
-    document.getElementById('btnCerrarModal').addEventListener('click', cerrarEditar);
-    document.getElementById('btnCancelarEdicion').addEventListener('click', cerrarEditar);
-    document.getElementById('modalBackdrop').addEventListener('click', cerrarEditar);
-    document.getElementById('btnCancelarEliminar').addEventListener('click', cerrarEliminar);
-    document.getElementById('btnConfirmarEliminar').addEventListener('click', confirmarEliminar);
-    document.getElementById('btnRecargar')?.addEventListener('click', () => {
-        nuevosCount = 0;
-        actualizarBadge();
-        cargarTurnos();
-    });
+  // ─── EVENT LISTENERS ───────────────────────────────────────────────────────
 
-    let searchTimer;
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(function() {
-        filtros.search = e.target.value;
-        renderKanban();
-      }, 250);
-    });
-
-    document.getElementById('filtroVehiculo').addEventListener('change', function(e) {
-      filtros.vehiculo = e.target.value;
-      renderKanban();
-    });
-
-    document.getElementById('filtroOrden').addEventListener('change', function(e) {
-      filtros.orden = e.target.value;
-      renderKanban();
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') { cerrarEditar(); cerrarEliminar(); cerrarModalDuracion(); cerrarModalFinalizar(); }
-    });
-
-    const SESSION_KEY = 'admin_session';
-    if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
-        window.location.href = '/admin/login';
-    }
-
-    // Logout (desktop y mobile)
-    function doLogout() {
-        sessionStorage.removeItem(SESSION_KEY);
-        sessionStorage.removeItem('admin_user');
-        window.location.href = '/admin/login';
-    }
-    document.getElementById('btnLogout')?.addEventListener('click', doLogout);
-    document.getElementById('btnLogoutMobile')?.addEventListener('click', doLogout);
-
-    // Hamburguesa
-    const btnMenu    = document.getElementById('btnMenuMobile');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const ham1 = document.getElementById('ham1');
-    const ham2 = document.getElementById('ham2');
-    const ham3 = document.getElementById('ham3');
-    let menuOpen = false;
-
-    btnMenu?.addEventListener('click', () => {
-        menuOpen = !menuOpen;
-        mobileMenu.style.maxHeight = menuOpen ? mobileMenu.scrollHeight + 'px' : '0';
-        mobileMenu.setAttribute('aria-hidden', String(!menuOpen));
-        if (menuOpen) {
-            ham1.style.transform = 'translateY(8px) rotate(45deg)';
-            ham2.style.opacity   = '0';
-            ham3.style.transform = 'translateY(-8px) rotate(-45deg)';
-        } else {
-            ham1.style.transform = '';
-            ham2.style.opacity   = '1';
-            ham3.style.transform = '';
-        }
-    });
-
-    // Recargar mobile (ícono independiente en header)
-    document.getElementById('btnRecargarMobile')?.addEventListener('click', () => {
-        nuevosCount = 0;
-        actualizarBadge();
-        // Sincronizar spinner con el ícono mobile también
-        const iconMobile = document.getElementById('iconRecargarMobile');
-        iconMobile.classList.add('spinning');
-        cargarTurnos().finally(() => iconMobile.classList.remove('spinning'));
-    });
-
-    // REALTIME + AUTO-REFRESH + BADGE + SONIDO
-    const SUPABASE_URL = 'https://eymmxgpzaxpzovlkakge.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable__G-Nx3ddgGdxPB580-lRlg_Cacgytd1';
-
-    let turnosCount = 0;
-    let nuevosCount = 0;
-
-    function sonarNotificacion() {
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.frequency.setValueAtTime(880, ctx.currentTime);
-            osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.3, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.4);
-        } catch(e) {}
-    }
-
-    function actualizarBadge() {
-        let badge = document.getElementById('badgeNuevosTurnos');
-        if (!badge) {
-            badge = document.createElement('span');
-            badge.id = 'badgeNuevosTurnos';
-            badge.style.cssText = `position: absolute; top: -6px; right: -6px; background: #ef4444; color: white; font-size: 10px; font-weight: 900; min-width: 18px; height: 18px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; padding: 0 4px; z-index: 99;`;
-            const btnRecargar = document.getElementById('btnRecargar');
-            btnRecargar.style.position = 'relative';
-            btnRecargar.appendChild(badge);
-        }
-        if (nuevosCount > 0) {
-            badge.textContent = String(nuevosCount);
-            badge.style.display = 'flex';
-        } else {
-            badge.style.display = 'none';
-        }
-    }
-
-    const supabaseScript = document.createElement('script');
-    supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-    supabaseScript.onload = () => {
-        const { createClient } = window.supabase;
-        const client = createClient(SUPABASE_URL, SUPABASE_KEY);
-        client
-            .channel('turnos-nuevos')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'turnos' }, (payload) => {
-                nuevosCount++;
-                actualizarBadge();
-                sonarNotificacion();
-                showToast(`Nuevo turno: ${payload.new.nombre} ${payload.new.apellido}`, 'info');
-                cargarTurnos();
-            })
-            .subscribe();
-    };
-    document.head.appendChild(supabaseScript);
-
-    setInterval(async () => {
-        try {
-            const res = await fetch('https://backend-cardozo.onrender.com/api/turnos');
-            const data = await res.json();
-            if (data.length !== turnosCount) {
-                turnosData = data;
-                turnosCount = data.length;
-                renderKanban();
-                updateStats();
-            }
-        } catch(e) {}
-    }, 10000);
-
+  document.getElementById('btnGuardarEdicion').addEventListener('click', guardarEdicion);
+  document.getElementById('btnCerrarModal').addEventListener('click', cerrarEditar);
+  document.getElementById('btnCancelarEdicion').addEventListener('click', cerrarEditar);
+  document.getElementById('modalBackdrop').addEventListener('click', cerrarEditar);
+  document.getElementById('btnCancelarEliminar').addEventListener('click', cerrarEliminar);
+  document.getElementById('btnConfirmarEliminar').addEventListener('click', confirmarEliminar);
+  document.getElementById('btnRecargar')?.addEventListener('click', () => {
+    nuevosCount = 0;
+    actualizarBadge();
     cargarTurnos();
+  });
+
+  let searchTimer;
+  document.getElementById('searchInput').addEventListener('input', function(e) {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function() {
+      filtros.search = e.target.value;
+      renderKanban();
+    }, 250);
+  });
+
+  document.getElementById('filtroVehiculo').addEventListener('change', function(e) {
+    filtros.vehiculo = e.target.value;
+    renderKanban();
+  });
+
+  document.getElementById('filtroOrden').addEventListener('change', function(e) {
+    filtros.orden = e.target.value;
+    renderKanban();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      cerrarEditar();
+      cerrarEliminar();
+      cerrarModalDuracion();
+      cerrarModalFinalizar();
+    }
+  });
+
+  // ─── SESIÓN ────────────────────────────────────────────────────────────────
+
+  const SESSION_KEY = 'admin_session';
+  if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
+    window.location.href = '/admin/login';
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem('admin_user');
+    window.location.href = '/admin/login';
+  }
+  document.getElementById('btnLogout')?.addEventListener('click', doLogout);
+  document.getElementById('btnLogoutMobile')?.addEventListener('click', doLogout);
+
+  // ─── HAMBURGUESA ───────────────────────────────────────────────────────────
+
+  const btnMenu    = document.getElementById('btnMenuMobile');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const ham1 = document.getElementById('ham1');
+  const ham2 = document.getElementById('ham2');
+  const ham3 = document.getElementById('ham3');
+  let menuOpen = false;
+
+  btnMenu?.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    mobileMenu.style.maxHeight = menuOpen ? mobileMenu.scrollHeight + 'px' : '0';
+    mobileMenu.setAttribute('aria-hidden', String(!menuOpen));
+    if (menuOpen) {
+      ham1.style.transform = 'translateY(8px) rotate(45deg)';
+      ham2.style.opacity   = '0';
+      ham3.style.transform = 'translateY(-8px) rotate(-45deg)';
+    } else {
+      ham1.style.transform = '';
+      ham2.style.opacity   = '1';
+      ham3.style.transform = '';
+    }
+  });
+
+  document.getElementById('btnRecargarMobile')?.addEventListener('click', () => {
+    nuevosCount = 0;
+    actualizarBadge();
+    const iconMobile = document.getElementById('iconRecargarMobile');
+    iconMobile.classList.add('spinning');
+    cargarTurnos().finally(() => iconMobile.classList.remove('spinning'));
+  });
+
+  // ─── REALTIME + AUTO-REFRESH + BADGE + SONIDO ──────────────────────────────
+
+  const SUPABASE_URL = 'https://eymmxgpzaxpzovlkakge.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable__G-Nx3ddgGdxPB580-lRlg_Cacgytd1';
+
+  let turnosCount = 0;
+  let nuevosCount = 0;
+
+  function sonarNotificacion() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.4);
+    } catch(e) {}
+  }
+
+  function actualizarBadge() {
+    let badge = document.getElementById('badgeNuevosTurnos');
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.id = 'badgeNuevosTurnos';
+      badge.style.cssText = `position: absolute; top: -6px; right: -6px; background: #ef4444; color: white; font-size: 10px; font-weight: 900; min-width: 18px; height: 18px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; padding: 0 4px; z-index: 99;`;
+      const btnRecargar = document.getElementById('btnRecargar');
+      btnRecargar.style.position = 'relative';
+      btnRecargar.appendChild(badge);
+    }
+    if (nuevosCount > 0) {
+      badge.textContent = String(nuevosCount);
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  const supabaseScript = document.createElement('script');
+  supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+  supabaseScript.onload = () => {
+    const { createClient } = window.supabase;
+    const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+    client
+      .channel('turnos-nuevos')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'turnos' }, (payload) => {
+        nuevosCount++;
+        actualizarBadge();
+        sonarNotificacion();
+        showToast(`Nuevo turno: ${payload.new.nombre} ${payload.new.apellido}`, 'info');
+        cargarTurnos();
+      })
+      .subscribe();
+  };
+  document.head.appendChild(supabaseScript);
+
+  setInterval(async () => {
+    try {
+      const res = await fetch('https://backend-cardozo.onrender.com/api/turnos');
+      const data = await res.json();
+      if (data.length !== turnosCount) {
+        turnosData = data;
+        turnosCount = data.length;
+        renderKanban();
+        updateStats();
+      }
+    } catch(e) {}
+  }, 10000);
+
+  cargarTurnos();
 </script>
