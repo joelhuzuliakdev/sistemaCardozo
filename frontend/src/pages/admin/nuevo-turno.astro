@@ -517,7 +517,7 @@ import Layout from '../../layouts/Layout.astro';
 
 		const bloqueados = new Set<string>();
 		try {
-			const resTurnos = await fetch('http://localhost:3000/api/turnos');
+			const resTurnos = await fetch('https://backend-cardozo.onrender.com/api/turnos');
 			const turnos: { estado: string; fecha: string; horario: string; duracion_horas: number }[] = await resTurnos.json();
 			turnos
 				.filter(t => t.fecha === fecha && (t.estado === 'confirmado' || t.estado === 'enproceso') && t.duracion_horas)
@@ -531,7 +531,7 @@ import Layout from '../../layouts/Layout.astro';
 					});
 				});
 
-			const resBloqueos = await fetch('http://localhost:3000/api/bloqueos');
+			const resBloqueos = await fetch('https://backend-cardozo.onrender.com/api/bloqueos');
 			const bloqueos: { fecha: string; horario: string | null }[] = await resBloqueos.json();
 
 			const diaCompleto = bloqueos.some(b => b.fecha === fecha && b.horario === null);
@@ -663,7 +663,7 @@ import Layout from '../../layouts/Layout.astro';
 		};
 
 		try {
-			await fetch("http://localhost:3000/api/turnos", {
+			await fetch("https://backend-cardozo.onrender.com/api/turnos", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(nuevoTurno)
@@ -697,3 +697,4 @@ import Layout from '../../layouts/Layout.astro';
 		if (charCount) charCount.textContent = '0 / 300';
 	});
 </script>
+
