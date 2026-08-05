@@ -723,7 +723,17 @@ import Layout from '../../layouts/Layout.astro';
     icon.classList.add('spinning');
     try {
       const res = await fetch("https://backend-cardozo.onrender.com/api/turnos");
-      turnosData = await res.json();
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || data.message || `Error del servidor (${res.status})`);
+      }
+
+      if (!Array.isArray(data)) {
+        throw new Error("La respuesta del servidor no tiene el formato esperado");
+      }
+
+      turnosData = data;
       turnosCount = turnosData.length;
       renderKanban();
       updateStats();
