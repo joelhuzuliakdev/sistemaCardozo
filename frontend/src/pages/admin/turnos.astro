@@ -1283,49 +1283,85 @@ function _construirPDF(t, filasTabla, notasPDF, totalPDF, logoBase64) {
   const colPrecW = 30;
   const colDescW = CW - colCantW - colPrecW;
 
-  // Header tabla
-  doc.setFillColor(20, 20, 20);
-  doc.rect(ML, y, CW, 6.5, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(6);
-  doc.setTextColor(200, 200, 200);
-  doc.text('CANT', ML + colCantW / 2, y + 4.2, { align: 'center' });
-  doc.text('DESCRIPCIÓN', ML + colCantW + 2, y + 4.2);
-  doc.text('PRECIO UNIT.', W - MR - 1, y + 4.2, { align: 'right' });
-  y += 6.5;
+  // Alto de página A5 y margen inferior: si algo no entra, pasa a una hoja nueva
+  const H = 210;
+  const MB = 12;
+  function nuevaPagina() {
+    doc.addPage();
+    y = 12;
+  }
+  function asegurarEspacio(alto) {
+    if (y + alto > H - MB) {
+      nuevaPagina();
+      return true;
+    }
+    return false;
+  }
+
+  function dibujarHeaderTabla() {
+    doc.setFillColor(20, 20, 20);
+    doc.rect(ML, y, CW, 6.5, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6);
+    doc.setTextColor(200, 200, 200);
+    doc.text('CANT', ML + colCantW / 2, y + 4.2, { align: 'center' });
+    doc.text('DESCRIPCIÓN', ML + colCantW + 2, y + 4.2);
+    doc.text('PRECIO UNIT.', W - MR - 1, y + 4.2, { align: 'right' });
+    y += 6.5;
+  }
+
+  dibujarHeaderTabla();
 
   const filas = filasTabla && filasTabla.length
     ? filasTabla
     : (t.trabajos_realizados || []).map(tr => ({ cant: 1, desc: tr, precio: 0 }));
 
-  const rowH = 7;
+  const lineH = 3.2;   // alto de cada renglón de descripción
+  const padV = 2.4;    // margen vertical dentro de la fila
   filas.forEach((f, idx) => {
-    doc.setFillColor(idx % 2 === 0 ? 252 : 244, idx % 2 === 0 ? 252 : 244, idx % 2 === 0 ? 252 : 244);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+
+    // La descripción se parte en todos los renglones que necesite
+    const descLines = doc.splitTextToSize(f.desc || '', colDescW - 3);
+    const rowH = Math.max(7, descLines.length * lineH + padV * 2);
+
+    // Si la fila no entra, pasamos de hoja y repetimos el encabezado de la tabla
+    if (asegurarEspacio(rowH)) dibujarHeaderTabla();
+
+    const gris = idx % 2 === 0 ? 252 : 244;
+    doc.setFillColor(gris, gris, gris);
     doc.rect(ML, y, CW, rowH, 'F');
     doc.setDrawColor(220, 220, 220);
     doc.line(ML, y + rowH, ML + CW, y + rowH);
+    doc.setDrawColor(180, 180, 180);
+    doc.line(ML, y, ML, y + rowH);
+    doc.line(ML + CW, y, ML + CW, y + rowH);
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(30, 30, 30);
 
-    // Cantidad (centrada)
-    doc.text(String(f.cant || 1), ML + colCantW / 2, y + 4.7, { align: 'center' });
+    const baseY = y + padV + 2.3;
 
-    // Descripción
-    const descFit = doc.splitTextToSize(f.desc || '', colDescW - 3);
-    doc.text(descFit[0] || '', ML + colCantW + 2, y + 4.7);
+    // Cantidad (centrada)
+    doc.text(String(f.cant || 1), ML + colCantW / 2, baseY, { align: 'center' });
+
+    // Descripción completa (todas las líneas)
+    descLines.forEach((linea, i) => {
+      doc.text(linea, ML + colCantW + 2, baseY + i * lineH);
+    });
 
     // Precio
     const precioStr = f.precio > 0 ? `$ ${Number(f.precio).toLocaleString('es-AR')}` : '—';
-    doc.text(precioStr, W - MR - 1, y + 4.7, { align: 'right' });
+    doc.text(precioStr, W - MR - 1, baseY, { align: 'right' });
 
     y += rowH;
   });
 
-  // Borde exterior tabla
+  // Cierre inferior de la tabla
   doc.setDrawColor(180, 180, 180);
-  doc.rect(ML, y - filas.length * rowH - 6.5, CW, filas.length * rowH + 6.5);
+  doc.line(ML, y, ML + CW, y);
 
   y += 5;
 
@@ -1336,11 +1372,25 @@ function _construirPDF(t, filasTabla, notasPDF, totalPDF, logoBase64) {
     doc.setFontSize(6.5);
     doc.setTextColor(100, 100, 100);
     const notaLines = doc.splitTextToSize(notasFinal, CW);
-    doc.text(notaLines, ML, y);
-    y += notaLines.length * 4 + 3;
+    // Renglón por renglón, para poder pasar de hoja si las notas son largas
+    notaLines.forEach(linea => {
+      if (asegurarEspacio(4)) {
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(6.5);
+        doc.setTextColor(100, 100, 100);
+      }
+      doc.text(linea, ML, y);
+      y += 4;
+    });
+    y += 3;
   }
 
   // ── PIE: nota dólar + TOTAL ───────────────────────────────────────────────
+  // Total + firma ocupan ~25 mm: los mantenemos juntos en la misma hoja
+  if (y + 2 + 25 > H - MB) {
+    nuevaPagina();
+    y += 5;
+  }
   y += 2;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6);
